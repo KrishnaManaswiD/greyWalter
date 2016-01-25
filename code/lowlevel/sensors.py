@@ -1,6 +1,8 @@
 import RPi.GPIO as GPIO
 import time
 
+GPIO.setmode(GPIO.BCM)
+
 class Sensor:
 
     def __init__(self,lightSensor_pin1,lightSensor_pin2,touchSensor_pin1,touchSensor_pin2,touchSensor_pin3,touchSensor_pin4,touchSensor_pin5,touchSensor_pin6,proximitySensor_pin1,proximitySensor_pin2):
@@ -32,7 +34,7 @@ class Sensor:
         GPIO.setup(self.proximitySensor_pin1, GPIO.IN)
         GPIO.setup(self.proximitySensor_pin2, GPIO.IN)
 
-		self.light1_value = 1 #self.read_light(self.lightSensor_pin1)
+	self.light1_value = 1 #self.read_light(self.lightSensor_pin1)
         self.light2_value = 1 #self.read_light(self.lightSensor_pin2)
         self.touch1_value = GPIO.input(self.touchSensor_pin1)
         self.touch2_value = GPIO.input(self.touchSensor_pin2)
@@ -51,27 +53,28 @@ class Sensor:
     def readSensor(self,sensor_type,pos):
 		while self.busy == True:
 			pass
-		    if sensor_type == self.touch:
+
+    		if sensor_type == self.touch:
 		        if pos == 1:
-					print GPIO.input(self.touchSensor_pin1)
-		            return GPIO.input(self.touchSensor_pin1)
+				print GPIO.input(self.touchSensor_pin1)
+				return GPIO.input(self.touchSensor_pin1)
 		        elif pos == 2:
-					print GPIO.input(self.touchSensor_pin2)
-		            return GPIO.input(self.touchSensor_pin2)
+				print GPIO.input(self.touchSensor_pin2)
+				return GPIO.input(self.touchSensor_pin2)
 		        elif pos == 3:
-		            return GPIO.input(self.touchSensor_pin3)
+				return GPIO.input(self.touchSensor_pin3)
 		        elif pos == 4:
-		            return GPIO.input(self.touchSensor_pin4)
+				return GPIO.input(self.touchSensor_pin4)
 		        elif pos == 5:
-		            return GPIO.input(self.touchSensor_pin5)
+				return GPIO.input(self.touchSensor_pin5)
 		        elif pos == 6:
-		            return GPIO.input(self.touchSensor_pin6)
-		    elif sensor_type == self.light:
+				return GPIO.input(self.touchSensor_pin6)
+		elif sensor_type == self.light:
 		        if pos == 1:
 		            return self.read_light(self.lightSensor_pin1)
 		        elif pos == 2:
 		            return self.read_light(self.lightSensor_pin2)
-		    else:
+		else:
 		        if pos == 1:
 		            return GPIO.input(self.proximitySensor_pin1)
 		        elif pos == 2:

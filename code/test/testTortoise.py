@@ -11,10 +11,13 @@ sys.path.append('../')
 # ------------------------------ #
 
 from tortoise import Tortoise,Direction,SensorType
+import time
 
 def main():
         wanderer = Tortoise()
-	while True:
+
+
+	while  not wanderer.isStopped():
 #		'''delay = raw_input("Delay between steps (milliseconds)?")
 #		steps = raw_input("How many steps forward? ")
 #		wanderer.gentleTurn(int(steps), int(delay)/2, Direction.forward_left)
@@ -42,7 +45,8 @@ def main():
 #		print "Light Sensor 2 value is %s" % light2
 
 		wanderer.doRandomStep()
-		print wanderer.readSensor(SensorType.light, 1)
+		#print wanderer.readSensor(SensorType.light, 1)
+
 
 if __name__=="__main__":
 	main()
