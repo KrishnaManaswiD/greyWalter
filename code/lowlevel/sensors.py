@@ -33,18 +33,31 @@ class Sensor:
         GPIO.setup(self.pr1, GPIO.IN)
         GPIO.setup(self.pr2, GPIO.IN)
 
+	self.light1 = 1 #self.read_light(self.ls1)
+        self.light2 = 1 #self.read_light(self.ls2)
+        self.touch1 = GPIO.input(self.sw1)
+        self.touch2 = GPIO.input(self.sw2)
+        self.touch3 = GPIO.input(self.sw3)
+        self.touch4 = GPIO.input(self.sw4)
+        self.touch5 = GPIO.input(self.sw5)
+        self.touch6 = GPIO.input(self.sw6)
+        self.prox1 = GPIO.input(self.pr1)
+        self.prox2 = GPIO.input(self.pr2)
+
         try:
             thread.start_new_thread(self.poll_sensors, (500,))
         except:
             print "Error: unable to start thread"
 
-    def readSensor(self,sensor_type,pos):
-        while self.busy == true:
-            pass
+    def readSensor(self,sensor_type,pos):        
+	while self.busy == True:
+	    pass
         if sensor_type == self.touch:
             if pos == 1:
+		print self.touch1
                 return self.touch1
             elif pos == 2:
+		print self.touch2
                 return self.touch2
             elif pos == 3:
                 return self.touch3
@@ -61,25 +74,28 @@ class Sensor:
                 return self.light2
         else:
             if pos == 1:
-                return self.proximity1
+                return self.prox1
             elif pos == 2:
-                return self.proximity2
+                return self.prox2
 
     def poll_sensors(self,delay):
-        while 1:
+        while True:
             self.busy = True
-            self.light1 = self.read_light(self.ls1)
-            self.light2 = self.read_light(self.ls2)
+            #self.light1 = self.read_light(self.ls1)
+            #self.light2 = self.read_light(self.ls2)
             self.touch1 = GPIO.input(self.sw1)
+	    #print self.touch1
             self.touch2 = GPIO.input(self.sw2)
-            self.touch3 = GPIO.input(self.sw3)
-            self.touch4 = GPIO.input(self.sw4)
+            #print self.touch2 
+	    self.touch3 = GPIO.input(self.sw3)
+            #print self.touch3
+	    self.touch4 = GPIO.input(self.sw4)
             self.touch5 = GPIO.input(self.sw5)
             self.touch6 = GPIO.input(self.sw6)
-            self.proximity1 = GPIO.input(self.pr1)
-            self.proximity2 = GPIO.input(self.pr2)
+            self.prox1 = GPIO.input(self.pr1)
+            self.prox2 = GPIO.input(self.pr2)
             self.busy = False
-            time.sleep(delay)
+            time.sleep(delay/1000.0)
 
     def read_light(self,lspin):
         reading = 0

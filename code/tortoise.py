@@ -41,7 +41,7 @@ class Tortoise:
         self.sensor = Sensor(1,2,3,5,6,7,8,9,10,11)
 
     def readSensor(self,sensor_type,pos):
-        self.sensor.readSensor(sensor_type,pos)
+        return self.sensor.readSensor(sensor_type,pos)
 
     def moveSomewhere(self, steps, delay, direction):
 
@@ -56,39 +56,39 @@ class Tortoise:
                 self.B.backwards(int(delay) / 1000.00, int(1))
             if direction == Direction.forward_right or direction == Direction.forward or direction == Direction.clockwise:
                 self.A.forward(int(delay) / 1000.00, int(1))
-            if direction == Direction.forward_left or direction == Direction.forward or direction == Direct.counterClockwise:
+            if direction == Direction.forward_left or direction == Direction.forward or direction == Direction.counterClockwise:
                 self.B.forward(int(delay) / 1000.00, int(1))
 
 
     def naturalTurn(self, totalSteps, straightStep, sideStep, delay, direction):
 
-        if forwardStep < 0 or sideStep < 0: return
-        if not direction == Direction.forward_left or not direction == Direction.forward_right or not direction == Direction.backward_left or not direction == Direction.backward_right:
+        if straightStep < 0 or sideStep < 0: return
+        if not direction == Direction.forward_left and not direction == Direction.forward_right and not direction == Direction.backward_left and not direction == Direction.backward_right:
             print "Don't mess around."
             return
 
-        for x in range(0, totalSteps):
+        for x in range(0, int(totalSteps/(straightStep+sideStep))):
             if direction == Direction.forward_left:
-                self.moveSomewhere(staightStep, delay, Direction.forward)
-                self.moveSomewhere(sideStep, delay, Direction.left)
+                self.moveSomewhere(straightStep, delay, Direction.forward)
+                self.moveSomewhere(sideStep, delay, Direction.forward_left)
             if direction == Direction.forward_right:
                 self.moveSomewhere(straightStep, delay, Direction.forward)
-                self.moveSomewhere(sideStep, delay, Direction.right)
+                self.moveSomewhere(sideStep, delay, Direction.forward_right)
             if direction == Direction.backward_left:
                 self.moveSomewhere(straightStep, delay, Direction.backward)
-                self.moveSomewhere(sideStep, delay, Direction.left)
+                self.moveSomewhere(sideStep, delay, Direction.backward_left)
             if direction == Direction.backward_right:
                 self.moveSomewhere(straightStep, delay, Direction.backward)
-                self.moveSomewhere(sideStep, delay, Direction.right)
+                self.moveSomewhere(sideStep, delay, Direction.backward_right)
 
-    def gentleTurn(self, steps, direction):
-        self.naturalTurn(steps, 3, 1, direction)
+    def gentleTurn(self, steps, delay,direction):
+        self.naturalTurn(steps, 3, 1, delay,direction)
 
-    def sharpTurn(self, steps, direction):
-        self.naturalTurn(steps, 1, 3, direction)
+    def sharpTurn(self, steps, delay,direction):
+        self.naturalTurn(steps, 1, 3, delay,direction)
 
-    def tryCircle(self, direction):
-        self.gentleTurn(2000, direction)
+    def tryCircle(self, delay, direction):
+        self.gentleTurn(2000, delay,direction)
 
-    def defaultCircle(self):
-        self.tryCircle(Direction.forward_right)
+    def defaultCircle(self,delay):
+        self.tryCircle(delay,Direction.forward_right)
