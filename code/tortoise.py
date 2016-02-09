@@ -200,29 +200,59 @@ class Tortoise:
             blinkLED()
             return -1
 
-        for x in range(0,steps):
+        numberOfstepsCommanded = int(10)
+        numberOfLoops = steps/numberOfstepsCommanded
+        numberOfStepsRemaining = steps % numberOfstepsCommanded
+        for x in range(0,numberOfLoops):
 
             # If a stop command has been sent, the turtle will stop its movement
             if self.getSensorData(enums.SensorType.emergencySwitch, 1) == 0:
 
                 if self.getStateTortoise() == enums.State.running:
                     self.setStateTortoise(enums.State.paused)
-
-                print "Tortoise paused"
+                    print "Tortoise paused"
+                    
                 break;
 
-            print "Tortoise running"
             if self.getStateTortoise() == enums.State.paused:
                 self.setStateTortoise(enums.State.running)
+                print "Tortoise running"
 
             if direction == enums.Direction.backward_left or direction == enums.Direction.backward or direction == enums.Direction.counterClockwise:
-                self.A.backwards(int(self.delay) / 1000.00, int(1))
+                self.A.backwards(int(self.delay) / 1000.00, numberOfstepsCommanded)
             elif direction == enums.Direction.backward_right or direction == enums.Direction.backward or direction == enums.Direction.clockwise:
-                self.B.backwards(int(self.delay) / 1000.00, int(1))
+                self.B.backwards(int(self.delay) / 1000.00, numberOfstepsCommanded)
             elif direction == enums.Direction.forward_right or direction == enums.Direction.forward or direction == enums.Direction.clockwise:
-                self.A.forward(int(self.delay) / 1000.00, int(1))
+                self.A.forward(int(self.delay) / 1000.00, numberOfstepsCommanded)
             elif direction == enums.Direction.forward_left or direction == enums.Direction.forward or direction == enums.Direction.counterClockwise:
-                self.B.forward(int(self.delay) / 1000.00, int(1))
+                self.B.forward(int(self.delay) / 1000.00, numberOfstepsCommanded)
+
+
+        if numberOfStepsRemaining > 0:
+            
+            # If a stop command has been sent, the turtle will stop its movement
+            if self.getSensorData(enums.SensorType.emergencySwitch, 1) == 0:
+
+                if self.getStateTortoise() == enums.State.running:
+                    self.setStateTortoise(enums.State.paused)
+                    print "Tortoise paused"
+
+                else:
+
+                    if self.getStateTortoise() == enums.State.paused:
+                        self.setStateTortoise(enums.State.running)
+                        print "Tortoise running"
+
+                    if direction == enums.Direction.backward_left or direction == enums.Direction.backward or direction == enums.Direction.counterClockwise:
+                        self.A.backwards(int(self.delay) / 1000.00, numberOfStepsRemaining)
+                    elif direction == enums.Direction.backward_right or direction == enums.Direction.backward or direction == enums.Direction.clockwise:
+                        self.B.backwards(int(self.delay) / 1000.00, numberOfStepsRemaining)
+                    elif direction == enums.Direction.forward_right or direction == enums.Direction.forward or direction == enums.Direction.clockwise:
+                        self.A.forward(int(self.delay) / 1000.00, numberOfStepsRemaining)
+                    elif direction == enums.Direction.forward_left or direction == enums.Direction.forward or direction == enums.Direction.counterClockwise:
+                        self.B.forward(int(self.delay) / 1000.00, numberOfStepsRemaining)
+
+
 
         self.A.stopMotors()
         self.B.stopMotors()
