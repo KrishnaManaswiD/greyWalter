@@ -19,24 +19,24 @@ class Motor:
 
 	def forward(self,delay, steps):
 		for i in range(0, steps):
-			self.setStep(self,0,0,1,1)
+			self.setStep(0,0,1,1)
 			time.sleep(delay)
-			self.setStep(self,1,0,0,1)
+			self.setStep(1,0,0,1)
 			time.sleep(delay)
-			self.setStep(self,1,1,0,0)
+			self.setStep(1,1,0,0)
 			time.sleep(delay)
-			self.setStep(self,0,1,1,0)
+			self.setStep(0,1,1,0)
 			time.sleep(delay)
 
 	def backwards(self,delay, steps):
 		for i in range(0, steps):
-			self.setStep(self,0,1,1,0)
+			self.setStep(0,1,1,0)
 			time.sleep(delay)
-			self.setStep(self,1,1,0,0)
+			self.setStep(1,1,0,0)
 			time.sleep(delay)
-			self.setStep(self,1,0,0,1)
+			self.setStep(1,0,0,1)
 			time.sleep(delay)
-			self.setStep(self,0,0,1,1)
+			self.setStep(0,0,1,1)
 			time.sleep(delay)
 
 	def setStep(self, w1,w2,w3,w4):
