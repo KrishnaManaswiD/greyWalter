@@ -24,6 +24,7 @@ class Sensors:
         self.touchSensor_pin4 = -1
         self.touchSensor_pin5 = -1
         self.touchSensor_pin6 = -1
+	
         self.proximitySensor_pin1 = -1
         self.proximitySensor_pin2 = -1
         self.emergencySwitch_pin1 = -1
@@ -55,21 +56,27 @@ class Sensors:
             if pos == 1:
                 self.touchSensor_pin1 = pin
                 GPIO.setup(pin, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+                GPIO.add_event_detect(pin, GPIO.FALLING, callback = self.callback_touch, bouncetime = 300)
             elif pos == 2:
                 self.touchSensor_pin2 = pin
                 GPIO.setup(pin, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+                GPIO.add_event_detect(pin, GPIO.FALLING, callback = self.callback_touch, bouncetime = 300)
             elif pos == 3:
                 self.touchSensor_pin3 = pin
                 GPIO.setup(pin, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+                GPIO.add_event_detect(pin, GPIO.FALLING, callback = self.callback_touch, bouncetime = 300)
             elif pos == 4:
                 self.touchSensor_pin4 = pin
                 GPIO.setup(pin, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+                GPIO.add_event_detect(pin, GPIO.FALLING, callback = self.callback_touch, bouncetime = 300)
             elif pos == 5:
                 self.touchSensor_pin5 = pin
                 GPIO.setup(pin, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+                GPIO.add_event_detect(pin, GPIO.FALLING, callback = self.callback_touch, bouncetime = 300)
             elif pos == 6:
                 self.touchSensor_pin6 = pin
                 GPIO.setup(pin, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+                GPIO.add_event_detect(pin, GPIO.FALLING, callback = self.callback_touch, bouncetime = 300)
 
         elif sensor_type == enums.SensorType.light:
 

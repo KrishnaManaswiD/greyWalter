@@ -10,6 +10,9 @@ class SensorType(Enum):
     proximity = 2
     emergencySwitch = 3
 
+class ActuatorType(Enum):
+   led = 0
+
 class Direction(Enum):
     counterClockwise = -4
     backward_right = -3

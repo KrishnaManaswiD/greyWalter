@@ -1,23 +1,15 @@
 from tortoise import Tortoise
-from enums import Direction, SensorType
-import time
+from enums import Direction, SensorType, ActuatorType
 
-def main():
-	Bob=Tortoise()
+Name=Tortoise()
 
-	count = 0
-	pressTime = time.time()
-	lastPress = Bob.getSensorData(SensorType.touch, 6)
-	print"testing push button"
-	while True:
- 		press = Bob.getSensorData(SensorType.touch, 6)
-  		if press == 0 and lastPress != press:
-    			count += 1
-    			pressTime = time.time()
-    			if count >= 5:
-      				print"five presses"
-      				count = 0
-  		lastPress = press
+while True:
 
-if __name__ =="__main__":
-	main()
+        touchSensor = Name.getSensorData(SensorType.touch,2)
+        if touchSensor == 1:
+                print "Switch is on"
+                Name.moveMotors(30, Direction.forward)
+                Name.setActuatorValue(ActuatorType.led, 1, 1)
+        else:
+                print "Switch is off"
+                Name.setActuatorValue(ActuatorType.led, 1, 0)

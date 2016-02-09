@@ -15,6 +15,7 @@ if cmd_subfolder not in sys.path:
 
 from motors import Motor
 from sensors import Sensors
+from actuators import Actuators
 
 import enums
 import time
@@ -54,20 +55,24 @@ class Tortoise:
         #self.B = Motor(5, 18, 22, 27) 
         self.B = Motor(27,22,18,5)
         self.sensors = Sensors()
+        self.actuators = Actuators()
         self.delay = 2
         self.state = enums.State.paused
 
         self.sensors.setSensor(enums.SensorType.light, 1, 16)
         self.sensors.setSensor(enums.SensorType.light, 2, 2)
-        self.sensors.setSensor(enums.SensorType.touch, 1, 3)
-        self.sensors.setSensor(enums.SensorType.touch, 2, 12)
-        self.sensors.setSensor(enums.SensorType.touch, 3, 13)
-        self.sensors.setSensor(enums.SensorType.touch, 4, 7)
-        self.sensors.setSensor(enums.SensorType.touch, 5, 8)
-        self.sensors.setSensor(enums.SensorType.touch, 6, 9)
-        self.sensors.setSensor(enums.SensorType.proximity, 1, 10)
-        self.sensors.setSensor(enums.SensorType.proximity, 2, 11)
+        #self.sensors.setSensor(enums.SensorType.touch, 1, 8)
+        self.sensors.setSensor(enums.SensorType.touch, 2, 8)
+        #self.sensors.setSensor(enums.SensorType.touch, 3, 13)
+        #self.sensors.setSensor(enums.SensorType.touch, 4, 7)
+        #self.sensors.setSensor(enums.SensorType.touch, 5, 8)
+        #self.sensors.setSensor(enums.SensorType.touch, 6, 9)
+        #self.sensors.setSensor(enums.SensorType.proximity, 1, 10)
+        #self.sensors.setSensor(enums.SensorType.proximity, 2, 11)
         self.sensors.setSensor(enums.SensorType.emergencySwitch, 1, 6)
+
+	self.actuators.initActuator(enums.ActuatorType.led,1,19)
+	self.actuators.initActuator(enums.ActuatorType.led,2,26)
 
 
         #print "light sensor value:"        
@@ -114,7 +119,6 @@ class Tortoise:
     def setStateTortoise(self, toState):
         self.state = toState
 
-
     def calibrateLight(self):
         global lowerBoundLight, upperBoundLight, isLightCalibrated
 
@@ -133,11 +137,10 @@ class Tortoise:
         print("Finished")
 
 
-
     def getSensorData(self,sensor_type,pos):
         #if self.getStateTortoise() == enums.State.running:
         value = self.sensors.readSensor(sensor_type,pos)
-        print "value", value
+        #print "value", value
         if sensor_type == enums.SensorType.light:
             # Scale #TODO fix division by 0
             lightVal = int(9 - round(abs(value-upperBoundLight)/(abs(upperBoundLight - lowerBoundLight)/9)))
@@ -149,13 +152,14 @@ class Tortoise:
             return lightVal
         
 
-        elif sensor_type == enums.SensorType.touch:
-
+        elif sensor_type == enums.SensorType.touch or sensor_type == enums.SensorType.emergencySwitch:
             return value % 2
-
         else:
             return value
 
+    def setActuatorValue(self,actuator_type,pos,value):
+        #if self.getStateTortoise() == enums.State.running:
+        self.actuators.setActuator(actuator_type,pos,value)
 
     def moveMotors(self, steps, direction):
 
