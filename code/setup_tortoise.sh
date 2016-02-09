@@ -7,10 +7,17 @@
 # at startup time.
 ####################################################
 
-# TODO: chmod watchdog
-# TODO: cd directory tortoise
 
-# TODO: if the watchdog is not in the .bashrc file, it is added
-if [ grep -Fxq  ]
+# Directory of this file
+BASEDIR=$(dirname `readlink -f $0`)
 
-# TODO: source .bashrc
+chmod +x $BASEDIR/lowlevel/watchdog.sh
+
+# If the watchdog is not in the .bashrc file, it is added
+if ! grep -Fxq "$BASEDIR/lowlevel/watchdog.sh &" ~/.bashrc
+then
+	echo "$BASEDIR/lowlevel/watchdog.sh &" >> ~/.bashrc
+	source ~/.bashrc
+fi
+
+exit 0

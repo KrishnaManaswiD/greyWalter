@@ -2,10 +2,16 @@
 
 # TODO: launch script to .bashrc
 
+# Directory of this file
+BASEDIR=$(dirname `readlink -f $0`)
+
 PIDS_DIRECTORY=~/.tortoise_pids
 
 # If the directory where the .pid files will be saved doesn't exist, it is created
 mkdir -p $PIDS_DIRECTORY
+
+# All .pid files are removed
+rm $PIDS_DIRECTORY/*.pid
 
 while true
 do
@@ -28,14 +34,14 @@ do
             # If it doesn't exist, it means the process has been stopped
             if [ $EXISTS -eq 0 ]
             then
-                echo "The process doesn't exist: KILL MOTORS"
-
                 MOTOR_PINS=`head -n 1 $f`
+
+		echo "The process doesn't exist. Killing motors pins: $MOTOR_PINS"
 
                 if [ `echo $MOTOR_PINS | wc -w` -eq 8 ]
                 then
                         # TODO: change to final directory
-                        python ~/greyWalterUpdated20160603/greyWalter/code/lowlevel/tortoise_cleanup.py $MOTOR_PINS
+                        python $BASEDIR/tortoise_cleanup.py $MOTOR_PINS
                 fi
 
                 # Removes the .pid file

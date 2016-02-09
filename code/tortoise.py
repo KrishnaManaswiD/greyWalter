@@ -189,14 +189,15 @@ class Tortoise:
         for x in range(0,steps):
     
             # If a stop command has been sent, the turtle will stop its movement
-            if self.getSensorData(enums.SensorType.emergencySwitch, 1) % 2 == 0:
+            if self.getSensorData(enums.SensorType.emergencySwitch, 1) == 0:
                 
                 if self.getStateTortoise() == enums.State.running:
                     self.setStateTortoise(enums.State.paused)
 
+                print "Tortoise paused"
                 break;
 
-
+            print "Tortoise running"
             if self.getStateTortoise() == enums.State.paused:
                 self.setStateTortoise(enums.State.running)
 
