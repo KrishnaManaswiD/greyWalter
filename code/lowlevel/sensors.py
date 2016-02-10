@@ -14,11 +14,12 @@ import time
 
 class Sensors:
 
-    self.busy = False
-    self.Touch = 0
-    self.Light = 1
-
     def __init__(self,ls_1,ls_2,sw_1,sw_2,sw_3,sw_4):
+
+		  self.busy = False
+		  self.Touch = 0
+		  self.Light = 1
+
         self.ls1 = ls_1
         self.ls2 = ls_2
         self.sw1 = sw_1
