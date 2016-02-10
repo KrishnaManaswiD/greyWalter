@@ -36,8 +36,8 @@ class Tortoise:
 
 	def main(self):
 		while True:
-			delay = raw_input("Delay between steps (milliseconds)?")	
-			steps = raw_input("How many steps forward? ")
+            delay = raw_input("Delay between steps (milliseconds)?")
+            steps = raw_input("How many steps forward? ")
             moveSomewhere(self, steps, delay/2, Direction.forward)
             steps = raw_input("How many steps backwards? ")
             moveSomewhere(self, steps, delay/2, Direction.backward)
@@ -46,11 +46,11 @@ class Tortoise:
     def moveSomewhere(self, steps, delay, direction):
         if direction == Direction.static return
         for x in range(0,steps):
-            if direction == Direction.backward_left || forward_or_back == Direction.backward || forward_or_back == Direction.counterClockwise:
+            if direction == Direction.backward_left || direction == Direction.backward || direction == Direction.counterClockwise:
                 self.A.backwards(int(delay) / 1000.00, int(1))
-            if direction == Direction.backward_right || forward_or_back == Direction.backward || forward_or_back == Direction.clockwise:
+            if direction == Direction.backward_right || direction == Direction.backward || direction == Direction.clockwise:
                 self.B.backwards(int(delay) / 1000.00, int(1))
-            if direction == Direction.forward_right || forward_or_back == Direction.forward || forward_or_back == Direction.clockwise:
+            if direction == Direction.forward_right || direction == Direction.forward || direction == Direction.clockwise:
                 self.A.forward(int(delay) / 1000.00, int(1))
-            if direction == Direction.forward_left || forward_or_back == Direction.forward || forward_or_back == Direct.counterClockwise:
+            if direction == Direction.forward_left || direction == Direction.forward || direction == Direct.counterClockwise:
                 self.B.forward(int(delay) / 1000.00, int(1))
