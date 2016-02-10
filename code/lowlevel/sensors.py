@@ -16,9 +16,9 @@ class Sensors:
 
     def __init__(self,ls_1,ls_2,sw_1,sw_2,sw_3,sw_4):
 
-		  self.busy = False
-		  self.Touch = 0
-		  self.Light = 1
+        self.busy = False
+        self.Touch = 0
+        self.Light = 1
 
         self.ls1 = ls_1
         self.ls2 = ls_2
@@ -77,5 +77,6 @@ class Sensors:
         GPIO.setup(lspin, GPIO.IN)
         # This takes about 1 millisecond per loop cycle
         while (GPIO.input(lspin) == GPIO.LOW):
-                reading += 1
+            reading += 1
         return reading
+
