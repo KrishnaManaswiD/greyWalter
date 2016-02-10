@@ -77,15 +77,15 @@ class Tortoise:
         self.delay = 2
         self.state = enums.State.paused
 
-        self.sensors.setSensor(enums.SensorType.light, 1, 16)
-        self.sensors.setSensor(enums.SensorType.light, 2, 2)
+        #self.sensors.setSensor(enums.SensorType.light, 1, 16)
+        #self.sensors.setSensor(enums.SensorType.light, 2, 2)
         #self.sensors.setSensor(enums.SensorType.touch, 1, 8)
         self.sensors.setSensor(enums.SensorType.touch, 2, 8)
         #self.sensors.setSensor(enums.SensorType.touch, 3, 13)
         #self.sensors.setSensor(enums.SensorType.touch, 4, 7)
         #self.sensors.setSensor(enums.SensorType.touch, 5, 8)
         #self.sensors.setSensor(enums.SensorType.touch, 6, 9)
-        #self.sensors.setSensor(enums.SensorType.proximity, 1, 10)
+        self.sensors.setSensor(enums.SensorType.proximity, 1, 21)
         #self.sensors.setSensor(enums.SensorType.proximity, 2, 11)
         self.sensors.setSensor(enums.SensorType.emergencySwitch, 1, 6)
 
@@ -141,12 +141,12 @@ class Tortoise:
 
         raw_input("Base condition press enter.")
         #lowerBoundLight = max(self.sensors.readSensor(enums.SensorType.light, 1), self.sensors.readSensor(enums.SensorType.light, 2))
-        lowerBoundLight = self.sensors.readSensor(enums.SensorType.light, 1)
+        #lowerBoundLight = self.sensors.readSensor(enums.SensorType.light, 1)
         print "Light in dark conditions is: ", lowerBoundLight
 
         raw_input("Now please place a light source in front of the tortoise's eyes and press enter.")
         #upperBoundLight = min((self.sensors.readSensor(enums.SensorType.light, 1), self.sensors.readSensor(enums.SensorType.light, 2)))
-        upperBoundLight = self.sensors.readSensor(enums.SensorType.light, 1)
+        #upperBoundLight = self.sensors.readSensor(enums.SensorType.light, 1)
         print "Light when there is a light source is:", upperBoundLight
 
         isLightCalibrated = True
@@ -158,7 +158,7 @@ class Tortoise:
         value = self.sensors.readSensor(sensor_type,pos)
         #added error checking + LED blinking
         if value<0:
-            blinkLED()
+            self.blinkLED()
             return -1
         #print "value", value
         if sensor_type == enums.SensorType.light:
@@ -177,11 +177,11 @@ class Tortoise:
         #if self.getStateTortoise() == enums.State.running:
         #added error checking + LED blinking
         if self.actuators.setActuator(actuator_type,pos,value)<0:
-            blinkLED()
+            self.blinkLED()
             return -1
 
     #internal function for LED error signal
-    def blinkLED():
+    def blinkLED(self):
         self.actuators.setActuator(enums.ActuatorType.led, 1,1)
         time.sleep(0.5)
         self.actuators.setActuator(enums.ActuatorType.led, 1,0)
@@ -193,11 +193,11 @@ class Tortoise:
     def moveMotors(self, steps, direction):
         if steps<0:
             raise RuntimeError('Motor delay can only be a positive number!')
-            blinkLED()
+            self.blinkLED()
             return -1
         elif direction == enums.Direction.static or abs(direction)>4:
             raise RuntimeError('Illegal Direction Type!')
-            blinkLED()
+            self.blinkLED()
             return -1
 
         numberOfstepsCommanded = int(10)
@@ -264,7 +264,7 @@ class Tortoise:
         if straightStep < 0 or sideStep < 0: return
         if not direction == enums.Direction.forward_left and not direction == enums.Direction.forward_right and not direction == enums.Direction.backward_left and not direction == enums.Direction.backward_right:
             raise RuntimeError('Illegal Direction Type!')
-            blinkLED()
+            self.blinkLED()
             return -1
 
         for x in range(0, int(totalSteps/(straightStep+sideStep))):

@@ -27,6 +27,8 @@ class Sensors:
 
         self.proximitySensor_pin1 = -1
         self.proximitySensor_pin2 = -1
+        self.proximitySensor_pin3 = -1
+        self.proximitySensor_pin4 = -1
         self.emergencySwitch_pin1 = -1
 
         self.light1_value = -1 #self.read_light(self.lightSensor_pin1)
@@ -37,8 +39,10 @@ class Sensors:
         self.touch4_timesPressed = 0
         self.touch5_timesPressed = 0
         self.touch6_timesPressed = 0
-        self.prox1_value = -1
-        self.prox2_value = -1
+        self.proximity1_state = -1 
+        self.proximity2_state = -1
+        self.proximity3_state = -1
+        self.proximity4_state = -1
         self.emergency1_timesPressed = 0
 
 #        try:
@@ -99,14 +103,34 @@ class Sensors:
         elif sensor_type == enums.SensorType.proximity:
             if pos == 1:
                 self.proximitySensor_pin1 = pin
-                GPIO.setup(pin, GPIO.IN)
+                
+                GPIO.setup(pin, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+                self.proximity1_state = GPIO.input(pin)
+                GPIO.add_event_detect(pin, GPIO.BOTH, callback = self.callback_proximity, bouncetime = 300)
                 return 0
             elif pos == 2:
                 self.proximitySensor_pin2 = pin
-                GPIO.setup(pin, GPIO.IN)
+                
+                GPIO.setup(pin, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+                self.proximity2_state = GPIO.input(pin)
+                GPIO.add_event_detect(pin, GPIO.BOTH, callback = self.callback_proximity, bouncetime = 300)
+                return 0
+            elif pos == 3:
+                self.proximitySensor_pin3 = pin
+                
+                GPIO.setup(pin, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+                self.proximity3_state = GPIO.input(pin)
+                GPIO.add_event_detect(pin, GPIO.BOTH, callback = self.callback_proximity, bouncetime = 300)
+                return 0
+            elif pos == 4:
+                self.proximitySensor_pin4 = pin
+                
+                GPIO.setup(pin, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+                self.proximity4_state = GPIO.input(pin)
+                GPIO.add_event_detect(pin, GPIO.BOTH, callback = self.callback_proximity, bouncetime = 300)
                 return 0
             else:
-                raise RuntimeError('Proximity sensor can only be assigned to position 1-2')
+                raise RuntimeError('Proximity sensor can only be assigned to position 1-4')
                 return -1
 
         elif sensor_type == enums.SensorType.emergencySwitch:
@@ -140,6 +164,16 @@ class Sensors:
         elif channel == self.emergencySwitch_pin1:
             self.emergency1_timesPressed = self.emergency1_timesPressed + 1
 
+    def callback_proximity(self,channel):
+        time.sleep(0.01)
+        if channel == self.proximitySensor_pin1:
+            self.proximity1_state =  GPIO.input(channel)
+        elif channel == self.proximitySensor_pin2:
+            self.proximity2_state =  GPIO.input(channel)
+        elif channel == self.proximitySensor_pin3:
+            self.proximity3_state =  GPIO.input(channel)
+        elif channel == self.proximitySensor_pin4:
+            self.proximity4_state =  GPIO.input(channel)
 
     #if everything OK, return sensor value. If sensor type unknown or position > limit, return -1
     def readSensor(self,sensor_type,pos):
@@ -197,38 +231,46 @@ class Sensors:
                     raise RuntimeError('Pin for light sensor in position 1 is not assigned')
                     return -1
                 else:
-                    print GPIO.input(self.lightSensor_pin1)
-                    return GPIO.input(self.lightSensor_pin1)
+                    return self.read_light(self.lightSensor_pin1)
 
             elif pos == 2:
                 if(self.lightSensor_pin2 == -1):
                     raise RuntimeError('Pin for light sensor in position 2 is not assigned')
                     return -1
                 else:
-                    print GPIO.input(self.lightSensor_pin2)
-                    return GPIO.input(self.lightSensor_pin2)
+                    return self.read_light(self.lightSensor_pin2)
             else:
                 raise RuntimeError('Light sensor can only be assigned to position 1-2')
                 return -1
 
-        elif sensor_type == enums. SensorType.proximity:
+        elif sensor_type == enums.SensorType.proximity:
 
             if pos == 1:
                 if(self.proximitySensor_pin1 == -1):
                     raise RuntimeError('Pin for proximity sensor in position 1 is not assigned')
                     return -1
                 else:
-                    print GPIO.input(self.proximitySensor_pin1)
-                    return GPIO.input(self.proximitySensor_pin1)
+                    return self.proximity1_state
             elif pos == 2:
                 if(self.proximitySensor_pin2 == -1):
                     raise RuntimeError('Pin for proximity sensor in position 2 is not assigned')
                     return -1
                 else:
-                    print GPIO.input(self.proximitySensor_pin2)
-                    return GPIO.input(self.proximitySensor_pin2)
+                    return self.proximity2_state
+            elif pos == 3:
+                if(self.proximitySensor_pin3 == -1):
+                    raise RuntimeError('Pin for proximity sensor in position 3 is not assigned')
+                    return -1
+                else:
+                    return self.proximity3_state
+            elif pos == 4:
+                if(self.proximitySensor_pin4 == -1):
+                    raise RuntimeError('Pin for proximity sensor in position 4 is not assigned')
+                    return -1
+                else:
+                    return self.proximity4_state
             else:
-                raise RuntimeError('Proximity sensor can only be assigned to position 1-2')
+                raise RuntimeError('Proximity sensor can only be assigned to position 1-4')
                 return -1
 
         elif sensor_type == enums.SensorType.emergencySwitch:
