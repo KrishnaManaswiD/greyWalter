@@ -14,6 +14,18 @@ if cmd_subfolder not in sys.path:
 # ------------------------------ #
 
 from motors import Motor
+from enum import Enum
+
+class Direction(Enum):
+    counterClockwise = -4
+    backward_right = -3
+    backward_left = -2
+    backward = -1
+    static = 0
+    forward = 1
+    forward_left = 2
+    forward_right = 3
+    clockwise = 4
 
 class Tortoise:
 
@@ -26,7 +38,19 @@ class Tortoise:
 		while True:
 			delay = raw_input("Delay between steps (milliseconds)?")	
 			steps = raw_input("How many steps forward? ")
-			self.A.forward(int(delay) / 1000.00, int(steps))
-			steps = raw_input("How many steps backwards? ")
-			self.A.backwards(int(delay) / 1000.00, int(steps))
+            moveSomewhere(self, steps, delay/2, Direction.forward)
+            steps = raw_input("How many steps backwards? ")
+            moveSomewhere(self, steps, delay/2, Direction.backward)
+                
 
+    def moveSomewhere(self, steps, delay, direction):
+        if direction == Direction.static return
+        for x in range(0,steps):
+            if direction == Direction.backward_left || forward_or_back == Direction.backward || forward_or_back == Direction.counterClockwise:
+                self.A.backwards(int(delay) / 1000.00, int(1))
+            if direction == Direction.backward_right || forward_or_back == Direction.backward || forward_or_back == Direction.clockwise:
+                self.B.backwards(int(delay) / 1000.00, int(1))
+            if direction == Direction.forward_right || forward_or_back == Direction.forward || forward_or_back == Direction.clockwise:
+                self.A.forward(int(delay) / 1000.00, int(1))
+            if direction == Direction.forward_left || forward_or_back == Direction.forward || forward_or_back == Direct.counterClockwise:
+                self.B.forward(int(delay) / 1000.00, int(1))
