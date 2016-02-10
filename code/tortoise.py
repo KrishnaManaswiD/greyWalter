@@ -44,13 +44,55 @@ class Tortoise:
                 
 
     def moveSomewhere(self, steps, delay, direction):
-        if direction == Direction.static return
+        
+        if direction == Direction.static:
+            print "Don't be silly..."
+            return
+        
         for x in range(0,steps):
-            if direction == Direction.backward_left || direction == Direction.backward || direction == Direction.counterClockwise:
+            if direction == Direction.backward_left or direction == Direction.backward or direction == Direction.counterClockwise:
                 self.A.backwards(int(delay) / 1000.00, int(1))
-            if direction == Direction.backward_right || direction == Direction.backward || direction == Direction.clockwise:
+            if direction == Direction.backward_right or direction == Direction.backward or direction == Direction.clockwise:
                 self.B.backwards(int(delay) / 1000.00, int(1))
-            if direction == Direction.forward_right || direction == Direction.forward || direction == Direction.clockwise:
+            if direction == Direction.forward_right or direction == Direction.forward or direction == Direction.clockwise:
                 self.A.forward(int(delay) / 1000.00, int(1))
-            if direction == Direction.forward_left || direction == Direction.forward || direction == Direct.counterClockwise:
+            if direction == Direction.forward_left or direction == Direction.forward or direction == Direct.counterClockwise:
                 self.B.forward(int(delay) / 1000.00, int(1))
+
+
+    def naturalTurn(self, totalSteps, straightStep, sideStep, delay, direction):
+        
+        if forwardStep < 0 or sideStep < 0 return
+        if not direction == Direction.forward_left or not direction == Direction.forward_right or not direction == Direction.backward_left or not direction == Direction.backward_right:
+            print "Don't mess around."
+            return
+        
+        for x in range(0, totalSteps):
+            if direction == Direction.forward_left:
+                moveSomewhere(self, staightStep, delay, Direction.forward)
+                moveSomewhere(self, sideStep, delay, Direction.left)
+            if direction == Direction.forward_right:
+                moveSomewhere(self, straightStep, delay, Direction.forward)
+                moveSomewhere(self, sideStep, delay, Direction.right)
+            if direction == Direction.backward_left:
+                moveSomewhere(self, straightStep, delay, Direction.backward)
+                moveSomewhere(self, sideStep, delay, Direction.left)
+            if direction == Direction.backward_right:
+                moveSomewhere(self, straightStep, delay, Direction.backward)
+                moveSomewhere(self, sideStep, delay, Direction.right)
+
+
+    def gentleTurn(self, steps, direction):
+        naturalTurn(self, steps, 3, 1, direction)
+
+    def sharpTurn(self, steps, direction):
+        naturalTurn(self, steps, 1, 3, direction)
+
+
+    def tryCircle(self, direction):
+        gentleTurn(self, 2000, direction)
+
+
+    def defaultCircle(self):
+        tryCircle(self, Direction.forward_right)
+
