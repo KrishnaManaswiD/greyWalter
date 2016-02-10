@@ -14,7 +14,12 @@ if cmd_subfolder not in sys.path:
 # ------------------------------ #
 
 from motors import Motor
+from sensors import Sensors
 from enum import Enum
+
+class SensorType(Enum):
+    Touch = 0
+    Light = 1
 
 class Direction(Enum):
     counterClockwise = -4
@@ -32,7 +37,7 @@ class Tortoise:
 	def __init__(self):
 		self.A = Motor(4, 17, 23, 24)
 		self.B = Motor(14, 15, 18, 27)
-
+        self.sensor = Sensors(1,2,3,5,6,7)
 
 	def main(self):
 		while True:
@@ -41,7 +46,8 @@ class Tortoise:
             moveSomewhere(self, steps, delay/2, Direction.forward)
             steps = raw_input("How many steps backwards? ")
             moveSomewhere(self, steps, delay/2, Direction.backward)
-                
+            touch1 = sensor.readSensor(SensorType.Touch,1)
+            print "Touch Sensor 1 is %s" % touch1
 
     def moveSomewhere(self, steps, delay, direction):
         
