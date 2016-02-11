@@ -3,7 +3,6 @@ import time
 
 GPIO.setmode(GPIO.BCM)
 
-
 class Motor:
 
 	def __init__(self, cA1p, cA2p, cB1p, cB2p):

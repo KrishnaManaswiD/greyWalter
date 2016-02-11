@@ -1,24 +1,14 @@
-#-------------------------------------------------------------------------------
-# Name:        module1
-# Purpose:
-#
-# Author:      dito
-#
-# Created:     10/02/2016
-# Copyright:   (c) dito 2016
-# Licence:     <your licence>
-#-------------------------------------------------------------------------------
 import thread
 import RPi.GPIO as GPIO
 import time
 
-class Sensors:
+class Sensor:
 
     def __init__(self,ls_1,ls_2,sw_1,sw_2,sw_3,sw_4):
 
         self.busy = False
-        self.Touch = 0
-        self.Light = 1
+        self.touch = 0
+        self.light = 1
 
         self.ls1 = ls_1
         self.ls2 = ls_2
@@ -35,14 +25,14 @@ class Sensors:
         GPIO.setup(self.sw4, GPIO.IN)
 
         try:
-            thread.start_new_thread(poll_sensors, 500)
+            thread.start_new_thread(self.poll_sensors, (500,))
         except:
             print "Error: unable to start thread"
 
     def readSensor(self,sensor_type,pos):
         while self.busy == true:
             pass
-        if sensor_type == self.Touch:
+        if sensor_type == self.touch:
             if pos == 1:
                 return self.touch1
             elif pos == 2:
@@ -69,7 +59,7 @@ class Sensors:
             self.busy = False
             time.sleep(delay)
 
-    def read_light(lspin):
+    def read_light(self,lspin):
         reading = 0
         GPIO.setup(lspin, GPIO.OUT)
         GPIO.output(lspin, GPIO.LOW)
