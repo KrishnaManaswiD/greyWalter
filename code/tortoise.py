@@ -20,6 +20,7 @@ from enum import Enum
 class SensorType(Enum):
     touch = 0
     light = 1
+    proximity = 2
 
 class Direction(Enum):
     counterClockwise = -4
@@ -37,7 +38,7 @@ class Tortoise:
     def __init__(self):
         self.A = Motor(4, 17, 23, 24)
         self.B = Motor(14, 15, 18, 27)
-        self.sensor = Sensor(1,2,3,5,6,7)
+        self.sensor = Sensor(1,2,3,5,6,7,8,9,10,11)
 
     def readSensor(self,sensor_type,pos):
         self.sensor.readSensor(sensor_type,pos)
