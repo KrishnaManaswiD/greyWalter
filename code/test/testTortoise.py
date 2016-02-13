@@ -26,7 +26,7 @@ def main():
 		print "Touch Sensor 2 is %s" % touch2
 		touch3 = wanderer.readSensor(SensorType.touch,3)
 		print "Touch Sensor 3 is %s" % touch3
-		'''touch4 = wanderer.readSensor(SensorType.touch,4)
+		touch4 = wanderer.readSensor(SensorType.touch,4)
 		print "Touch Sensor 4 is %s" % touch4
 		touch5 = wanderer.readSensor(SensorType.touch,5)
 		print "Touch Sensor 5 is %s" % touch5
@@ -39,7 +39,7 @@ def main():
 		light1 = wanderer.readSensor(SensorType.light,1)
 		print "Light Sensor 1 value is %s" % light1
 		light2 = wanderer.readSensor(SensorType.light,2)
-		print "Light Sensor 2 value is %s" % light2'''
+		print "Light Sensor 2 value is %s" % light2
 
 if __name__=="__main__":
 	main()

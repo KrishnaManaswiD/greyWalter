@@ -49,7 +49,7 @@ class Sensor:
         except:
             print "Error: unable to start thread"
 
-    def readSensor(self,sensor_type,pos):        
+    def readSensor(self,sensor_type,pos):
 	while self.busy == True:
 	    pass
         if sensor_type == self.touch:
@@ -82,18 +82,25 @@ class Sensor:
         while True:
             self.busy = True
             #self.light1 = self.read_light(self.ls1)
+            #print self.light1
             #self.light2 = self.read_light(self.ls2)
+            #print self.light2
             self.touch1 = GPIO.input(self.sw1)
 	    #print self.touch1
             self.touch2 = GPIO.input(self.sw2)
-            #print self.touch2 
+            #print self.touch2
 	    self.touch3 = GPIO.input(self.sw3)
             #print self.touch3
 	    self.touch4 = GPIO.input(self.sw4)
+            #print self.touch4
             self.touch5 = GPIO.input(self.sw5)
+            #print self.touch5
             self.touch6 = GPIO.input(self.sw6)
+            #print self.touch6
             self.prox1 = GPIO.input(self.pr1)
+            #print self.prox1
             self.prox2 = GPIO.input(self.pr2)
+            #print self.prox2
             self.busy = False
             time.sleep(delay/1000.0)
 
