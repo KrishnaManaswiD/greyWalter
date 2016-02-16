@@ -39,11 +39,12 @@ class Tortoise:
         self.A = Motor(4, 17, 23, 24)
         self.B = Motor(14, 15, 18, 27)
         self.sensor = Sensor(1,2,3,5,6,7,8,9,10,11)
+		self.self.delay = 8
 
     def readSensor(self,sensor_type,pos):
         return self.sensor.readSensor(sensor_type,pos)
 
-    def moveSomewhere(self, steps, delay, direction):
+    def moveMotors(self, steps, direction):
 
         if direction == Direction.static:
             print "Are you kiddin' me??"
@@ -51,16 +52,16 @@ class Tortoise:
 
         for x in range(0,steps):
             if direction == Direction.backward_left or direction == Direction.backward or direction == Direction.counterClockwise:
-                self.A.backwards(int(delay) / 1000.00, int(1))
+                self.A.backwards(int(self.delay) / 1000.00, int(1))
             if direction == Direction.backward_right or direction == Direction.backward or direction == Direction.clockwise:
-                self.B.backwards(int(delay) / 1000.00, int(1))
+                self.B.backwards(int(self.delay) / 1000.00, int(1))
             if direction == Direction.forward_right or direction == Direction.forward or direction == Direction.clockwise:
-                self.A.forward(int(delay) / 1000.00, int(1))
+                self.A.forward(int(self.delay) / 1000.00, int(1))
             if direction == Direction.forward_left or direction == Direction.forward or direction == Direction.counterClockwise:
-                self.B.forward(int(delay) / 1000.00, int(1))
+                self.B.forward(int(self.delay) / 1000.00, int(1))
 
 
-    def naturalTurn(self, totalSteps, straightStep, sideStep, delay, direction):
+    def naturalTurn(self, totalSteps, straightStep, sideStep, direction):
 
         if straightStep < 0 or sideStep < 0: return
         if not direction == Direction.forward_left and not direction == Direction.forward_right and not direction == Direction.backward_left and not direction == Direction.backward_right:
@@ -69,26 +70,39 @@ class Tortoise:
 
         for x in range(0, int(totalSteps/(straightStep+sideStep))):
             if direction == Direction.forward_left:
-                self.moveSomewhere(straightStep, delay, Direction.forward)
-                self.moveSomewhere(sideStep, delay, Direction.forward_left)
+                self.moveMotors(straightStep, self.delay, Direction.forward)
+                self.moveMotors(sideStep, self.delay, Direction.forward_left)
             if direction == Direction.forward_right:
-                self.moveSomewhere(straightStep, delay, Direction.forward)
-                self.moveSomewhere(sideStep, delay, Direction.forward_right)
+                self.moveMotors(straightStep, self.delay, Direction.forward)
+                self.moveMotors(sideStep, self.delay, Direction.forward_right)
             if direction == Direction.backward_left:
-                self.moveSomewhere(straightStep, delay, Direction.backward)
-                self.moveSomewhere(sideStep, delay, Direction.backward_left)
+                self.moveMotors(straightStep, self.delay, Direction.backward)
+                self.moveMotors(sideStep, self.delay, Direction.backward_left)
             if direction == Direction.backward_right:
-                self.moveSomewhere(straightStep, delay, Direction.backward)
-                self.moveSomewhere(sideStep, delay, Direction.backward_right)
+                self.moveMotors(straightStep, self.delay, Direction.backward)
+                self.moveMotors(sideStep, self.delay, Direction.backward_right)
 
-    def gentleTurn(self, steps, delay,direction):
-        self.naturalTurn(steps, 3, 1, delay,direction)
+    def gentleTurn(self, steps, direction):
+        self.naturalTurn(steps, 3, 1, direction)
 
-    def sharpTurn(self, steps, delay,direction):
-        self.naturalTurn(steps, 1, 3, delay,direction)
+    def sharpTurn(self, steps, direction):
+        self.naturalTurn(steps, 1, 3, direction)
 
-    def tryCircle(self, delay, direction):
-        self.gentleTurn(2000, delay,direction)
+    def tryCircle(self, direction):
+        self.gentleTurn(2000, direction)
 
-    def defaultCircle(self,delay):
-        self.tryCircle(delay,Direction.forward_right)
+    def defaultCircle(self):
+        self.tryCircle(Direction.forward_right)
+
+	def doRandomStep(self):
+
+		
+
+		""" 
+			RANDOM VELOCITY			
+	
+			Forward
+			gentleTurn left, right
+			sharpturn left, right
+		"""
+		
