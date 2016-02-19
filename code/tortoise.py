@@ -16,6 +16,8 @@ if cmd_subfolder not in sys.path:
 from motors import Motor
 from sensors import Sensor
 from enum import Enum
+import numpy as np
+import thread
 
 class SensorType(Enum):
     touch = 0
@@ -37,9 +39,25 @@ class Tortoise:
 
     def __init__(self):
         self.A = Motor(4, 17, 23, 24)
-        self.B = Motor(14, 15, 18, 27)
+        self.B = Motor(5, 18, 22, 27)
         self.sensor = Sensor(1,2,3,5,6,7,8,9,10,11)
 		self.self.delay = 8
+		self.switchForEmergencyStop_pin = 6;
+
+        try:
+            thread.start_new_thread(self.eStop)
+        except:
+            print "Error: unable to start thread"
+
+
+	def eStop():
+		GPIO.setup(self.switchForEmergencyStop_pin, GPIO.IN)
+
+		while(True):	
+			time.sleep(0.1)
+			if (GPIO.input(lspin) == GPIO.HIGH):
+				print "EMERGENCY STOP. Exiting program"
+				sys.exit()
 
     def readSensor(self,sensor_type,pos):
         return self.sensor.readSensor(sensor_type,pos)
@@ -96,13 +114,24 @@ class Tortoise:
 
 	def doRandomStep(self):
 
-		
+		# Random number between 15 and (503*3 + 15)
+		numberOfSteps = int(509*3*np.random.random_sample() + 15)
 
-		""" 
-			RANDOM VELOCITY			
-	
-			Forward
-			gentleTurn left, right
-			sharpturn left, right
-		"""
-		
+		# Random number between 0 and 1
+		randomNumber = np.random.random_sample()		
+
+		if(randomNumber < 0.4):
+			self.moveMotors(numberOfSteps, Direction.forward)
+		else:
+			# Random direction: left of right
+			if(np.random.random_sample() < 0.5)
+				direction = Direction.forward_left
+			else
+				direction = Direction.forward_right
+			
+
+			if(randomNumber < 0.7):
+				self.gentleTurn(numberOfSteps, direction)
+			else
+				self.sharpTurn(numberOfSteps, direction)
+
