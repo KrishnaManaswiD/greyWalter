@@ -23,6 +23,10 @@ import RPi.GPIO as GPIO
 
 GPIO.setmode(GPIO.BCM)
 
+class State(Enum):
+	paused = 0
+	running = 1
+
 class SensorType(Enum):
     touch = 0
     light = 1
@@ -39,6 +43,7 @@ class Direction(Enum):
     forward_right = 3
     clockwise = 4
 
+
 class Tortoise:
 
 	def __init__(self):
@@ -47,29 +52,37 @@ class Tortoise:
 		#self.sensor = Sensor(1,2,3,5,6,7,8,9,10,11)
 		self.delay = 8
 		self.switchForEmergencyStop_pin = 6;
-		self.sentStopCommand = False
+		self.state = State.running
 
 		try:
-	 		thread.start_new_thread(self.eStop, ())
+	 		thread.start_new_thread(self.pauseAndResume, ())
 		except:
 			print "Error: unable to start thread"
 	
 
 
-	def eStop(self):
+	def pauseAndResume(self):
 		GPIO.setup(self.switchForEmergencyStop_pin, GPIO.IN)
 
-		while(GPIO.input(self.switchForEmergencyStop_pin) == GPIO.LOW):	
+		while True:
+	
+			if GPIO.input(self.switchForEmergencyStop_pin) == GPIO.HIGH:
+				if self.state == State.running:
+					self.state = State.paused
+				elif self.state == State.paused:
+					self.state = State.running
+
 			time.sleep(0.1)
 
-		self.sentStopCommand = True
 
-	def isStopped(self):
-		return self.sentStopCommand
+
+	def isPaused(self):
+		return self.state == State.paused
 
 
 	def readSensor(self,sensor_type,pos):
-        	return self.sensor.readSensor(sensor_type,pos)
+		if self.state == State.running:
+			return self.sensor.readSensor(sensor_type,pos)
 
 	def moveMotors(self, steps, direction):
 
@@ -78,6 +91,11 @@ class Tortoise:
 		    return
 
 		for x in range(0,steps):
+	
+			# If a stop command has been sent, the turtle will stop its movement
+			if self.state == State.paused:
+				break;
+
 		    if direction == Direction.backward_left or direction == Direction.backward or direction == Direction.counterClockwise:
 		        self.A.backwards(int(self.delay) / 1000.00, int(1))
 		    if direction == Direction.backward_right or direction == Direction.backward or direction == Direction.clockwise:

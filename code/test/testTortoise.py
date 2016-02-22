@@ -17,7 +17,7 @@ def main():
         wanderer = Tortoise()
 
 
-	while  not wanderer.isStopped():
+	while True:
 #		'''delay = raw_input("Delay between steps (milliseconds)?")
 #		steps = raw_input("How many steps forward? ")
 #		wanderer.gentleTurn(int(steps), int(delay)/2, Direction.forward_left)
@@ -46,7 +46,3 @@ def main():
 
 		wanderer.doRandomStep()
 		#print wanderer.readSensor(SensorType.light, 1)
-
-
-if __name__=="__main__":
-	main()
