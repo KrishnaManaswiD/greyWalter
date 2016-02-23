@@ -10,39 +10,18 @@ if cmd_folder not in sys.path:
 sys.path.append('../')
 # ------------------------------ #
 
-from tortoise import Tortoise,Direction,SensorType
+from tortoise import Tortoise
+import enums
 import time
 
 def main():
         wanderer = Tortoise()
 
-
 	while True:
-#		'''delay = raw_input("Delay between steps (milliseconds)?")
-#		steps = raw_input("How many steps forward? ")
-#		wanderer.gentleTurn(int(steps), int(delay)/2, Direction.forward_left)
-#		steps = raw_input("How many steps backwards? ")
-#		wanderer.gentleTurn(int(steps), int(delay)/2, Direction.forward_right)'''
-#		touch1 = wanderer.readSensor(SensorType.touch,1)
-#		print "Touch Sensor 1 is %s" % touch1
-#		touch2 = wanderer.readSensor(SensorType.touch,2)
-#		print "Touch Sensor 2 is %s" % touch2
-#		touch3 = wanderer.readSensor(SensorType.touch,3)
-#		print "Touch Sensor 3 is %s" % touch3
-#		touch4 = wanderer.readSensor(SensorType.touch,4)
-#		print "Touch Sensor 4 is %s" % touch4
-#		touch5 = wanderer.readSensor(SensorType.touch,5)
-#		print "Touch Sensor 5 is %s" % touch5
-#		touch6 = wanderer.readSensor(SensorType.touch,6)
-#		print "Touch Sensor 6 is %s" % touch6
-#		proximity1 = wanderer.readSensor(SensorType.proximity,1)
-#		print "Proximity Sensor 1 is %s" % proximity1
-#		proximity2 = wanderer.readSensor(SensorType.proximity,2)
-#		print "Proximity Sensor 2 is %s" % proximity2
-#		light1 = wanderer.readSensor(SensorType.light,1)
-#		print "Light Sensor 1 value is %s" % light1
-#		light2 = wanderer.readSensor(SensorType.light,2)
-#		print "Light Sensor 2 value is %s" % light2
+		#pass
+		wanderer.moveMotors(100, enums.Direction.forward)
+		print wanderer.getSensorData(enums.SensorType.light, 1)
+		#time.sleep(0.1)
 
-		wanderer.doRandomStep()
-		#print wanderer.readSensor(SensorType.light, 1)
+if __name__ == "__main__":
+	main()

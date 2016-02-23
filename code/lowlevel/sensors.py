@@ -1,5 +1,6 @@
 import RPi.GPIO as GPIO
 import time
+import enums
 
 GPIO.setmode(GPIO.BCM)
 
@@ -51,10 +52,10 @@ class Sensor:
 #            print "Error: unable to start thread"
 
     def readSensor(self,sensor_type,pos):
-		while self.busy == True:
-			pass
-
-    		if sensor_type == self.touch:
+		#print "Sensor Type enumVal"
+		#print sensor_type
+    		if sensor_type == enums.SensorType.touch:
+			#print "We are activating a touch sensor"
 		        if pos == 1:
 				print GPIO.input(self.touchSensor_pin1)
 				return GPIO.input(self.touchSensor_pin1)
@@ -69,12 +70,16 @@ class Sensor:
 				return GPIO.input(self.touchSensor_pin5)
 		        elif pos == 6:
 				return GPIO.input(self.touchSensor_pin6)
-		elif sensor_type == self.light:
+		if sensor_type == enums.SensorType.light:
+			#print "We are activating a light sensor"
 		        if pos == 1:
+			    #print "Pos1"
 		            return self.read_light(self.lightSensor_pin1)
 		        elif pos == 2:
+			    #print "Pos2"
 		            return self.read_light(self.lightSensor_pin2)
-		else:
+		if sensor_type == enums. SensorType.proximity:
+			#print "We are activating a proximity sensor"
 		        if pos == 1:
 		            return GPIO.input(self.proximitySensor_pin1)
 		        elif pos == 2:
@@ -93,7 +98,7 @@ class Sensor:
 #            #print self.touch2_value
 #	    	self.touch3_value = GPIO.input(self.touchSensor_pin3)
 #            #print self.touch3_value
-#	   		self.touch4_value = GPIO.input(self.touchSensor_pin4)
+#	   	self.touch4_value = GPIO.input(self.touchSensor_pin4)
 #            #print self.touch4_value
 #            self.touch5_value = GPIO.input(self.touchSensor_pin5)
 #            #print self.touch5_value
@@ -113,7 +118,10 @@ class Sensor:
         time.sleep(0.1)
         GPIO.setup(lspin, GPIO.IN)
         # This takes about 1 millisecond per loop cycle
+	#print "Entering loop"
         while (GPIO.input(lspin) == GPIO.LOW):
             reading += 1
+	#print "Leaving loop"	
+	#print "read light"
         return reading
 
