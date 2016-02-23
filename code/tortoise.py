@@ -137,13 +137,13 @@ class Tortoise:
 				break;
 
 		    if direction == Direction.backward_left or direction == Direction.backward or direction == Direction.counterClockwise:
-		        self.A.backwards(int(self.delay) / 1000.00, int(1))
+			self.A.backwards(int(self.delay) / 1000.00, int(1))
 		    if direction == Direction.backward_right or direction == Direction.backward or direction == Direction.clockwise:
-		        self.B.backwards(int(self.delay) / 1000.00, int(1))
+			self.B.backwards(int(self.delay) / 1000.00, int(1))
 		    if direction == Direction.forward_right or direction == Direction.forward or direction == Direction.clockwise:
-		        self.A.forward(int(self.delay) / 1000.00, int(1))
+			self.A.forward(int(self.delay) / 1000.00, int(1))
 		    if direction == Direction.forward_left or direction == Direction.forward or direction == Direction.counterClockwise:
-		        self.B.forward(int(self.delay) / 1000.00, int(1))
+			self.B.forward(int(self.delay) / 1000.00, int(1))
 
 		print "Cheers, drive!"
 
