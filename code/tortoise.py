@@ -23,6 +23,17 @@ import RPi.GPIO as GPIO
 
 GPIO.setmode(GPIO.BCM)
 
+
+
+
+global isLightCalibrated = False
+global lowerBoundLight
+global upperBoundLight
+
+
+
+
+
 class State(Enum):
 	paused = 0
 	running = 1
@@ -47,17 +58,25 @@ class Direction(Enum):
 class Tortoise:
 
 	def __init__(self):
+		global isCalibrated
+
 		self.A = Motor(4, 17, 23, 24)
 		self.B = Motor(5, 18, 22, 27)
 		#self.sensor = Sensor(1,2,3,5,6,7,8,9,10,11)
 		self.delay = 8
-		self.switchForEmergencyStop_pin = 6;
-		self.state = State.running
+		self.switchForEmergencyStop_pin = 6
+		self.state = State.paused
+
+		if not isLightCalibrated:
+			self.calibrateLight()
 
 		try:
 	 		thread.start_new_thread(self.pauseAndResume, ())
 		except:
 			print "Error: unable to start thread"
+
+		while self.state == State.paused:
+			time.sleep(0.1)
 	
 
 
@@ -80,9 +99,32 @@ class Tortoise:
 		return self.state == State.paused
 
 
-	def readSensor(self,sensor_type,pos):
+	def calibrateLight(self):
+		global lowerBoundLight, upperBoundLight, isLightCalibrated
+
+		raw_input("Now we are in cinema mode. Let's do some tricks. Please, turn the lights off and press enter.")
+		lowerBoundLight = max(self.sensor.readSensor(SensorType.light, 1), self.sensor.readSensor(SensorType.light, 2))
+
+		raw_input("Now please place a light source in front of the tortoise's eyes and press enter.")
+		upperBoundLight = min((self.sensor.readSensor(SensorType.light, 1), self.sensor.readSensor(SensorType.light, 2)))
+
+		isLightCalibrated = True
+
+		print("Gert lush, me babber! (That's very Bristolian)")
+
+
+
+	def getSensorData(self,sensor_type,pos):
 		if self.state == State.running:
-			return self.sensor.readSensor(sensor_type,pos)
+			value = self.sensor.readSensor(sensor_type,pos)
+
+			if sensor_type == SensorType.light:
+				# Scale
+				return round(abs(value-upperBoundLight)/(abs(upperBoundLight - lowerBoundLight)/9))
+
+			else:
+				return value
+
 
 	def moveMotors(self, steps, direction):
 
@@ -104,6 +146,8 @@ class Tortoise:
 		        self.A.forward(int(self.delay) / 1000.00, int(1))
 		    if direction == Direction.forward_left or direction == Direction.forward or direction == Direction.counterClockwise:
 		        self.B.forward(int(self.delay) / 1000.00, int(1))
+
+		print "Cheers, drive!"
 
 
 	def naturalTurn(self, totalSteps, straightStep, sideStep, direction):
