@@ -60,7 +60,7 @@ class Tortoise:
 
 		self.A = Motor(4, 17, 23, 24)
 		self.B = Motor(5, 18, 22, 27)
-		#self.sensor = Sensor(1,2,3,5,6,7,8,9,10,11)
+		self.sensor = Sensor(1,2,3,5,6,7,8,9,10,11)
 		self.delay = 8
 		self.switchForEmergencyStop_pin = 6
 		self.state = State.paused
