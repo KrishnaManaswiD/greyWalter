@@ -44,4 +44,6 @@ class Motor:
 		GPIO.output(self.coil_B_1_pin, w3)
 		GPIO.output(self.coil_B_2_pin, w4)
 
+	def stopMotors(self):
+		self.setStep(0, 0, 0 ,0)
 

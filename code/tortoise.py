@@ -160,6 +160,8 @@ class Tortoise:
 		    if direction == enums.Direction.forward_left or direction == enums.Direction.forward or direction == enums.Direction.counterClockwise:
 			self.B.forward(int(self.delay) / 1000.00, int(1))
 
+		self.A.stopMotors()
+		self.B.stopMotors()
 
 	def naturalTurn(self, totalSteps, straightStep, sideStep, direction):
 
@@ -197,7 +199,7 @@ class Tortoise:
 	def doRandomStep(self):
 
 		# Random number between 15 and (503/2 + 15)
-		numberOfSteps = int(509/2*np.random.random_sample() + 15)
+		numberOfSteps = int(509/4*np.random.random_sample() + 15)
 
 		# Random number between 0 and 1
 		randomNumber = np.random.random_sample()		
