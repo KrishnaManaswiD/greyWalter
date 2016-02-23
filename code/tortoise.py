@@ -25,15 +25,6 @@ GPIO.setmode(GPIO.BCM)
 
 
 
-
-global isLightCalibrated = False
-global lowerBoundLight
-global upperBoundLight
-
-
-
-
-
 class State(Enum):
 	paused = 0
 	running = 1
@@ -58,7 +49,14 @@ class Direction(Enum):
 class Tortoise:
 
 	def __init__(self):
-		global isCalibrated
+
+		global isLightCalibrated
+		global lowerBoundLight
+		global upperBoundLight
+
+		isLightCalibrated = False
+		lowerBoundLight = 0
+		upperBoundLight = 0
 
 		self.A = Motor(4, 17, 23, 24)
 		self.B = Motor(5, 18, 22, 27)
