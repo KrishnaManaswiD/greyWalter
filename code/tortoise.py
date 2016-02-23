@@ -132,9 +132,9 @@ class Tortoise:
 
 		for x in range(0,steps):
 	
-			# If a stop command has been sent, the turtle will stop its movement
-			if self.state == State.paused:
-				break;
+		    # If a stop command has been sent, the turtle will stop its movement
+		    if self.state == State.paused:
+			break;
 
 		    if direction == Direction.backward_left or direction == Direction.backward or direction == Direction.counterClockwise:
 			self.A.backwards(int(self.delay) / 1000.00, int(1))
