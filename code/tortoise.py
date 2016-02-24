@@ -23,6 +23,16 @@ import RPi.GPIO as GPIO
 
 GPIO.setmode(GPIO.BCM)
 
+def synchronized(method):
+    """ Work with instance method only !!! """
+
+    def new_method(self, *arg, **kws):
+        with self.lock:
+            return method(self, *arg, **kws)
+
+
+    return new_method
+
 
 
 class State(Enum):
@@ -63,7 +73,7 @@ class Tortoise:
 		self.sensor = Sensor(1,2,3,5,6,7,8,9,10,11)
 		self.delay = 8
 		self.switchForEmergencyStop_pin = 6
-		self.state = State.paused
+		setStateTortoise(State.paused)
 
 		if not isLightCalibrated:
 			self.calibrateLight()
@@ -73,7 +83,9 @@ class Tortoise:
 		except:
 			print "Error: unable to start thread"
 
-		while self.state == State.paused:
+		
+		print "Tortoise alive! Release me from all the roots that attach me to the earth (disconnect the wires!) and press the pause/resume button to set me free."
+		while self.getStateTortoise() == State.paused:
 			time.sleep(0.1)
 	
 
@@ -84,17 +96,22 @@ class Tortoise:
 		while True:
 	
 			if GPIO.input(self.switchForEmergencyStop_pin) == GPIO.HIGH:
-				if self.state == State.running:
-					self.state = State.paused
-				elif self.state == State.paused:
-					self.state = State.running
+				if self.getStateTortoise() == State.running:
+					self.setStateTortoise(State.paused)
+				elif self.getStateTortoise() == State.paused:
+					self.setStateTortoise(State.running)
 
 			time.sleep(0.1)
 
 
 
-	def isPaused(self):
-		return self.state == State.paused
+	@synchronized
+	def getStateTortoise(self):
+		return self.state
+
+	@synchronized
+	def setStateTortoise(self, state):
+		self.state = state
 
 
 	def calibrateLight(self):
@@ -113,7 +130,7 @@ class Tortoise:
 
 
 	def getSensorData(self,sensor_type,pos):
-		if self.state == State.running:
+		if self.getStateTortoise() == State.running:
 			value = self.sensor.readSensor(sensor_type,pos)
 
 			if sensor_type == SensorType.light:
@@ -133,7 +150,7 @@ class Tortoise:
 		for x in range(0,steps):
 	
 		    # If a stop command has been sent, the turtle will stop its movement
-		    if self.state == State.paused:
+		    if self.getStateTortoise() == State.paused:
 			break;
 
 		    if direction == Direction.backward_left or direction == Direction.backward or direction == Direction.counterClockwise:
