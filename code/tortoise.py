@@ -53,7 +53,7 @@ class Tortoise:
 		self.A = Motor(4, 17, 23, 24)
 		self.B = Motor(5, 18, 22, 27) 
 		self.sensor = Sensor(16,2,3,12,6,7,8,9,10,11)
-		self.delay = 5
+		self.delay = 2
 		self.switchForEmergencyStop_pin = 6
 		self.state = enums.State.paused
 
@@ -67,8 +67,8 @@ class Tortoise:
 		except:
 			print "Error: unable to start thread"
 
-		
-		print "Tortoise alive! Release me from all the roots that attach me to the earth (disconnect the wires!) and press the pause/resume button to set me free."
+		print(chr(27) + "[2J")
+		print "Tortoise alive! Press the pause/resume button to set me going."
 		while self.getStateTortoise() == enums.State.paused:
 			time.sleep(0.1)
 	
@@ -106,19 +106,19 @@ class Tortoise:
 	def calibrateLight(self):
 		global lowerBoundLight, upperBoundLight, isLightCalibrated
 
-		raw_input("Now we are in cinema mode. Let's do some tricks. Please, turn the lights off and press enter.")
+		raw_input("Base condition press enter.")
 		#lowerBoundLight = max(self.sensor.readSensor(enums.SensorType.light, 1), self.sensor.readSensor(enums.SensorType.light, 2))
 		lowerBoundLight = self.sensor.readSensor(enums.SensorType.light, 1)
-		print "Light in dark conditions is: ", lowerBoundLight
+		#print "Light in dark conditions is: ", lowerBoundLight
 
 		raw_input("Now please place a light source in front of the tortoise's eyes and press enter.")
 		#upperBoundLight = min((self.sensor.readSensor(enums.SensorType.light, 1), self.sensor.readSensor(enums.SensorType.light, 2)))
 		upperBoundLight = self.sensor.readSensor(enums.SensorType.light, 1)
-		print "Light when there is a light source is:", upperBoundLight
+		#print "Light when there is a light source is:", upperBoundLight
 
 		isLightCalibrated = True
 
-		print("Gert lush, me babber! (That's very Bristolian)")
+		print("Finished")
 
 
 

@@ -10,7 +10,16 @@ def main():
 	# Name your tortoise here.
 	Name = Tortoise()
 
-	while True && (calibrated==1):
+	if (calibrated==0):
+		print "Let's use different levels of light to see what calibrated readings we get"
+		raw_input("First let's see what the room gives us, press enter when you're done")
+		print Name.getSensorData(SensorType.light,1)
+		raw_input("Now try it with a light source right up close and press enter when you're done")
+		print Name.getSensorData(SensorType.light,1)
+		raw_input("And now try somewhere in the middle")
+		print Name.getSensorData(SensorType.light,1)
+	
+	while True and (calibrated==1):
 		# First we need a reading from the light sensor
 		lightSensorReading = Name.getSensorData(SensorType.light,1)
 
