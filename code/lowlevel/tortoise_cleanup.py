@@ -10,6 +10,8 @@
 import sys
 import RPi.GPIO as GPIO  
 
+GPIO.setmode(GPIO.BCM)
+
 # No warnings in this script
 GPIO.setwarnings(False)
 

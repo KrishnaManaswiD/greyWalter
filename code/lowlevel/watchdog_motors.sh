@@ -19,7 +19,7 @@ do
         for f in $PIDS_DIRECTORY/*.pid
         do
             # Gets PID from file
-	        PID=`echo $f | cut -d '/' -f 5 | cut -d '.' -f 1`
+            PID=`echo $f | cut -d '/' -f 5 | cut -d '.' -f 1`
             echo $PID
 
             # Looks for PID in list of processes
@@ -32,19 +32,20 @@ do
 
                 MOTOR_PINS=`head -n 1 $f`
 
-                # TODO: check current working directory
-                python ./tortoise_cleanup.py $MOTOR_PINS
+                if [ `echo $MOTOR_PINS | wc -w` -eq 8 ]
+                then
+                        # TODO: change to final directory
+                        python ~/greyWalterUpdated20160603/greyWalter/code/lowlevel/tortoise_cleanup.py $MOTOR_PINS
+                fi
 
                 # Removes the .pid file
                 # TODO: uncomment
-#                rm $f
+                rm $f
             fi
-
         done
-
     fi
     
-	sleep 1
+    sleep 1
 done
 
 

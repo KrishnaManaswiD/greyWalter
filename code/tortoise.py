@@ -51,7 +51,7 @@ class Tortoise:
         lowerBoundLight = 0
         upperBoundLight = 0
 
-        motor.pins = [4, 17, 23, 24, 27, 22, 18, 5]
+        motorPins = [4, 17, 23, 24, 27, 22, 18, 5]
 
         # CREATING FILE WITH PID
 
@@ -64,15 +64,15 @@ class Tortoise:
         # Filename: [PID].pid
         f = open(directory + str(pid) + ".pid", "w")
 
-        f.write(motor.pins[0] + " " + motor.pins[1] + " " + motor.pins[2] + " " + motor.pins[3] + " " + motor.pins[4] + " " + motor.pins[5] + " " + motor.pins[6] + " " + motor.pins[7] + "\n")
+        f.write(str(motorPins[0]) + " " + str(motorPins[1]) + " " + str(motorPins[2]) + " " + str(motorPins[3]) + " " + str(motorPins[4]) + " " + str(motorPins[5]) + " " + str(motorPins[6]) + " " + str(motorPins[7]) + "\n")
 
         f.close()
         # ----------------------
 
 
         # TODO: change to self.Motor.Left
-        self.A = Motor(motor.pins[0], motor.pins[1], motor.pins[2], motor.pins[3])
-        self.B = Motor(motor.pins[4], motor.pins[5], motor.pins[6], motor.pins[7])
+        self.A = Motor(motorPins[0], motorPins[1], motorPins[2], motorPins[3])
+        self.B = Motor(motorPins[4], motorPins[5], motorPins[6], motorPins[7])
         self.sensors = Sensors()
         self.actuators = Actuators()
         self.delay = 2
