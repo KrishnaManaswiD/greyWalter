@@ -11,7 +11,7 @@ PIDS_DIRECTORY=~/.tortoise_pids
 mkdir -p $PIDS_DIRECTORY
 
 # All .pid files are removed
-rm $PIDS_DIRECTORY/*.pid
+rm $PIDS_DIRECTORY/*.pid 2>/dev/null
 
 while true
 do
