@@ -10,3 +10,6 @@
 - LEDs in a thread?
 - Change
 - Improve sensors.py to arrays
+- change self.A to motorLeft
+- run motors in parallel
+- debug proximity sensor

@@ -5,7 +5,7 @@ Name=Tortoise()
 
 while True:
 
-        touchSensor = Name.getSensorData(SensorType.touch,2)
+        touchSensor = Name.getSensorData(SensorType.touch,1)
         if touchSensor == 1:
                 print "Switch is on"
                 Name.moveMotors(30, Direction.forward)

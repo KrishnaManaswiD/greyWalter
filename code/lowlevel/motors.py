@@ -11,8 +11,6 @@ class Motor:
         self.coil_B_1_pin = cB1p
         self.coil_B_2_pin = cB2p
 
-        GPIO.setwarnings(False)
-
         GPIO.setup(self.coil_A_1_pin, GPIO.OUT)
         GPIO.setup(self.coil_A_2_pin, GPIO.OUT)
         GPIO.setup(self.coil_B_1_pin, GPIO.OUT)

@@ -86,13 +86,23 @@ class Sensors:
             if pos == 1:
                 self.proximitySensor_pin1 = pin
                 GPIO.setup(pin, GPIO.IN, pull_up_down = GPIO.PUD_UP)
-                self.proximity1_state = GPIO.input(pin)
+
+                if GPIO.input(pin) == GPIO.LOW:
+                        self.proximity1_state = 1
+                else:
+                        self.proximity1_state = 0
+
                 GPIO.add_event_detect(pin, GPIO.BOTH, callback = self.callback_proximity, bouncetime = 300)
                 return 0
             elif pos == 2:
                 self.proximitySensor_pin2 = pin
                 GPIO.setup(pin, GPIO.IN, pull_up_down = GPIO.PUD_UP)
-                self.proximity2_state = GPIO.input(pin)
+
+                if GPIO.input(pin) == GPIO.LOW:
+                        self.proximity1_state = 1
+                else:
+                        self.proximity1_state = 0
+
                 GPIO.add_event_detect(pin, GPIO.BOTH, callback = self.callback_proximity, bouncetime = 300)
                 return 0
             elif pos == 3:
@@ -138,15 +148,19 @@ class Sensors:
 
 
     def callback_proximity(self,channel):
-        time.sleep(0.01)
+        time.sleep(0.1)
         if channel == self.proximitySensor_pin1:
-            self.proximity1_state =  GPIO.input(channel)
+                if GPIO.input(channel) == GPIO.LOW:
+                        self.proximity1_state = 1
+                else:
+                        self.proximity1_state = 0
+         #   self.proximity1_state =  GPIO.input(channel) == GPIO.LOW
         elif channel == self.proximitySensor_pin2:
-            self.proximity2_state =  GPIO.input(channel)
+            self.proximity2_state =  GPIO.input(channel) == GPIO.LOW
         elif channel == self.proximitySensor_pin3:
-            self.proximity3_state =  GPIO.input(channel)
+            self.proximity3_state =  GPIO.input(channel) == GPIO.LOW
         elif channel == self.proximitySensor_pin4:
-            self.proximity4_state =  GPIO.input(channel)
+            self.proximity4_state =  GPIO.input(channel) == GPIO.LOW
 
 
 
@@ -185,16 +199,15 @@ class Sensors:
                     raise RuntimeError('Pin for light sensor in position 1 is not assigned')
                     return -1
                 else:
-                    print GPIO.input(self.lightSensor_pin1)
-                    return GPIO.input(self.lightSensor_pin1)
+                    #print GPIO.input(self.read_light(self.lightSensor_pin1))
+                    return self.read_light(self.lightSensor_pin1)
 
             elif pos == 2:
                 if(self.lightSensor_pin2 == -1):
                     raise RuntimeError('Pin for light sensor in position 2 is not assigned')
                     return -1
                 else:
-                    print GPIO.input(self.lightSensor_pin2)
-                    return GPIO.input(self.lightSensor_pin2)
+                    return self.read_light(self.lightSensor_pin2)
             else:
                 raise RuntimeError('Light sensor can only be assigned to position 1-2')
                 return -1

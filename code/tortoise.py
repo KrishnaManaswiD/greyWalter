@@ -46,6 +46,8 @@ class Tortoise:
         global lowerBoundLight
         global upperBoundLight
 
+        GPIO.setwarnings(False)
+
 #        self.lock = threading.RLock()
 
         isLightCalibrated = False
@@ -53,7 +55,7 @@ class Tortoise:
         upperBoundLight = 0
 
         # Previous: [4, 17, 23, 24, 27, 22, 18, 5]
-        motorPins = [7, 5, 6, 13, 11, 9, 10, 20]
+        motorPins = [13, 6, 5, 7, 20, 10, 9,11]
 
         # CREATING FILE WITH PID
 
@@ -99,8 +101,8 @@ class Tortoise:
 
         #print "light sensor value:"
         #print self.sensors.readSensor(enums.SensorType.light, 1)
-        #if not isLightCalibrated:
-#            self.calibrateLight()
+        if not isLightCalibrated:
+                self.calibrateLight()
 
 #        try:
 #             thread.start_new_thread(self.pauseAndResume, ())
@@ -111,6 +113,8 @@ class Tortoise:
         print "Tortoise alive! Press the pause/resume button to set me going."
         while self.getSensorData(enums.SensorType.emergencySwitch, 1) == 0:
             time.sleep(0.1)
+
+        print "[TORTOISE RUNNING]"
 
         self.state = enums.State.running
 
@@ -183,7 +187,7 @@ class Tortoise:
 
         elif (sensor_type == enums.SensorType.proximity):
 
-            if (pos < 1 or pos > 2):
+            if (pos < 1 or pos > 4):
 
                 print "Master, I only have two proximity sensors."
                 print "\tHINT: check the position of the sensor you want to set ;)"
@@ -237,7 +241,7 @@ class Tortoise:
 
     def setActuatorValue(self, actuator_type, pos, value):
 
-        if(actuator_type != enums.ActuatorType.led)
+        if(actuator_type != enums.ActuatorType.led):
             print "Glubdhrtfarrrg! I can only set my LEDs!"
             print "\tHINT: check the type of actuator ;)"
             self.blinkLED(1, 3, 0.5)
@@ -261,25 +265,25 @@ class Tortoise:
 
     def blinkLED(self, positions, numberOfBlinks, delay):
 
-        for (x in range(0, numberOfBlinks)):
+        for x in range(0, numberOfBlinks):
 
             try:
-                for (y in range(0, len(positions))):
-                    self.actuators.setActuator(enums.ActuatorType.led, position[y], 1)
+                for y in range(0, len(positions)):
+                    self.actuators.setActuator(enums.ActuatorType.led, positions[y], 1)
 
                 time.sleep(delay)
 
-                for (y in range(0, len(positions))):
-                    self.actuators.setActuator(enums.ActuatorType.led, position[y], 0)
+                for y in range(0, len(positions)):
+                    self.actuators.setActuator(enums.ActuatorType.led, positions[y], 0)
 
             except TypeError: # It's not an array but an integer
 
-                self.actuators.setActuator(enums.ActuatorType.led, position, 1)
+                self.actuators.setActuator(enums.ActuatorType.led, positions, 1)
                 time.sleep(delay)
-                self.actuators.setActuator(enums.ActuatorType.led, position, 0)
+                self.actuators.setActuator(enums.ActuatorType.led, positions, 0)
 
             # TODO: remove if threaded
-            if x != (numberOfBlinks - 1)
+            if x != (numberOfBlinks - 1):
                 time.sleep(delay)
 
 
@@ -287,8 +291,8 @@ class Tortoise:
     def moveMotors(self, steps, direction):
 
         if( direction != enums.Direction.backward_right and direction != enums.Direction.backward_left and 
-            direction != enums.Direction.forward_right and direction != enums.Direction.forward_left ) :
-            print "Hey, my master! I can only turn backward or forward, and either left or right."
+            direction != enums.Direction.forward_right and direction != enums.Direction.forward_left and direction != enums.Direction.forward and direction != enums.Direction.backward ) :
+            print "Hey, my master! I can only move backward or forward, and either left or right."
             print "\tHINT: check the direction ;)"
             self.blinkLED(1, 3, 0.5)
             return -1
@@ -300,7 +304,7 @@ class Tortoise:
             return -1
 
 
-        numberOfstepsCommanded = int(10)
+        numberOfstepsCommanded = int(1)
         numberOfLoops = steps/numberOfstepsCommanded
         numberOfStepsRemaining = steps % numberOfstepsCommanded
 
@@ -320,23 +324,19 @@ class Tortoise:
                 print "[TORTOISE RESUMED]"
 
 
-            if direction == enums.Direction.backward_left or direction == enums.Direction.backward or 
-                direction == enums.Direction.counterClockwise:
+            if direction == enums.Direction.backward_left or direction == enums.Direction.backward or direction == enums.Direction.counterClockwise:
 
                 self.A.backwards(int(self.delay) / 1000.00, numberOfstepsCommanded)
 
-            elif direction == enums.Direction.backward_right or direction == enums.Direction.backward or 
-                direction == enums.Direction.clockwise:
+            if direction == enums.Direction.backward_right or direction == enums.Direction.backward or direction == enums.Direction.clockwise:
 
                 self.B.backwards(int(self.delay) / 1000.00, numberOfstepsCommanded)
 
-            elif direction == enums.Direction.forward_right or direction == enums.Direction.forward or 
-                direction == enums.Direction.clockwise:
+            if direction == enums.Direction.forward_right or direction == enums.Direction.forward or direction == enums.Direction.clockwise:
 
                 self.A.forward(int(self.delay) / 1000.00, numberOfstepsCommanded)
 
-            elif direction == enums.Direction.forward_left or direction == enums.Direction.forward or 
-                direction == enums.Direction.counterClockwise:
+            if direction == enums.Direction.forward_left or direction == enums.Direction.forward or direction == enums.Direction.counterClockwise:
 
                 self.B.forward(int(self.delay) / 1000.00, numberOfstepsCommanded)
 
@@ -357,23 +357,19 @@ class Tortoise:
                         print "[TORTOISE RESUMED]"
 
 
-                    if direction == enums.Direction.backward_left or direction == enums.Direction.backward or 
-                        direction == enums.Direction.counterClockwise:
+                    if direction == enums.Direction.backward_left or direction == enums.Direction.backward or direction == enums.Direction.counterClockwise:
 
                         self.A.backwards(int(self.delay) / 1000.00, numberOfStepsRemaining)
 
-                    elif direction == enums.Direction.backward_right or direction == enums.Direction.backward or 
-                        direction == enums.Direction.clockwise:
+                    if direction == enums.Direction.backward_right or direction == enums.Direction.backward or direction == enums.Direction.clockwise:
 
                         self.B.backwards(int(self.delay) / 1000.00, numberOfStepsRemaining)
 
-                    elif direction == enums.Direction.forward_right or direction == enums.Direction.forward or 
-                        direction == enums.Direction.clockwise:
+                    if direction == enums.Direction.forward_right or direction == enums.Direction.forward or direction == enums.Direction.clockwise:
 
                         self.A.forward(int(self.delay) / 1000.00, numberOfStepsRemaining)
 
-                    elif direction == enums.Direction.forward_left or direction == enums.Direction.forward or 
-                        direction == enums.Direction.counterClockwise:
+                    if direction == enums.Direction.forward_left or direction == enums.Direction.forward or direction == enums.Direction.counterClockwise:
 
                         self.B.forward(int(self.delay) / 1000.00, numberOfStepsRemaining)
 

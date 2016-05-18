@@ -18,10 +18,17 @@ def main():
         wanderer = Tortoise()
 
 	while True:
-		print "Light 1: " + str(wanderer.getSensorData(enums.SensorType.light, 1))
-                #print "Light 2: " + str(wanderer.getSensorData(enums.SensorType.light, 2))
-                #print
-		time.sleep(0.5)
+
+                proximitySensor_1 = wanderer.getSensorData(enums.SensorType.proximity, 1)
+
+                if proximitySensor_1 == 1:
+                        print "Proximity sensor 1 is ON"
+                else:
+                        print "Proximity sensor 1 is OFF"
+
+                print
+
+                time.sleep(1)
 
 if __name__ == "__main__":
 	main()
