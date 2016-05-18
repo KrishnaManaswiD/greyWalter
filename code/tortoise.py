@@ -314,6 +314,7 @@ class Tortoise:
         for x in range(0,numberOfLoops):
 
             motorAprocess = Process(target=self.A.forward, args=(int(self.delay) / 1000.00, numberOfstepsCommanded))
+            motorBprocess = Process(target=self.B.forward, args=(int(self.delay) / 1000.00, numberOfstepsCommanded))
 
             # If a stop command has been sent, the turtle will stop its movement
             if self.getSensorData(enums.SensorType.emergencySwitch, 1) == 0:
@@ -328,7 +329,7 @@ class Tortoise:
                 self.setStateTortoise(enums.State.running)
                 print "[TORTOISE RESUMED]"
              
-            print "Before starting"
+            #print "Before starting"
 
             if direction == enums.Direction.backward_left or direction == enums.Direction.backward or direction == enums.Direction.counterClockwise:
 
@@ -345,15 +346,15 @@ class Tortoise:
 
             if direction == enums.Direction.forward_left or direction == enums.Direction.forward or direction == enums.Direction.counterClockwise:
 
-                #motorBprocess.start()
-                self.B.forward(int(self.delay) / 1000.00, numberOfstepsCommanded)
+                motorBprocess.start()
+                #self.B.forward(int(self.delay) / 1000.00, numberOfstepsCommanded)
 
-            motorAprocess.join()
+            #motorAprocess.join()
 
             #motorAprocess.terminate()
             #motorBprocess.join()
 
-
+        print "GHERE"
         if numberOfStepsRemaining > 0:
             
             # If a stop command has been sent, the turtle will stop its movement

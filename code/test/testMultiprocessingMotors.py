@@ -19,14 +19,14 @@ def main():
 
 	while True:
 
-                wanderer.moveMotors(1000, enums.Direction.forward)
-                time.sleep(0.5)
+                wanderer.moveMotors(300, enums.Direction.forward)
+                time.sleep(1)
 #                wanderer.gentleTurn(1000, enums.Direction.forward_left)
 #                time.sleep(1)
 #                wanderer.moveMotors(1000, enums.Direction.forward_right)
 #                time.sleep(1)
-                wanderer.moveMotors(1000, enums.Direction.backward)
-                time.sleep(0.5)
+                wanderer.moveMotors(300, enums.Direction.backward)
+                time.sleep(1)
 #                wanderer.gentleTurn(1000, enums.Direction.backward_left)
 #                time.sleep(1)
 #                wanderer.moveMotors(1000, enums.Direction.backward_right)
