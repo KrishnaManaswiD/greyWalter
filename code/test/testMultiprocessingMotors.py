@@ -25,7 +25,7 @@ def main():
 #                time.sleep(1)
 #                wanderer.moveMotors(1000, enums.Direction.forward_right)
 #                time.sleep(1)
-                wanderer.moveMotors(500, enums.Direction.backward)
+                wanderer.moveMotors(500*60, enums.Direction.backward)
                 time.sleep(1)
 #                wanderer.gentleTurn(1000, enums.Direction.backward_left)
 #                time.sleep(1)
