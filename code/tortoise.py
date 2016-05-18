@@ -341,20 +341,20 @@ class Tortoise:
 
             if direction == enums.Direction.forward_right or direction == enums.Direction.forward or direction == enums.Direction.clockwise:
 
-                motorAprocess.start()
-                #self.A.forward(int(self.delay) / 1000.00, numberOfstepsCommanded)
+                #motorAprocess.start()
+                self.A.forward(int(self.delay) / 1000.00, numberOfstepsCommanded)
 
             if direction == enums.Direction.forward_left or direction == enums.Direction.forward or direction == enums.Direction.counterClockwise:
 
-                motorBprocess.start()
-                #self.B.forward(int(self.delay) / 1000.00, numberOfstepsCommanded)
+                #motorBprocess.start()
+                self.B.forward(int(self.delay) / 1000.00, numberOfstepsCommanded)
 
-            #motorAprocess.join()
+            if motorAprocess.is_alive() and motorBprocess.is_alive():
+                    motorAprocess.join()
+                    motorBprocess.join()
 
-            #motorAprocess.terminate()
-            #motorBprocess.join()
+            print "HERE"
 
-        print "GHERE"
         if numberOfStepsRemaining > 0:
             
             # If a stop command has been sent, the turtle will stop its movement
