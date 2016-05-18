@@ -308,10 +308,12 @@ class Tortoise:
         numberOfLoops = steps/numberOfstepsCommanded
         numberOfStepsRemaining = steps % numberOfstepsCommanded
 
-        motorAprocess = multiprocessing.Process(target=self.A.forward, args=(int(self.delay) / 1000.00, numberOfstepsCommanded))
-        motorBprocess = multiprocessing.Process(target=self.B.forward, args=(int(self.delay) / 1000.00, numberOfstepsCommanded))
+        
+       # motorBprocess = Process(target=self.B.forward, args=(int(self.delay) / 1000.00, numberOfstepsCommanded))
 
         for x in range(0,numberOfLoops):
+
+            motorAprocess = Process(target=self.A.forward, args=(int(self.delay) / 1000.00, numberOfstepsCommanded))
 
             # If a stop command has been sent, the turtle will stop its movement
             if self.getSensorData(enums.SensorType.emergencySwitch, 1) == 0:
@@ -325,7 +327,8 @@ class Tortoise:
             if self.getStateTortoise() == enums.State.paused:
                 self.setStateTortoise(enums.State.running)
                 print "[TORTOISE RESUMED]"
-
+             
+            print "Before starting"
 
             if direction == enums.Direction.backward_left or direction == enums.Direction.backward or direction == enums.Direction.counterClockwise:
 
@@ -338,13 +341,17 @@ class Tortoise:
             if direction == enums.Direction.forward_right or direction == enums.Direction.forward or direction == enums.Direction.clockwise:
 
                 motorAprocess.start()
+                #self.A.forward(int(self.delay) / 1000.00, numberOfstepsCommanded)
 
             if direction == enums.Direction.forward_left or direction == enums.Direction.forward or direction == enums.Direction.counterClockwise:
 
-                motorBprocess.start()
+                #motorBprocess.start()
+                self.B.forward(int(self.delay) / 1000.00, numberOfstepsCommanded)
 
             motorAprocess.join()
-            motorBprocess.join()
+
+            #motorAprocess.terminate()
+            #motorBprocess.join()
 
 
         if numberOfStepsRemaining > 0:
