@@ -101,8 +101,8 @@ class Tortoise:
 
         #print "light sensor value:"
         #print self.sensors.readSensor(enums.SensorType.light, 1)
-        if not isLightCalibrated:
-                self.calibrateLight()
+        #if not isLightCalibrated:
+                #self.calibrateLight()
 
 #        try:
 #             thread.start_new_thread(self.pauseAndResume, ())
@@ -169,16 +169,16 @@ class Tortoise:
 
         if (sensor_type == enums.SensorType.touch):
 
-            if (pos < 1 or pos > 2):
+            if (pos < 1 or pos > 3):
 
-                print "Master, I only have two touch sensors."
+                print "Master, I only have three touch sensors."
                 print "\tHINT: check the position of the sensor you want to set ;)"
                 self.blinkLED(1, 3, 0.5)
                 return -1
 
         elif (sensor_type == enums.SensorType.light):
 
-            if (pos != 1):
+            if (pos != 1 and pos!=2):
 
                 print "Master, I only have one light sensor."
                 print "\tHINT: check the position of the sensor you want to set ;)"
@@ -213,12 +213,12 @@ class Tortoise:
         value = self.sensors.readSensor(sensor_type,pos)
 
         if sensor_type == enums.SensorType.light:
-
+            return value
             if (upperBoundLight - lowerBoundLight) == 0:
                 print "I am blind!"
                 print "\tHINT: the light sensor seems to be not calibrated ;)"
                 self.blinkLED(1, 3, 0.5)
-                return -1
+                #return -1
 
             # Scale 
             lightVal = int(9 - round(abs(value-upperBoundLight)/(abs(upperBoundLight - lowerBoundLight)/9)))
