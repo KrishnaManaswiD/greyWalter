@@ -76,6 +76,7 @@ class Sensors:
             if pos == 1:
                 self.lightSensor_pin1 = pin
                 GPIO.setup(pin, GPIO.OUT)
+                print "sensor set"
             elif pos == 2:
                 self.lightSensor_pin2 = pin
                 GPIO.setup(pin, GPIO.OUT)
@@ -135,45 +136,45 @@ class Sensors:
         if sensor_type == enums.SensorType.touch:
             if pos == 1:
 
-                if(self.touchSensor_pin1 == -1)            
+                if(self.touchSensor_pin1 == -1) :           
                     raise RuntimeError('Pin for touch sensor in position 1 not assigned')
-                else
+                else:
                     return self.touch1_timesPressed
 
             elif pos == 2:
 
-                if(self.touchSensor_pin2 == -1)            
+                if(self.touchSensor_pin2 == -1) :           
                     raise RuntimeError('Pin for touch sensor in position 2 not assigned')
-                else
+                else:
                     return self.touch2_timesPressed
 
 
             elif pos == 3:
 
-                if(self.touchSensor_pin3 == -1)            
+                if(self.touchSensor_pin3 == -1):            
                     raise RuntimeError('Pin for touch sensor in position 3 not assigned')
-                else
+                else:
                     return self.touch3_timesPressed
 
             elif pos == 4:
 
-                if(self.touchSensor_pin4 == -1)            
+                if(self.touchSensor_pin4 == -1):          
                     raise RuntimeError('Pin for touch sensor in position 4 not assigned')
-                else
+                else:
                     return self.touch4_timesPressed
 
             elif pos == 5:
 
-                if(self.touchSensor_pin5 == -1)            
+                if(self.touchSensor_pin5 == -1):          
                     raise RuntimeError('Pin for touch sensor in position 5 not assigned')
-                else
+                else:
                     return self.touch5_timesPressed
 
             elif pos == 6:
 
-                if(self.touchSensor_pin6 == -1)            
+                if(self.touchSensor_pin6 == -1):           
                     raise RuntimeError('Pin for touch sensor in position 6 not assigned')
-                else
+                else:
                     return self.touch6_timesPressed
 
 
@@ -181,17 +182,17 @@ class Sensors:
 
             if pos == 1:
 
-                if(self.lightSensor_pin1 == -1)            
+                if(self.lightSensor_pin1 == -1):            
                     raise RuntimeError('Pin for light sensor in position 1 not assigned')
-                else
+                else:
                     print GPIO.input(self.lightSensor_pin1)
                     return GPIO.input(self.lightSensor_pin1)
 
             elif pos == 2:
 
-                if(self.lightSensor_pin2 == -1)            
+                if(self.lightSensor_pin2 == -1):           
                     raise RuntimeError('Pin for light sensor in position 2 not assigned')
-                else
+                else:
                     print GPIO.input(self.lightSensor_pin2)
                     return GPIO.input(self.lightSensor_pin2)
 
@@ -199,17 +200,17 @@ class Sensors:
 
             if pos == 1:
 
-                if(self.proximitySensor_pin1 == -1)            
+                if(self.proximitySensor_pin1 == -1):            
                     raise RuntimeError('Pin for proximity sensor in position 1 not assigned')
-                else
+                else:
                     print GPIO.input(self.proximitySensor_pin1)
                     return GPIO.input(self.proximitySensor_pin1)
 
             elif pos == 2:
 
-                if(self.proximitySensor_pin2 == -1)            
+                if(self.proximitySensor_pin2 == -1):            
                     raise RuntimeError('Pin for proximity sensor in position 2 not assigned')
-                else
+                else:
                     print GPIO.input(self.proximitySensor_pin2)
                     return GPIO.input(self.proximitySensor_pin2)
 
@@ -217,9 +218,9 @@ class Sensors:
         
             if pos == 1:
             
-                if(self.emergencySwitch_pin1 == -1)            
+                if(self.emergencySwitch_pin1 == -1):            
                     raise RuntimeError('Pin for emergency switch in position 1 not assigned')
-                else
+                else:
                     return self.emergency1_timesPressed
 
 

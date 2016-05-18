@@ -72,8 +72,8 @@ class Tortoise:
 
         #print "light sensor value:"        
         #print self.sensors.readSensor(enums.SensorType.light, 1)
-        if not isLightCalibrated:
-            self.calibrateLight()
+        #if not isLightCalibrated:
+           # self.calibrateLight()
 
 #        try:
 #             thread.start_new_thread(self.pauseAndResume, ())
@@ -85,7 +85,7 @@ class Tortoise:
         while self.getSensorData(enums.SensorType.emergencySwitch, 1) == 0:
             time.sleep(0.1)
     
-        self.state = enums.State.running
+
 
 #    def pauseAndResume(self):
 
@@ -121,12 +121,12 @@ class Tortoise:
         raw_input("Base condition press enter.")
         #lowerBoundLight = max(self.sensors.readSensor(enums.SensorType.light, 1), self.sensors.readSensor(enums.SensorType.light, 2))
         lowerBoundLight = self.sensors.readSensor(enums.SensorType.light, 1)
-        print "Light in dark conditions is: ", lowerBoundLight
+        #print "Light in dark conditions is: ", lowerBoundLight
 
         raw_input("Now please place a light source in front of the tortoise's eyes and press enter.")
         #upperBoundLight = min((self.sensors.readSensor(enums.SensorType.light, 1), self.sensors.readSensor(enums.SensorType.light, 2)))
         upperBoundLight = self.sensors.readSensor(enums.SensorType.light, 1)
-        print "Light when there is a light source is:", upperBoundLight
+        #print "Light when there is a light source is:", upperBoundLight
 
         isLightCalibrated = True
 
@@ -137,7 +137,7 @@ class Tortoise:
     def getSensorData(self,sensor_type,pos):
         #if self.getStateTortoise() == enums.State.running:
         value = self.sensors.readSensor(sensor_type,pos)
-        print "value", value
+
         if sensor_type == enums.SensorType.light:
             # Scale #TODO fix division by 0
             lightVal = int(9 - round(abs(value-upperBoundLight)/(abs(upperBoundLight - lowerBoundLight)/9)))

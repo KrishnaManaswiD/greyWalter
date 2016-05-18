@@ -21,7 +21,7 @@ if (calibrated==0):
 
 while True and (calibrated==1):
 	# First we need a reading from the light sensor
-	lightSensorReading = Frankie.getSensorData(SensorType.light,1)
+	lightSensorReading = Frankie.getSensorData(SensorType.light, 1)
 
 	# Can you tune the light sensor values for the conditions based on your calibration findings?
 	if lightSensorReading < 4:
