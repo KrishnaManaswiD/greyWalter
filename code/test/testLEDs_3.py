@@ -19,10 +19,10 @@ def main():
 
     while True:
 
-        wanderer.setActuatorValue(enums.ActuatorType.led, 1, 1)
-        wanderer.setActuatorValue(enums.ActuatorType.led, 2, 0)
-        wanderer.setActuatorValue(enums.ActuatorType.led, 3, 1)
-        wanderer.setActuatorValue(enums.ActuatorType.led, 4, 0)
+        wanderer.setLEDValue(1, 1)
+        wanderer.setLEDValue(2, 0)
+        wanderer.setLEDValue(3, 1)
+        wanderer.setLEDValue(4, 0)
 
         print "LEDs 1 and 3 set"
         print
@@ -40,10 +40,10 @@ def main():
 
 
 
-        wanderer.setActuatorValue(enums.ActuatorType.led, 1, 1)
-        wanderer.setActuatorValue(enums.ActuatorType.led, 2, 1)
-        wanderer.setActuatorValue(enums.ActuatorType.led, 3, 1)
-        wanderer.setActuatorValue(enums.ActuatorType.led, 4, 1)
+        wanderer.setLEDValue(1, 1)
+        wanderer.setLEDValue(2, 1)
+        wanderer.setLEDValue(3, 1)
+        wanderer.setLEDValue(4, 1)
 
         print "LEDs 1, 2, 3 and 4 set"
         print

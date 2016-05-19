@@ -200,6 +200,15 @@ class Tortoise:
                 self.blinkLEDs([1, 2, 3, 4], 3, 0.2)
                 return -1
 
+        elif (sensor_type == enums.SensorType.emergencyStop):
+
+            if (position != 1):
+
+                print "You've asked for a emergency stop that doesn't exist."
+                print "\tHINT: check the position of the sensor you want to set."
+                self.blinkLEDs([1, 2, 3, 4], 3, 0.2)
+                return -1
+
         else:
                 print "You've asked for a sensor that doesn't exist."
                 print "\tHINT: check the type of the sensor you want to read."
@@ -307,7 +316,7 @@ class Tortoise:
 
 
 
-        previousStateLEDs = [ self.getActuatorState(enums.ActuatorType.led, x) for x in range(1, 5) ]
+        previousStateLEDs = [ self.getLEDState(x) for x in range(1, 5) ]
 
         cont = True
 
@@ -342,7 +351,7 @@ class Tortoise:
         
         # If it doesn't block, the previous state of the LEDs is restored
         for x in range(1, 5):
-            self.setActuatorValue(enums.ActuatorType.led, x, previousStateLEDs[x - 1])
+            self.setLEDValue(x, previousStateLEDs[x - 1])
             
         return 0
 
@@ -611,13 +620,13 @@ class Tortoise:
 
     def moveForwards(self, steps):
 
-        return self.move(steps, steps, enums.Direction.forwards)
+        return self.moveMotors(steps, steps, enums.Direction.forwards)
 
 
 
     def moveBackwards(self, steps):
 
-        return self.move(steps, steps, enums.Direction.backwards)
+        return self.moveMotors(steps, steps, enums.Direction.backwards)
 
 
 

@@ -17,7 +17,7 @@ class Motor:
         GPIO.setup(self.coil_B_2_pin, GPIO.OUT)
 
     #if everything OK, return 0. If delay or steps < 0, return -1
-    def forward(self,delay, steps):
+    def forwards(self,delay, steps):
         if delay<0:
             raise RuntimeError('Motor delay can only be a positive number!')
             return -1
@@ -37,7 +37,7 @@ class Motor:
             return 0
 
     #if everything OK, return 0. If delay or steps < 0, return -1
-    def backward(self,delay, steps):
+    def backwards(self,delay, steps):
         if delay<0:
             raise RuntimeError('Motor delay can only be a positive number!')
             return -1

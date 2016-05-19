@@ -18,7 +18,7 @@ def main():
     wanderer = Tortoise()
 
     while True:
-        print "Light 1: " + str(wanderer.getSensorData(enums.SensorType.light, 1))
+        #print "Light 1: " + str(wanderer.getSensorData(enums.SensorType.light, 1))
         print "Light 2: " + str(wanderer.getSensorData(enums.SensorType.light, 2))
         #print
         time.sleep(0.5)

@@ -34,6 +34,9 @@ def main():
 #        print "\tPress enter to continue"
 #        raw_input()
 
+        print "Blinking LED 2 and 3"
+        wanderer.blinkLEDs([3, 2], 3, 0.3, blocking = False)
+
         print "Blinking LED 2 and 4"
         wanderer.blinkLEDs([4, 2], 3, 0.3, blocking = False)
 #        print "\tPress enter to continue"
@@ -44,13 +47,16 @@ def main():
 #        print "\tPress enter to continue"
 #        raw_input()
 
+        print "Blinking LED 1, 2 and 3"
+        wanderer.blinkLEDs([2, 1, 3], 3, 0.3, blocking = False)
+
         print "Blinking LED 1, 2 and 4"
         wanderer.blinkLEDs([2, 1, 4], 3, 0.3, blocking = False)
 #        print "\tPress enter to continue"
 #        raw_input()
 
         print "Blinking LED 1, 3 and 4"
-        wanderer.blinkLEDs([3, 1, 1], 3, 0.3, blocking = False)
+        wanderer.blinkLEDs([3, 1, 4], 3, 0.3, blocking = False)
 #        print "\tPress enter to continue"
 #        raw_input()
 
