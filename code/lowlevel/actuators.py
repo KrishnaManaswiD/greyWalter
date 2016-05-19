@@ -18,12 +18,12 @@ class Actuators:
         self.led_pin5 = -1
         self.led_pin6 = -1
 
-        self.led1_status = -1
-        self.led2_status = -1
-        self.led3_status = -1
-        self.led4_status = -1
-        self.led5_status = -1
-        self.led6_status = -1
+        self.led1_state = -1
+        self.led2_state = -1
+        self.led3_state = -1
+        self.led4_state = -1
+        self.led5_state = -1
+        self.led6_state = -1
 
 
 
@@ -35,26 +35,32 @@ class Actuators:
             if pos == 1:
                 self.led_pin1 = pin
                 GPIO.setup(pin, GPIO.OUT, initial=GPIO.LOW)
+                self.led1_state = 0
                 return 0
             elif pos == 2:
                 self.led_pin2 = pin
                 GPIO.setup(pin, GPIO.OUT, initial=GPIO.LOW)
+                self.led2_state = 0
                 return 0
             elif pos == 3:
                 self.led_pin3 = pin
                 GPIO.setup(pin, GPIO.OUT, initial=GPIO.LOW)
+                self.led3_state = 0
                 return 0
             elif pos == 4:
                 self.led_pin4 = pin
                 GPIO.setup(pin, GPIO.OUT, initial=GPIO.LOW)
+                self.led4_state = 0
                 return 0
             elif pos == 5:
                 self.led_pin5 = pin
                 GPIO.setup(pin, GPIO.OUT, initial=GPIO.LOW)
+                self.led5_state = 0
                 return 0
             elif pos == 6:
                 self.led_pin6 = pin
                 GPIO.setup(pin, GPIO.OUT, initial=GPIO.LOW)
+                self.led6_state = 0
                 return 0
             else:
                 raise RuntimeError('LED can only be assigned to position 1-6')

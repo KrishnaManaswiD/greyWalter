@@ -15,9 +15,9 @@ import enums
 import time
 
 def main():
-        wanderer = Tortoise()
+    wanderer = Tortoise()
 
-	while True:
+    while True:
 
         print "Blinking LED 1"
         wanderer.blinkLED(1, 3, 0.5)

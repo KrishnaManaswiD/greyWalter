@@ -244,7 +244,7 @@ class Tortoise:
 
     def getActuatorState(self, actuator_type, pos):
         
-        if (sensor_type != enums.ActuatorType.led):
+        if (actuator_type != enums.ActuatorType.led):
             print "Glubdhrtfarrrg! I only have LEDs!"
             print "\tHINT: check the type of actuator ;)"
             self.blinkLED(1, 3, 0.5)
@@ -325,8 +325,6 @@ class Tortoise:
 
             try:
                 for y in range(0, len(positions)):
-
-                    if 
 
                     self.actuators.setActuator(enums.ActuatorType.led, positions[y], 1)
 

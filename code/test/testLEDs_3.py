@@ -15,23 +15,46 @@ import enums
 import time
 
 def main():
-        wanderer = Tortoise()
+    wanderer = Tortoise()
 
-	while True:
+    while True:
 
-        wanderer.setActuator(enums.ActuatorType.led, 1, 1)
-        wanderer.setActuator(enums.ActuatorType.led, 1, 0)
-        wanderer.setActuator(enums.ActuatorType.led, 1, 0)
-        wanderer.setActuator(enums.ActuatorType.led, 1, 1)
+        wanderer.setActuatorValue(enums.ActuatorType.led, 1, 1)
+        wanderer.setActuatorValue(enums.ActuatorType.led, 2, 0)
+        wanderer.setActuatorValue(enums.ActuatorType.led, 3, 1)
+        wanderer.setActuatorValue(enums.ActuatorType.led, 4, 0)
 
         print "LEDs 1 and 3 set"
-
-        time.sleep(3)
+        print
+        print "\tPress enter to continue"
+        raw_input()
 
         print "Blinking LED 1, 2, 3 and 4"
-        wanderer.blinkLED([3, 4, 1, 2], 3, 0.3):
+        wanderer.blinkLED([3, 4, 1, 2], 3, 0.3)
 
         print "Check status of LEDs after blinking"
+        print
+        print "\tPress enter to continue"
+        raw_input()
+
+
+
+        wanderer.setActuatorValue(enums.ActuatorType.led, 1, 1)
+        wanderer.setActuatorValue(enums.ActuatorType.led, 2, 1)
+        wanderer.setActuatorValue(enums.ActuatorType.led, 3, 1)
+        wanderer.setActuatorValue(enums.ActuatorType.led, 4, 1)
+
+        print "LEDs 1, 2, 3 and 4 set"
+        print
+        print "\tPress enter to continue"
+        raw_input()
+
+        print "Blinking LED 1, 2, 3 and 4"
+        wanderer.blinkLED([3, 4, 1, 2], 3, 0.3)
+
+        print "Check status of LEDs after blinking"
+        print
+        print "\tPress enter to continue"
         raw_input()
 
 
