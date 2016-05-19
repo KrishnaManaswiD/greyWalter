@@ -86,13 +86,14 @@ class Sensors:
             if pos == 1:
                 self.proximitySensor_pin1 = pin
                 GPIO.setup(pin, GPIO.IN, pull_up_down = GPIO.PUD_UP)
-
-                if GPIO.input(pin) == GPIO.LOW:
+                time.sleep(0.1)
+      
+                if GPIO.input(pin) == GPIO.HIGH: # Modified friday 10 June
                         self.proximity1_state = 1
                 else:
                         self.proximity1_state = 0
 
-                GPIO.add_event_detect(pin, GPIO.BOTH, callback = self.callback_proximity, bouncetime = 300)
+                GPIO.add_event_detect(pin, GPIO.BOTH, callback = self.callback_proximity, bouncetime = 100)
                 return 0
             elif pos == 2:
                 self.proximitySensor_pin2 = pin
@@ -150,7 +151,7 @@ class Sensors:
     def callback_proximity(self,channel):
         time.sleep(0.1)
         if channel == self.proximitySensor_pin1:
-                if GPIO.input(channel) == GPIO.LOW:
+                if GPIO.input(channel) == GPIO.HIGH:
                         self.proximity1_state = 1
                 else:
                         self.proximity1_state = 0

@@ -19,12 +19,13 @@ def main():
 
 	while True:
 
-                proximitySensor_1 = wanderer.getSensorData(enums.SensorType.proximity, 4)
+                proximitySensor_1 = wanderer.getSensorData(enums.SensorType.proximity, 1)
+        
 
                 if proximitySensor_1 == 1:
-                        print "Proximity sensor 1 is ON"
-                else:
                         print "Proximity sensor 1 is OFF"
+                else:
+                        print "Proximity sensor 1 is ON"
 
                 print
 
