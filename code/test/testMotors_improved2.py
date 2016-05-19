@@ -19,10 +19,10 @@ def main():
 
 	while True:
 
-        wanderer.moveMotors_improved2(500, enums.Direction.forward)
-        time.sleep(1)
-        wanderer.moveMotors_improved2(500, enums.Direction.backward)
-        time.sleep(1)
+                wanderer.moveMotors_improved2(500, enums.Direction.forward)
+                time.sleep(1)
+                wanderer.moveMotors_improved2(500, enums.Direction.backward)
+                time.sleep(1)
         
 
 if __name__ == "__main__":

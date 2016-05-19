@@ -17,12 +17,12 @@ import time
 def main():
         wanderer = Tortoise()
 
-	while True:
+        while True:
 
-        wanderer.moveMotors_improved1(500, enums.Direction.forward)
-        time.sleep(1)
-        wanderer.moveMotors_improved1(500, enums.Direction.backward)
-        time.sleep(1)
+                wanderer.moveMotors_improved1(500, enums.Direction.forward)
+                time.sleep(1)
+                wanderer.moveMotors_improved1(500, enums.Direction.backward)
+                time.sleep(1)
         
 
 if __name__ == "__main__":

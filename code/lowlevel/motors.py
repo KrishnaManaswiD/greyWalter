@@ -37,7 +37,7 @@ class Motor:
             return 0
 
     #if everything OK, return 0. If delay or steps < 0, return -1
-    def backwards(self,delay, steps):
+    def backward(self,delay, steps):
         if delay<0:
             raise RuntimeError('Motor delay can only be a positive number!')
             return -1
