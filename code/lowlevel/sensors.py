@@ -231,10 +231,10 @@ class Sensors:
         time.sleep(0.1)
         GPIO.setup(lspin, GPIO.IN)
         # This takes about 1 millisecond per loop cycle
-	#print "Entering loop"
+    #print "Entering loop"
         while (GPIO.input(lspin) == GPIO.LOW):
             reading += 1
-	#print "Leaving loop"	
-	#print "read light"
+    #print "Leaving loop"    
+    #print "read light"
         return reading
 
