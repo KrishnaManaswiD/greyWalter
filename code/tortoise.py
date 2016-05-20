@@ -52,64 +52,64 @@ class Tortoise:
 
 		self.A = Motor(4, 17, 23, 24)
 		self.B = Motor(5, 18, 22, 27) 
-		self.sensor = Sensor()
+		self.sensors = Sensors()
 		self.delay = 2
 		self.state = enums.State.paused
 
-        self.sensor.setSensor(enums.SensorType.light, 1, 16)
-        self.sensor.setSensor(enums.SensorType.light, 2, 2)
-        self.sensor.setSensor(enums.SensorType.touch, 1, 3)
-        self.sensor.setSensor(enums.SensorType.touch, 2, 12)
-        self.sensor.setSensor(enums.SensorType.touch, 3, 13)
-        self.sensor.setSensor(enums.SensorType.touch, 4, 7)
-        self.sensor.setSensor(enums.SensorType.touch, 5, 8)
-        self.sensor.setSensor(enums.SensorType.touch, 6, 9)
-        self.sensor.setSensor(enums.SensorType.proximity, 1, 10)
-        self.sensor.setSensor(enums.SensorType.proximity, 2, 11)
-        self.sensor.setSensor(enums.SensorType.emergencySwitch, 1, 6)
+        self.sensors.setSensor(enums.SensorType.light, 1, 16)
+        self.sensors.setSensor(enums.SensorType.light, 2, 2)
+        self.sensors.setSensor(enums.SensorType.touch, 1, 3)
+        self.sensors.setSensor(enums.SensorType.touch, 2, 12)
+        self.sensors.setSensor(enums.SensorType.touch, 3, 13)
+        self.sensors.setSensor(enums.SensorType.touch, 4, 7)
+        self.sensors.setSensor(enums.SensorType.touch, 5, 8)
+        self.sensors.setSensor(enums.SensorType.touch, 6, 9)
+        self.sensors.setSensor(enums.SensorType.proximity, 1, 10)
+        self.sensors.setSensor(enums.SensorType.proximity, 2, 11)
+        self.sensors.setSensor(enums.SensorType.emergencySwitch, 1, 6)
 
 
 		#print "light sensor value:"		
-		#print self.sensor.readSensor(enums.SensorType.light, 1)
+		#print self.sensors.readSensor(enums.SensorType.light, 1)
 		if not isLightCalibrated:
 			self.calibrateLight()
 
-		try:
-	 		thread.start_new_thread(self.pauseAndResume, ())
-		except:
-			print "Error: unable to start thread"
+#		try:
+#	 		thread.start_new_thread(self.pauseAndResume, ())
+#		except:
+#			print "Error: unable to start thread"
 
 		print(chr(27) + "[2J")
 		print "Tortoise alive! Press the pause/resume button to set me going."
-		while self.getStateTortoise() == enums.State.paused:
+		while self.getSensorData(enums.SensorType.emergencySwitch, 1) == 0:
 			time.sleep(0.1)
 	
 
 
-	def pauseAndResume(self):
+#	def pauseAndResume(self):
 
-		while True:
-	
-			if self.getSensorData(enums.SensorType.emergencySwitch, 1):
-				if self.getStateTortoise() == enums.State.running:
-					self.setStateTortoise(enums.State.paused)
-					print "Tortoise paused!"
-				elif self.getStateTortoise() == enums.State.paused:
-					self.setStateTortoise(enums.State.running)
-					print "Tortoise running!"
+#		while True:
+#	
+#			if self.getSensorData(enums.SensorType.emergencySwitch, 1):
+#				if self.getStateTortoise() == enums.State.running:
+#					self.setStateTortoise(enums.State.paused)
+#					print "Tortoise paused!"
+#				elif self.getStateTortoise() == enums.State.paused:
+#					self.setStateTortoise(enums.State.running)
+#					print "Tortoise running!"
 
-				# For having time to switch state
-				time.sleep(0.5)
+#				# For having time to switch state
+#				time.sleep(0.5)
 
-			time.sleep(0.1)
+#			time.sleep(0.1)
 
 
 
-	@synchronized
+#	@synchronized
 	def getStateTortoise(self):
 		return self.state
 
-	@synchronized
+#	@synchronized
 	def setStateTortoise(self, toState):
 		self.state = toState
 
@@ -118,13 +118,13 @@ class Tortoise:
 		global lowerBoundLight, upperBoundLight, isLightCalibrated
 
 		raw_input("Base condition press enter.")
-		#lowerBoundLight = max(self.sensor.readSensor(enums.SensorType.light, 1), self.sensor.readSensor(enums.SensorType.light, 2))
-		lowerBoundLight = self.sensor.readSensor(enums.SensorType.light, 1)
+		#lowerBoundLight = max(self.sensors.readSensor(enums.SensorType.light, 1), self.sensors.readSensor(enums.SensorType.light, 2))
+		lowerBoundLight = self.sensors.readSensor(enums.SensorType.light, 1)
 		#print "Light in dark conditions is: ", lowerBoundLight
 
 		raw_input("Now please place a light source in front of the tortoise's eyes and press enter.")
-		#upperBoundLight = min((self.sensor.readSensor(enums.SensorType.light, 1), self.sensor.readSensor(enums.SensorType.light, 2)))
-		upperBoundLight = self.sensor.readSensor(enums.SensorType.light, 1)
+		#upperBoundLight = min((self.sensors.readSensor(enums.SensorType.light, 1), self.sensors.readSensor(enums.SensorType.light, 2)))
+		upperBoundLight = self.sensors.readSensor(enums.SensorType.light, 1)
 		#print "Light when there is a light source is:", upperBoundLight
 
 		isLightCalibrated = True
@@ -135,7 +135,7 @@ class Tortoise:
 
 	def getSensorData(self,sensor_type,pos):
 		#if self.getStateTortoise() == enums.State.running:
-		value = self.sensor.readSensor(sensor_type,pos)
+		value = self.sensors.readSensor(sensor_type,pos)
 
 		if sensor_type == enums.SensorType.light:
 			# Scale
@@ -146,6 +146,12 @@ class Tortoise:
 				lightVal = 0
 
 			return lightVal
+        
+
+        elif sensor_type == enums.SensorType.touch:
+
+            return value % 2
+
 		else:
 			return value
 
@@ -159,8 +165,12 @@ class Tortoise:
 		for x in range(0,steps):
 	
 		    # If a stop command has been sent, the turtle will stop its movement
-		    if self.getStateTortoise() == enums.State.paused:
+		    if self.getSensorData(enums.SensorType.emergencySwitch, 1) % 2 == 0
+				self.setStateTortoise(enums.State.paused)
+				print "Tortoise paused!"
 			    break;
+            else
+                self.setStateTortoise(enums.State.running)
 
 		    if direction == enums.Direction.backward_left or direction == enums.Direction.backward or direction == enums.Direction.counterClockwise:
 			self.A.backwards(int(self.delay) / 1000.00, int(1))
@@ -229,4 +239,5 @@ class Tortoise:
 				self.gentleTurn(numberOfSteps, direction)
 			else:
 				self.sharpTurn(numberOfSteps, direction)
+
 
