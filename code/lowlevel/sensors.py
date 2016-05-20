@@ -6,110 +6,176 @@ GPIO.setmode(GPIO.BCM)
 
 class Sensor:
 
-    def __init__(self,lightSensor_pin1,lightSensor_pin2,touchSensor_pin1,touchSensor_pin2,touchSensor_pin3,touchSensor_pin4,touchSensor_pin5,touchSensor_pin6,proximitySensor_pin1,proximitySensor_pin2):
+    def __init__(self):
 
         self.busy = False
         self.touch = 0
         self.light = 1
         self.proximity = 2
 
-        self.lightSensor_pin1 = lightSensor_pin1
-        self.lightSensor_pin2 = lightSensor_pin2
-        self.touchSensor_pin1 = touchSensor_pin1
-        self.touchSensor_pin2 = touchSensor_pin2
-        self.touchSensor_pin3 = touchSensor_pin3
-        self.touchSensor_pin4 = touchSensor_pin4
-        self.touchSensor_pin5 = touchSensor_pin5
-        self.touchSensor_pin6 = touchSensor_pin6
-        self.proximitySensor_pin1 = proximitySensor_pin1
-        self.proximitySensor_pin2 = proximitySensor_pin2
+        self.lightSensor_pin1 = -1
+        self.lightSensor_pin2 = -1
+        self.touchSensor_pin1 = -1
+        self.touchSensor_pin2 = -1
+        self.touchSensor_pin3 = -1
+        self.touchSensor_pin4 = -1
+        self.touchSensor_pin5 = -1
+        self.touchSensor_pin6 = -1
+        self.proximitySensor_pin1 = -1
+        self.proximitySensor_pin2 = -1
 
-        GPIO.setup(self.lightSensor_pin1, GPIO.OUT)
-        GPIO.setup(self.lightSensor_pin2, GPIO.OUT)
-        GPIO.setup(self.touchSensor_pin1, GPIO.IN)
-        GPIO.setup(self.touchSensor_pin2, GPIO.IN)
-        GPIO.setup(self.touchSensor_pin3, GPIO.IN)
-        GPIO.setup(self.touchSensor_pin4, GPIO.IN)
-        GPIO.setup(self.touchSensor_pin5, GPIO.IN)
-        GPIO.setup(self.touchSensor_pin6, GPIO.IN)
-        GPIO.setup(self.proximitySensor_pin1, GPIO.IN)
-        GPIO.setup(self.proximitySensor_pin2, GPIO.IN)
 
-	self.light1_value = 1 #self.read_light(self.lightSensor_pin1)
-        self.light2_value = 1 #self.read_light(self.lightSensor_pin2)
-        self.touch1_value = GPIO.input(self.touchSensor_pin1)
-        self.touch2_value = GPIO.input(self.touchSensor_pin2)
-        self.touch3_value = GPIO.input(self.touchSensor_pin3)
-        self.touch4_value = GPIO.input(self.touchSensor_pin4)
-        self.touch5_value = GPIO.input(self.touchSensor_pin5)
-        self.touch6_value = GPIO.input(self.touchSensor_pin6)
-        self.prox1_value = GPIO.input(self.proximitySensor_pin1)
-        self.prox2_value = GPIO.input(self.proximitySensor_pin2)
+        self.light1_value = -1 #self.read_light(self.lightSensor_pin1)
+        self.light2_value = -1 #self.read_light(self.lightSensor_pin2)
+        self.touch1_value = -1
+        self.touch2_value = -1
+        self.touch3_value = -1
+        self.touch4_value = -1
+        self.touch5_value = -1
+        self.touch6_value = -1
+        self.prox1_value = -1
+        self.prox2_value = -1
 
 #        try:
 #            thread.start_new_thread(self.poll_sensors, (500,))
 #        except:
 #            print "Error: unable to start thread"
 
-    def readSensor(self,sensor_type,pos):
-		#print "Sensor Type enumVal"
-		#print sensor_type
-    		if sensor_type == enums.SensorType.touch:
-			#print "We are activating a touch sensor"
-		        if pos == 1:
-				print GPIO.input(self.touchSensor_pin1)
-				return GPIO.input(self.touchSensor_pin1)
-		        elif pos == 2:
-				print GPIO.input(self.touchSensor_pin2)
-				return GPIO.input(self.touchSensor_pin2)
-		        elif pos == 3:
-				return GPIO.input(self.touchSensor_pin3)
-		        elif pos == 4:
-				return GPIO.input(self.touchSensor_pin4)
-		        elif pos == 5:
-				return GPIO.input(self.touchSensor_pin5)
-		        elif pos == 6:
-				return GPIO.input(self.touchSensor_pin6)
-		if sensor_type == enums.SensorType.light:
-			#print "We are activating a light sensor"
-		        if pos == 1:
-			    #print "Pos1"
-		            return self.read_light(self.lightSensor_pin1)
-		        elif pos == 2:
-			    #print "Pos2"
-		            return self.read_light(self.lightSensor_pin2)
-		if sensor_type == enums. SensorType.proximity:
-			#print "We are activating a proximity sensor"
-		        if pos == 1:
-		            return GPIO.input(self.proximitySensor_pin1)
-		        elif pos == 2:
-		            return GPIO.input(self.proximitySensor_pin2)
 
-#    def poll_sensors(self,delay):
-#        while True:
-#            self.busy = True
-#            #self.light1_value = self.read_light(self.lightSensor_pin1)
-#            #print self.light1_value
-#            #self.light2_value = self.read_light(self.lightSensor_pin2)
-#            #print self.light2_value
-#            self.touch1_value = GPIO.input(self.touchSensor_pin1)
-#	    #print self.touch1_value
-#            self.touch2_value = GPIO.input(self.touchSensor_pin2)
-#            #print self.touch2_value
-#	    	self.touch3_value = GPIO.input(self.touchSensor_pin3)
-#            #print self.touch3_value
-#	   	self.touch4_value = GPIO.input(self.touchSensor_pin4)
-#            #print self.touch4_value
-#            self.touch5_value = GPIO.input(self.touchSensor_pin5)
-#            #print self.touch5_value
-#            self.touch6_value = GPIO.input(self.touchSensor_pin6)
-#            #print self.touch6_value
-#            self.prox1_value = GPIO.input(self.proximitySensor_pin1)
-#            #print self.prox1_value
-#            self.prox2_value = GPIO.input(self.proximitySensor_pin2)
-#            #print self.prox2_value
-#            self.busy = False
-#            time.sleep(delay/1000.0)
+
+    def setSensor(self, sensor_type, pos, pin):
+
+        if sensor_type == enums.SensorType.touch:
+
+            if pos == 1:
+                self.touchSensor_pin1 = pin
+                GPIO.setup(pin, GPIO.IN)
+            elif pos == 2:
+                self.touchSensor_pin2 = pin
+                GPIO.setup(pin, GPIO.IN)
+            elif pos == 3:
+                self.touchSensor_pin3 = pin
+                GPIO.setup(pin, GPIO.IN)
+            elif pos == 4:
+                self.touchSensor_pin4 = pin
+                GPIO.setup(pin, GPIO.IN)
+            elif pos == 5:
+                self.touchSensor_pin5 = pin
+                GPIO.setup(pin, GPIO.IN)
+            elif pos == 6:
+                self.touchSensor_pin6 = pin
+                GPIO.setup(pin, GPIO.IN)
+
+        if sensor_type == enums.SensorType.light:
+
+            if pos == 1:
+                self.lightSensor_pin1 = pin
+                GPIO.setup(pin, GPIO.OUT)
+            elif pos == 2:
+                self.lightSensor_pin2 = pin
+                GPIO.setup(pin, GPIO.OUT)
+
+        if sensor_type == enums. SensorType.proximity:
+
+            if pos == 1:
+                self.proximitySensor_pin1 = pin
+                GPIO.setup(pin, GPIO.IN)
+            elif pos == 2:
+                self.proximitySensor_pin2 = pin
+                GPIO.setup(pin, GPIO.IN)
+    
+
+
+    def readSensor(self,sensor_type,pos):
+
+        if sensor_type == enums.SensorType.touch:
+            if pos == 1:
+
+                if(self.touchSensor_pin1 == -1)            
+                    raise RuntimeError('Pin for touch sensor in position 1 not assigned')
+                else
+                    print GPIO.input(self.touchSensor_pin1)
+                    return GPIO.input(self.touchSensor_pin1)
+
+            elif pos == 2:
+
+                if(self.touchSensor_pin2 == -1)            
+                    raise RuntimeError('Pin for touch sensor in position 2 not assigned')
+                else
+                    print GPIO.input(self.touchSensor_pin2)
+                    return GPIO.input(self.touchSensor_pin2)
+
+
+            elif pos == 3:
+
+                if(self.touchSensor_pin3 == -1)            
+                    raise RuntimeError('Pin for touch sensor in position 3 not assigned')
+                else
+                    print GPIO.input(self.touchSensor_pin3)
+                    return GPIO.input(self.touchSensor_pin3)
+
+            elif pos == 4:
+
+                if(self.touchSensor_pin4 == -1)            
+                    raise RuntimeError('Pin for touch sensor in position 4 not assigned')
+                else
+                    print GPIO.input(self.touchSensor_pin4)
+                    return GPIO.input(self.touchSensor_pin4)
+
+            elif pos == 5:
+
+                if(self.touchSensor_pin5 == -1)            
+                    raise RuntimeError('Pin for touch sensor in position 5 not assigned')
+                else
+                    print GPIO.input(self.touchSensor_pin5)
+                    return GPIO.input(self.touchSensor_pin5)
+
+            elif pos == 6:
+
+                if(self.touchSensor_pin6 == -1)            
+                    raise RuntimeError('Pin for touch sensor in position 6 not assigned')
+                else
+                    print GPIO.input(self.touchSensor_pin6)
+                    return GPIO.input(self.touchSensor_pin6)
+
+
+        if sensor_type == enums.SensorType.light:
+
+            if pos == 1:
+
+                if(self.lightSensor_pin1 == -1)            
+                    raise RuntimeError('Pin for light sensor in position 1 not assigned')
+                else
+                    print GPIO.input(self.lightSensor_pin1)
+                    return GPIO.input(self.lightSensor_pin1)
+
+            elif pos == 2:
+
+                if(self.lightSensor_pin2 == -1)            
+                    raise RuntimeError('Pin for light sensor in position 2 not assigned')
+                else
+                    print GPIO.input(self.lightSensor_pin2)
+                    return GPIO.input(self.lightSensor_pin2)
+
+        if sensor_type == enums. SensorType.proximity:
+
+            if pos == 1:
+
+                if(self.proximitySensor_pin1 == -1)            
+                    raise RuntimeError('Pin for proximity sensor in position 1 not assigned')
+                else
+                    print GPIO.input(self.proximitySensor_pin1)
+                    return GPIO.input(self.proximitySensor_pin1)
+
+            elif pos == 2:
+
+                if(self.proximitySensor_pin2 == -1)            
+                    raise RuntimeError('Pin for proximity sensor in position 2 not assigned')
+                else
+                    print GPIO.input(self.proximitySensor_pin2)
+                    return GPIO.input(self.proximitySensor_pin2)
+
+
 
     def read_light(self,lspin):
         reading = 0

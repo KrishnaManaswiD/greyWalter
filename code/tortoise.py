@@ -52,10 +52,22 @@ class Tortoise:
 
 		self.A = Motor(4, 17, 23, 24)
 		self.B = Motor(5, 18, 22, 27) 
-		self.sensor = Sensor(16,2,3,12,6,7,8,9,10,11)
+		self.sensor = Sensor()
 		self.delay = 2
 		self.switchForEmergencyStop_pin = 6
 		self.state = enums.State.paused
+
+        self.sensor.setSensor(enums.SensorType.light, 1, 16)
+        self.sensor.setSensor(enums.SensorType.light, 2, 2)
+        self.sensor.setSensor(enums.SensorType.touch, 1, 3)
+        self.sensor.setSensor(enums.SensorType.touch, 2, 12)
+        self.sensor.setSensor(enums.SensorType.touch, 3, 13)
+        self.sensor.setSensor(enums.SensorType.touch, 4, 7)
+        self.sensor.setSensor(enums.SensorType.touch, 5, 8)
+        self.sensor.setSensor(enums.SensorType.touch, 6, 9)
+        self.sensor.setSensor(enums.SensorType.proximity, 1, 10)
+        self.sensor.setSensor(enums.SensorType.proximity, 2, 11)
+
 
 		#print "light sensor value:"		
 		#print self.sensor.readSensor(enums.SensorType.light, 1)
