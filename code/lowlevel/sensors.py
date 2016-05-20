@@ -12,6 +12,7 @@ class Sensor:
         self.touch = 0
         self.light = 1
         self.proximity = 2
+        self.emergencySwitch = 3
 
         self.lightSensor_pin1 = -1
         self.lightSensor_pin2 = -1
@@ -23,6 +24,7 @@ class Sensor:
         self.touchSensor_pin6 = -1
         self.proximitySensor_pin1 = -1
         self.proximitySensor_pin2 = -1
+        self.emergencySwitch_pin1 = -1
 
 
         self.light1_value = -1 #self.read_light(self.lightSensor_pin1)
@@ -35,6 +37,7 @@ class Sensor:
         self.touch6_value = -1
         self.prox1_value = -1
         self.prox2_value = -1
+        self.emergency1_value = -1
 
 #        try:
 #            thread.start_new_thread(self.poll_sensors, (500,))
@@ -66,7 +69,7 @@ class Sensor:
                 self.touchSensor_pin6 = pin
                 GPIO.setup(pin, GPIO.IN)
 
-        if sensor_type == enums.SensorType.light:
+        elif sensor_type == enums.SensorType.light:
 
             if pos == 1:
                 self.lightSensor_pin1 = pin
@@ -75,13 +78,20 @@ class Sensor:
                 self.lightSensor_pin2 = pin
                 GPIO.setup(pin, GPIO.OUT)
 
-        if sensor_type == enums. SensorType.proximity:
+        elif sensor_type == enums.SensorType.proximity:
 
             if pos == 1:
                 self.proximitySensor_pin1 = pin
                 GPIO.setup(pin, GPIO.IN)
             elif pos == 2:
                 self.proximitySensor_pin2 = pin
+                GPIO.setup(pin, GPIO.IN)
+
+        elif sensor_type == enums.SensorType.emergencySwitch:
+        
+            if pos == 1:
+            
+                self.emergencySwitch_pin1 = pin
                 GPIO.setup(pin, GPIO.IN)
     
 
@@ -95,7 +105,7 @@ class Sensor:
                     raise RuntimeError('Pin for touch sensor in position 1 not assigned')
                 else
                     print GPIO.input(self.touchSensor_pin1)
-                    return GPIO.input(self.touchSensor_pin1)
+                    return GPIO.input(self.touchSensor_pin1) == GPIO.HIGH
 
             elif pos == 2:
 
@@ -103,7 +113,7 @@ class Sensor:
                     raise RuntimeError('Pin for touch sensor in position 2 not assigned')
                 else
                     print GPIO.input(self.touchSensor_pin2)
-                    return GPIO.input(self.touchSensor_pin2)
+                    return GPIO.input(self.touchSensor_pin2) == GPIO.HIGH
 
 
             elif pos == 3:
@@ -112,7 +122,7 @@ class Sensor:
                     raise RuntimeError('Pin for touch sensor in position 3 not assigned')
                 else
                     print GPIO.input(self.touchSensor_pin3)
-                    return GPIO.input(self.touchSensor_pin3)
+                    return GPIO.input(self.touchSensor_pin3) == GPIO.HIGH
 
             elif pos == 4:
 
@@ -120,7 +130,7 @@ class Sensor:
                     raise RuntimeError('Pin for touch sensor in position 4 not assigned')
                 else
                     print GPIO.input(self.touchSensor_pin4)
-                    return GPIO.input(self.touchSensor_pin4)
+                    return GPIO.input(self.touchSensor_pin4) == GPIO.HIGH
 
             elif pos == 5:
 
@@ -128,7 +138,7 @@ class Sensor:
                     raise RuntimeError('Pin for touch sensor in position 5 not assigned')
                 else
                     print GPIO.input(self.touchSensor_pin5)
-                    return GPIO.input(self.touchSensor_pin5)
+                    return GPIO.input(self.touchSensor_pin5) == GPIO.HIGH
 
             elif pos == 6:
 
@@ -136,10 +146,10 @@ class Sensor:
                     raise RuntimeError('Pin for touch sensor in position 6 not assigned')
                 else
                     print GPIO.input(self.touchSensor_pin6)
-                    return GPIO.input(self.touchSensor_pin6)
+                    return GPIO.input(self.touchSensor_pin6) == GPIO.HIGH
 
 
-        if sensor_type == enums.SensorType.light:
+        elif sensor_type == enums.SensorType.light:
 
             if pos == 1:
 
@@ -157,7 +167,7 @@ class Sensor:
                     print GPIO.input(self.lightSensor_pin2)
                     return GPIO.input(self.lightSensor_pin2)
 
-        if sensor_type == enums. SensorType.proximity:
+        elif sensor_type == enums. SensorType.proximity:
 
             if pos == 1:
 
@@ -174,6 +184,16 @@ class Sensor:
                 else
                     print GPIO.input(self.proximitySensor_pin2)
                     return GPIO.input(self.proximitySensor_pin2)
+
+        elif sensor_type == enums.SensorType.emergencySwitch:
+        
+            if pos == 1:
+            
+                if(self.emergencySwitch_pin1 == -1)            
+                    raise RuntimeError('Pin for emergency switch in position 1 not assigned')
+                else
+                    print GPIO.input(self.emergencySwitch_pin1)
+                    return GPIO.input(self.emergencySwitch_pin1) == GPIO.HIGH
 
 
 

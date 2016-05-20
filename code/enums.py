@@ -8,6 +8,7 @@ class SensorType(Enum):
     touch = 0
     light = 1
     proximity = 2
+    emergencySwitch = 3
 
 class Direction(Enum):
     counterClockwise = -4

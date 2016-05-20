@@ -54,7 +54,6 @@ class Tortoise:
 		self.B = Motor(5, 18, 22, 27) 
 		self.sensor = Sensor()
 		self.delay = 2
-		self.switchForEmergencyStop_pin = 6
 		self.state = enums.State.paused
 
         self.sensor.setSensor(enums.SensorType.light, 1, 16)
@@ -67,6 +66,7 @@ class Tortoise:
         self.sensor.setSensor(enums.SensorType.touch, 6, 9)
         self.sensor.setSensor(enums.SensorType.proximity, 1, 10)
         self.sensor.setSensor(enums.SensorType.proximity, 2, 11)
+        self.sensor.setSensor(enums.SensorType.emergencySwitch, 1, 6)
 
 
 		#print "light sensor value:"		
@@ -87,11 +87,10 @@ class Tortoise:
 
 
 	def pauseAndResume(self):
-		GPIO.setup(self.switchForEmergencyStop_pin, GPIO.IN)
 
 		while True:
 	
-			if GPIO.input(self.switchForEmergencyStop_pin) == GPIO.HIGH:
+			if self.getSensorData(enums.SensorType.emergencySwitch, 1):
 				if self.getStateTortoise() == enums.State.running:
 					self.setStateTortoise(enums.State.paused)
 					print "Tortoise paused!"
@@ -161,7 +160,7 @@ class Tortoise:
 	
 		    # If a stop command has been sent, the turtle will stop its movement
 		    if self.getStateTortoise() == enums.State.paused:
-			break;
+			    break;
 
 		    if direction == enums.Direction.backward_left or direction == enums.Direction.backward or direction == enums.Direction.counterClockwise:
 			self.A.backwards(int(self.delay) / 1000.00, int(1))
