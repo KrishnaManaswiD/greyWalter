@@ -87,35 +87,45 @@ class Sensors:
                 self.proximitySensor_pin1 = pin
                 GPIO.setup(pin, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 
-                if GPIO.input(pin) == GPIO.LOW:
-                        self.proximity1_state = 1
-                else:
+                if GPIO.input(pin) == GPIO.HIGH:
                         self.proximity1_state = 0
+                else:
+                        self.proximity1_state = 1
 
-                GPIO.add_event_detect(pin, GPIO.BOTH, callback = self.callback_proximity, bouncetime = 300)
+                GPIO.add_event_detect(pin, GPIO.BOTH, callback = self.callback_proximity, bouncetime = 100)
                 return 0
             elif pos == 2:
                 self.proximitySensor_pin2 = pin
                 GPIO.setup(pin, GPIO.IN, pull_up_down = GPIO.PUD_UP)
 
-                if GPIO.input(pin) == GPIO.LOW:
-                        self.proximity1_state = 1
+                if GPIO.input(pin) == GPIO.HIGH:
+                        self.proximity2_state = 0
                 else:
-                        self.proximity1_state = 0
+                        self.proximity2_state = 1
 
-                GPIO.add_event_detect(pin, GPIO.BOTH, callback = self.callback_proximity, bouncetime = 300)
+                GPIO.add_event_detect(pin, GPIO.BOTH, callback = self.callback_proximity, bouncetime = 100)
                 return 0
             elif pos == 3:
                 self.proximitySensor_pin3 = pin
                 GPIO.setup(pin, GPIO.IN, pull_up_down = GPIO.PUD_UP)
-                self.proximity1_state = GPIO.input(pin)
-                GPIO.add_event_detect(pin, GPIO.BOTH, callback = self.callback_proximity, bouncetime = 300)
+
+                if GPIO.input(pin) == GPIO.HIGH:
+                        self.proximity3_state = 0
+                else:
+                        self.proximity3_state = 1
+
+                GPIO.add_event_detect(pin, GPIO.BOTH, callback = self.callback_proximity, bouncetime = 100)
                 return 0
             elif pos == 4:
                 self.proximitySensor_pin4 = pin
                 GPIO.setup(pin, GPIO.IN, pull_up_down = GPIO.PUD_UP)
-                self.proximity1_state = GPIO.input(pin)
-                GPIO.add_event_detect(pin, GPIO.BOTH, callback = self.callback_proximity, bouncetime = 300)
+
+                if GPIO.input(pin) == GPIO.HIGH:
+                        self.proximity4_state = 0
+                else:
+                        self.proximity4_state = 1
+
+                GPIO.add_event_detect(pin, GPIO.BOTH, callback = self.callback_proximity, bouncetime = 100)
                 return 0
             else:
                 raise RuntimeError('Proximity sensor can only be assigned to position 1-4')
@@ -150,17 +160,26 @@ class Sensors:
     def callback_proximity(self,channel):
         time.sleep(0.1)
         if channel == self.proximitySensor_pin1:
-                if GPIO.input(channel) == GPIO.LOW:
-                        self.proximity1_state = 1
-                else:
+                if GPIO.input(channel) == GPIO.HIGH:
                         self.proximity1_state = 0
+                else:
+                        self.proximity1_state = 1
          #   self.proximity1_state =  GPIO.input(channel) == GPIO.LOW
         elif channel == self.proximitySensor_pin2:
-            self.proximity2_state =  GPIO.input(channel) == GPIO.LOW
+                if GPIO.input(channel) == GPIO.HIGH:
+                        self.proximity2_state = 0
+                else:
+                        self.proximity2_state = 1
         elif channel == self.proximitySensor_pin3:
-            self.proximity3_state =  GPIO.input(channel) == GPIO.LOW
+                if GPIO.input(channel) == GPIO.HIGH:
+                        self.proximity3_state = 0
+                else:
+                        self.proximity3_state = 1
         elif channel == self.proximitySensor_pin4:
-            self.proximity4_state =  GPIO.input(channel) == GPIO.LOW
+                if GPIO.input(channel) == GPIO.HIGH:
+                        self.proximity4_state = 0
+                else:
+                        self.proximity4_state = 1
 
 
 

@@ -25,24 +25,24 @@ def main():
         proximitySensor_4 = wanderer.getSensorData(enums.SensorType.proximity, 4)
 
         if proximitySensor_1 == 1:
-                print "Proximity sensor 1 is on"
+                print "Proximity sensor 1 is ON"
         else:
-                print "Proximity sensor 1 is off"
+                print "Proximity sensor 1 is OFF"
 
         if proximitySensor_2 == 1:
-                print "Proximity sensor 2 is on"
+                print "Proximity sensor 2 is ON"
         else:
-                print "Proximity sensor 2 is off"
+                print "Proximity sensor 2 is OFF"
 
         if proximitySensor_3 == 1:
-                print "Proximity sensor 3 is on"
+                print "Proximity sensor 3 is ON"
         else:
-                print "Proximity sensor 3 is off"
+                print "Proximity sensor 3 is OFF"
 
         if proximitySensor_4 == 1:
-                print "Proximity sensor is on"
+                print "Proximity sensor 4 is ON"
         else:
-                print "Proximity sensor is off"
+                print "Proximity sensor 4 is OFF"
 
         print
 
