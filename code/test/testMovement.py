@@ -76,7 +76,7 @@ def main():
         raw_input()
 
         print "Turning naturally forwards_left"
-        wanderer.turnNaturally(200, 500, enums.Direction.forwards_left)
+        wanderer.turn(200, 500, enums.Direction.forwards_left)
         time.sleep(0.5)
 
         print
@@ -85,7 +85,7 @@ def main():
         raw_input()
 
         print "Turning naturally backwards_left"
-        wanderer.turnNaturally(200, 500, enums.Direction.backwards_left)
+        wanderer.turn(200, 500, enums.Direction.backwards_left)
         time.sleep(0.5)
 
         print
@@ -94,7 +94,7 @@ def main():
         raw_input()
 
         print "Turning naturally forwards_right"
-        wanderer.turnNaturally(500, 200, enums.Direction.forwards_right)
+        wanderer.turn(500, 200, enums.Direction.forwards_right)
         time.sleep(0.5)
 
         print
@@ -103,7 +103,7 @@ def main():
         raw_input()
 
         print "Turning naturally backwards_right"
-        wanderer.turnNaturally(500, 200, enums.Direction.backwards_right)
+        wanderer.turn(500, 200, enums.Direction.backwards_right)
         time.sleep(0.5)
 
         print
@@ -112,7 +112,7 @@ def main():
         raw_input()
 
         print "Gyrating clockwise"
-        wanderer.gyrateOnTheSpot(500, enums.Direction.clockwise)
+        wanderer.shuffleOnTheSpot(500, enums.Direction.clockwise)
         time.sleep(0.5)
 
         print
@@ -121,7 +121,7 @@ def main():
         raw_input()
 
         print "Gyrating counter clockwise"
-        wanderer.gyrateOnTheSpot(500, enums.Direction.counterClockwise)
+        wanderer.shuffleOnTheSpot(500, enums.Direction.counterClockwise)
         time.sleep(0.5)
 
         print
