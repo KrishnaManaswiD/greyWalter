@@ -694,7 +694,7 @@ class Tortoise:
 
 
 
-    def gyrateOnTheSpot(self, steps, direction):
+    def shuffleOnTheSpot(self, steps, direction):
 
         if(steps < 0):
             print "I can't move a negative number of steps!"
@@ -703,7 +703,7 @@ class Tortoise:
             return -1
 
         if( direction != enums.Direction.clockwise and direction != enums.Direction.counterClockwise ) :
-            print "I can only gyrate clockwise or counter clockwise."
+            print "I can only shuffle clockwise or counter clockwise."
             print "\tHINT: check the direction."
             self.blinkLEDs([1, 2, 3, 4], 3, 0.2)
             return -1
@@ -716,7 +716,7 @@ class Tortoise:
 
 
 
-    def turnNaturally(self, stepsWheelA, stepsWheelB, direction):
+    def turn(self, stepsWheelA, stepsWheelB, direction):
 
         if( direction != enums.Direction.backwards_right and direction != enums.Direction.backwards_left and 
             direction != enums.Direction.forwards_right and direction != enums.Direction.forwards_left ) :
@@ -732,7 +732,7 @@ class Tortoise:
             return -1
 
         if (direction == enums.Direction.backwards_left or direction == enums.Direction.forwards_left) and (stepsWheelA >= stepsWheelB):
-            print "I won't turn the way you want."
+            print "I can't turn the way you want."
             print "\tHINT: check the direction and number of steps."
             self.blinkLEDs([1, 2, 3, 4], 3, 0.2)
             return -1
@@ -758,69 +758,6 @@ class Tortoise:
             return self.moveMotors(stepsWheelA, stepsWheelB, delay, self.minDelayMotors, direction)
         
 
-#    def naturalTurn(self, totalSteps, straightStep, sideStep, direction):
-
-#        if( direction != enums.Direction.backwards_right and direction != enums.Direction.backwards_left and 
-#            direction != enums.Direction.forwards_right and direction != enums.Direction.forwards_left ) :
-#            print "I can only turn backwards or forwards, and either left or right."
-#            print "\tHINT: check the direction."
-#            self.blinkLEDs([1, 2, 3, 4], 3, 0.2)
-#            return -1
-
-#        if(totalSteps < 0 or straightStep < 0 or sideStep < 0):
-#            print "How am I going to move a negative number of steps? I can't travel back in time!"
-#            print "\tHINT: check the number of steps."
-#            self.blinkLEDs([1, 2, 3, 4], 3, 0.2)
-#            return -1
-
-
-#        if (straightStep + sideStep) > totalSteps: 
-##            print "I can't move as you wish."
-##            print "\tHINT: check the number of straight steps, side steps and total steps ;)"
-#            self.blinkLEDs([1, 2, 3, 4], 3, 0.2)
-#            return -1
-
-
-#        for x in range(0, int(totalSteps/(straightStep+sideStep))):
-#            if direction == enums.Direction.forwards_left:
-#                self.moveMotors(straightStep, enums.Direction.forwards)
-#                self.moveMotors(sideStep, enums.Direction.forwards_left)
-#            if direction == enums.Direction.forwards_right:
-#                self.moveMotors(straightStep, enums.Direction.forwards)
-#                self.moveMotors(sideStep, enums.Direction.forwards_right)
-#            if direction == enums.Direction.backwards_left:
-#                self.moveMotors(straightStep, enums.Direction.backwards)
-#                self.moveMotors(sideStep, enums.Direction.backwards_left)
-#            if direction == enums.Direction.backwards_right:
-#                self.moveMotors(straightStep, enums.Direction.backwards)
-#                self.moveMotors(sideStep, enums.Direction.backwards_right)
-
-#        return 0
-
-
-#    def gentleTurn(self, steps, direction):
-
-#        return self.naturalTurn(steps, 3, 1, direction)
-
-
-#    def sharpTurn(self, steps, direction):
-
-#        return self.naturalTurn(steps, 1, 3, direction)
-
-
-#    def tryCircle(self, direction):
-
-#        if( direction != enums.Direction.clockwise and direction != enums.Direction.counterClockwise):
-#            print "I can only rotate clockwise or counterclockwise."
-#            print "\tHINT: check the direction."
-#            self.blinkLEDs([1, 2, 3, 4], 3, 0.2)
-#            return -1
-
-#        return self.gentleTurn(2000, direction)
-
-
-#    def defaultCircle(self):
-#        self.tryCircle(enums.Direction.forwards_right)
 
 
     def doRandomMovement(self):
