@@ -40,7 +40,7 @@ def main():
 
 
         print "Turning on the spot forwards_left"
-        wanderer.turnOnTheSpot(500, forwards_left)
+        wanderer.turnOnTheSpot(500, enums.Direction.forwards_left)
         time.sleep(0.5)
 
         print
@@ -49,7 +49,7 @@ def main():
         raw_input()
 
         print "Turning on the spot forwards_right"
-        wanderer.turnOnTheSpot(500, forwards_right)
+        wanderer.turnOnTheSpot(500, enums.Direction.forwards_right)
         time.sleep(0.5)
 
         print
@@ -58,7 +58,7 @@ def main():
         raw_input()
 
         print "Turning on the spot backwards_left"
-        wanderer.turnOnTheSpot(500, backwards_left)
+        wanderer.turnOnTheSpot(500, enums.Direction.backwards_left)
         time.sleep(0.5)
 
         print
@@ -67,7 +67,7 @@ def main():
         raw_input()
 
         print "Turning on the spot bakwards_right"
-        wanderer.turnOnTheSpot(500, backwards_right)
+        wanderer.turnOnTheSpot(500, enums.Direction.backwards_right)
         time.sleep(0.5)
 
         print

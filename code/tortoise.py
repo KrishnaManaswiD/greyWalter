@@ -540,7 +540,7 @@ class Tortoise:
             self.blinkLEDs([1, 2, 3, 4], 3, 0.2)
             return -1
 
-        if((stepsWheelA > 0 and delayWheelA < self.minDelayMotors) or (stepsWheelB > 0 and delayWheelB < self.minDelayMotors))
+        if((stepsWheelA > 0 and delayWheelA < self.minDelayMotors) or (stepsWheelB > 0 and delayWheelB < self.minDelayMotors)):
             print "I can't move my motors faster than 2 ms."
             print "\tHINT: check the delay."
             self.blinkLEDs([1, 2, 3, 4], 3, 0.2)
@@ -670,7 +670,13 @@ class Tortoise:
 
 
 
-    def turnOnTheSpot(self, direction):
+    def turnOnTheSpot(self, steps, direction):
+
+        if(steps < 0):
+            print "I can't move a negative number of steps!"
+            print "\tHINT: check the number of steps."
+            self.blinkLEDs([1, 2, 3, 4], 3, 0.2)
+            return -1
 
         if( direction != enums.Direction.backwards_right and direction != enums.Direction.backwards_left and 
             direction != enums.Direction.forwards_right and direction != enums.Direction.forwards_left ) :
@@ -678,6 +684,8 @@ class Tortoise:
             print "\tHINT: check the direction."
             self.blinkLEDs([1, 2, 3, 4], 3, 0.2)
             return -1
+
+    
 
         
         if direction == enums.Direction.backwards_right or direction == enums.Direction.forwards_right:
