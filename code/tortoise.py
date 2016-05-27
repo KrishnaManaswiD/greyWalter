@@ -104,17 +104,17 @@ class Tortoise:
         # Position 2 of the light sensors area in the PCB assigned to pin 4
         self.sensors.setSensor(enums.SensorType.light, 2, 4)
 
-        # Position 1 of the touch sensors area in the PCB assigned to pin 27
-        self.sensors.setSensor(enums.SensorType.touch, 1, 27) 
+        # Position 1 of the touch sensors area in the PCB assigned to pin 3
+        self.sensors.setSensor(enums.SensorType.emergencyStop, 1, 3) 
 
-        # Position 2 of the touch sensors area in the PCB assigned to pin 2
-        self.sensors.setSensor(enums.SensorType.touch, 2, 2)
+        # Position 2 of the touch sensors area in the PCB assigned to pin 27
+        self.sensors.setSensor(enums.SensorType.touch, 2, 27) 
 
-        # Position 3 of the touch sensors area in the PCB assigned to pin 18
-        self.sensors.setSensor(enums.SensorType.touch, 3, 18)
+        # Position 3 of the touch sensors area in the PCB assigned to pin 2
+        self.sensors.setSensor(enums.SensorType.touch, 3, 2)
 
-        # Position 4 of the touch sensors area in the PCB assigned to pin 3
-        self.sensors.setSensor(enums.SensorType.emergencyStop, 4, 3) 
+        # Position 4 of the touch sensors area in the PCB assigned to pin 18
+        self.sensors.setSensor(enums.SensorType.touch, 4, 18)
 
         # Position 1 of the proximity sensors area in the PCB assigned to pin 19
         self.sensors.setSensor(enums.SensorType.proximity, 1, 19)
@@ -803,10 +803,9 @@ class Tortoise:
         The function chooses a movement, and it can be repeated up to three times. The probabilities of repeating the movement are as follows:
 
         - No repetition: 60%
-        - Once: 60%
-        - Twice: 25%
-        - Three times: 10%
-        - Four times: 5%
+        - Once: 25%
+        - Twice: 10%
+        - Three times: 5%
 
         The probabilities of choosing a random movement are as follows:
 
