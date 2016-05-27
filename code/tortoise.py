@@ -285,7 +285,7 @@ class Tortoise:
 
 
 
-        previousStateLEDs = [ self.getLEDState(x) for x in range(1, 5) ]
+        previousStateLEDs = [ self.getLEDValue(x) for x in range(1, 5) ]
 
         cont = True
 
