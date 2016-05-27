@@ -7,15 +7,15 @@ from enums import Direction, SensorType, ActuatorType
 # 1  1  move forwards
 # 0  1  move backwards
 
-Name=Tortoise()
+Walter=Tortoise()
 
 while True:
 
-    forwardSwitch = Name.getSensorData(SensorType.touch, 1)
-    backwardSwitch = Name.getSensorData(SensorType.touch, 2)
+    forwardSwitch = Walter.getSensorData(SensorType.touch, 1)
+    backwardSwitch = Walter.getSensorData(SensorType.touch, 2)
 #    if (forwardSwitch == backwardSwitch):
     if (forwardSwitch == 0 and backwardSwitch == 0) or (forwardSwitch == 1 and backwardSwitch == 1):
-	print "monkey"
+	print "Moving forwards"
 	if forwardSwitch == 1:
                 print "Switch 1 is on"
         else:
@@ -27,13 +27,13 @@ while True:
                 print "Switch 2 is off"
 
 	print " "
-        Name.moveForwards(100)
-        Name.setLEDValue(1, 1) #self.setLEDValue(position, value)
-        Name.setLEDValue(2, 0) #self.setLEDValue(position, value)
+        Walter.setLEDValue(1, 1) #self.setLEDValue(position, value)
+        Walter.setLEDValue(2, 0) #self.setLEDValue(position, value)
+	Walter.moveForwards(100)
 
 #    if (forwardSwitch != backwardSwitch):
     if (forwardSwitch == 1 and backwardSwitch == 0) or (forwardSwitch == 0 and backwardSwitch == 1):
-	print "donkey"
+	print "Moving backwards"
 	if forwardSwitch == 1:
                 print "Switch 1 is on"
         else:
@@ -45,6 +45,6 @@ while True:
                 print "Switch 2 is off"
 
 	print " "
-        Name.moveBackwards(100)
-        Name.setLEDValue(1, 0) #self.setLEDValue(position, value)
-        Name.setLEDValue(2, 1) #self.setLEDValue(position, value)
+        Walter.setLEDValue(1, 0) #self.setLEDValue(position, value)
+        Walter.setLEDValue(2, 1) #self.setLEDValue(position, value)
+        Walter.moveBackwards(100)

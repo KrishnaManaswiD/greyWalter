@@ -11,7 +11,7 @@ while True:
         print "Obstacle detected in front"
         Name.setLEDValue(1, 1) #self.setLEDValue(position, value)
     	Name.setLEDValue(2, 0) #self.setLEDValue(position, value)
-    	Name.moveBackwards(30)
+    	Name.moveBackwards(100)
     if proxSensor == 1 and proxSensor2 == 1:
     	print "Obstacles detected in front and behind!"
     	Name.setLEDValue(1, 1) #self.setLEDValue(position, value)
@@ -20,9 +20,9 @@ while True:
         print "Obstacle detected behind"
         Name.setLEDValue(1, 0) #self.setLEDValue(position, value)
     	Name.setLEDValue(2, 1) #self.setLEDValue(position, value)
-    	Name.moveForwards(30)
+    	Name.moveForwards(100)
     else:
         print "No obstacle detected"
-        #Name.doRandomMovement()
+        Name.doRandomMovement()
         Name.setLEDValue(1, 0) #self.setLEDValue(position, value)
    	Name.setLEDValue(2, 0) #self.setLEDValue(position, value)
