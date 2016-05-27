@@ -40,7 +40,7 @@ while True:
             responseFlag = 1
    
     if responseFlag == 1:        
-	Cora.moveForwards(100)
+        Cora.moveForwards(100)
     else:
         if random.random()<0.5:
             Cora.turnOnTheSpot(10,Direction.backwards_right)
