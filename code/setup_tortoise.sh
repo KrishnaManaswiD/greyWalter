@@ -7,6 +7,13 @@
 # at startup time.
 ####################################################
 
+sudo apt-get install -y git
+
+sudo apt-get install -y ntpdate
+
+sudo apt-get install -y gedit
+
+sudo pip install enum34
 
 # Directory of this file
 BASEDIR=$(dirname `readlink -f $0`)

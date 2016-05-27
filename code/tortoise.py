@@ -553,10 +553,10 @@ class Tortoise:
                     self.setStateTortoise(enums.State.running)
                     print "[TORTOISE RESUMED]"
 
-            motorAprocess_backwards = Process(target=self.A.backwards, args=(int(self.delay) / 1000.00, stepsRight))
-            motorBprocess_backwards = Process(target=self.B.backwards, args=(int(self.delay) / 1000.00, stepsLeft))
-            motorAprocess_forwards = Process(target=self.A.forwards, args=(int(self.delay) / 1000.00, stepsLeft))
-            motorBprocess_forwards = Process(target=self.B.forwards, args=(int(self.delay) / 1000.00, stepsRight))
+            motorAprocess_backwards = Process(target=self.A.backwards, args=((self.delay) / 1000.00, stepsRight))
+            motorBprocess_backwards = Process(target=self.B.backwards, args=((self.delay) / 1000.00, stepsLeft))
+            motorAprocess_forwards = Process(target=self.A.forwards, args=((self.delay) / 1000.00, stepsLeft))
+            motorBprocess_forwards = Process(target=self.B.forwards, args=((self.delay) / 1000.00, stepsRight))
 
 
             if direction == enums.Direction.backwards_left or direction == enums.Direction.backwards or direction == enums.Direction.counterClockwise:
