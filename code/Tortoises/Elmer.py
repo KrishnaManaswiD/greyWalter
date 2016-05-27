@@ -12,11 +12,11 @@ while True:
         Elmer.setLEDValue(1, 1) #self.setLEDValue(position, value)
     	Elmer.setLEDValue(2, 0) #self.setLEDValue(position, value)
     	Elmer.moveBackwards(150)
-    if proxSensor == 1 and proxSensor2 == 1:
+    elif proxSensor == 1 and proxSensor2 == 1:
     	print "Obstacles detected in front and behind!"
     	Elmer.setLEDValue(1, 1) #self.setLEDValue(position, value)
    	Elmer.setLEDValue(2, 1) #self.setLEDValue(position, value)
-    if proxSensor == 0 and proxSensor2 == 1:
+    elif proxSensor == 0 and proxSensor2 == 1:
         print "Obstacle detected behind"
         Elmer.setLEDValue(1, 0) #self.setLEDValue(position, value)
     	Elmer.setLEDValue(2, 1) #self.setLEDValue(position, value)
