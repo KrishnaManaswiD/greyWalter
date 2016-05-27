@@ -83,18 +83,18 @@ class Sensors:
             return -1
 
     def callback_touch(self, channel):
-        for pos in range(1,len(self.touchSensor_pin)):
-            if channel == self.touchSensor_pin[pos]:
+        for pos in range(1,len(self.touchSensor_pin)-1):
+            if channel == self.touchSensor_pin[num]:
                 self.touch_timesPressed[pos] = self.touch_timesPressed[pos] + 1
                 break
-        for pos in range(1,len(self.emergencyStop_pin)):
+        for pos in range(1,len(self.emergencyStop_pin)-1):
             if channel == self.emergencyStop_pin[pos]:
-                self.emergency_timesPressed[pos] = self.emergency_timesPressed[pos] + 1
+                self.emergency_timesPressed[pos] = self.emergency1_timesPressed[pos] + 1
                 break
 
     def callback_proximity(self,channel):
         time.sleep(0.1)
-        for pos in range(1,len(self.proximitySensor_pin)):
+        for pos in range(1,len(self.proximitySensor_pin)-1):
             if channel == self.proximitySensor_pin[pos]:
                 if GPIO.input(channel) == GPIO.HIGH:
                         self.proximity_state[pos] = 0

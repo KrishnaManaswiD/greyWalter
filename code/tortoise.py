@@ -334,20 +334,17 @@ class Tortoise:
 
         if( direction != enums.Direction.backwards_right and direction != enums.Direction.backwards_left and direction != enums.Direction.forwards_right and direction != enums.Direction.forwards_left and direction != enums.Direction.forwards and direction != enums.Direction.backwards  and direction != enums.Direction.clockwise and direction != enums.Direction.counterClockwise  ) :
 
-            print "I can only move backwards or forwards, and either left or right."
-            print "\tHINT: check the direction."
+            messages.printMessage('bad_direction')
             self.blinkLEDs_error()
             return -1
 
         if(stepsWheelA < 0 or stepsWheelB < 0):
-            print "I can't move a negative number of steps!"
-            print "\tHINT: check the number of steps."
+            messages.printMessage('bad_steps')
             self.blinkLEDs_error()
             return -1
 
         if((stepsWheelA > 0 and delayWheelA < self.minDelayMotors) or (stepsWheelB > 0 and delayWheelB < self.minDelayMotors)):
-            print "I can't move my motors faster than 2 ms."
-            print "\tHINT: check the delay."
+            messages.printMessage('bad_delay')
             self.blinkLEDs_error()
             return -1
 
@@ -357,13 +354,13 @@ class Tortoise:
             if self.getStateTortoise() == enums.State.running:
 
                 self.setStateTortoise(enums.State.paused)
-                print "[TORTOISE PAUSED]"
+                messages.printMessage('paused')
 
         else:
 
             if self.getStateTortoise() == enums.State.paused:
                     self.setStateTortoise(enums.State.running)
-                    print "[TORTOISE RESUMED]"
+                    messages.printMessage('resumed')
 
             motorAprocess_backwards = Process(target=self.A.backwards, args=(delayWheelA / 1000.00, stepsWheelA))
             motorBprocess_backwards = Process(target=self.B.backwards, args=(delayWheelB / 1000.00, stepsWheelB))
@@ -404,21 +401,6 @@ class Tortoise:
                     motorBprocess_backwards.start()
 
 
-#            if direction == enums.Direction.backwards_left or direction == enums.Direction.backwards or direction == enums.Direction.counterClockwise:
-#
-#                motorAprocess_backwards.start()
-
-#            if direction == enums.Direction.backwards_right or direction == enums.Direction.backwards or direction == enums.Direction.clockwise:
-
-#                motorBprocess_backwards.start()
-
-#            if direction == enums.Direction.forwards_right or direction == enums.Direction.forwards or direction == enums.Direction.clockwise:
-
-#                motorAprocess_forwards.start()
-
-#            if direction == enums.Direction.forwards_left or direction == enums.Direction.forwards or direction == enums.Direction.counterClockwise:
-
-#                motorBprocess_forwards.start()
 
 
             # The main loop pools the emergencyStop
@@ -430,7 +412,7 @@ class Tortoise:
                     if self.getStateTortoise() == enums.State.running:
 
                         self.setStateTortoise(enums.State.paused)
-                        print "[TORTOISE PAUSED]"
+                        messages.printMessage('paused')
 
                         if motorAprocess_backwards.is_alive():
                             motorAprocess_backwards.terminate()
@@ -450,7 +432,7 @@ class Tortoise:
 
                 elif self.getStateTortoise() == enums.State.paused:
                     self.setStateTortoise(enums.State.running)
-                    print "[TORTOISE RESUMED]"
+                    messages.printMessage('resumed')
 
 
                 time.sleep(0.5)
@@ -478,15 +460,13 @@ class Tortoise:
     def turnOnTheSpot(self, steps, direction):
 
         if(steps < 0):
-            print "I can't move a negative number of steps!"
-            print "\tHINT: check the number of steps."
+            messages.printMessage('bad_steps')
             self.blinkLEDs_error()
             return -1
 
         if( direction != enums.Direction.backwards_right and direction != enums.Direction.backwards_left and
             direction != enums.Direction.forwards_right and direction != enums.Direction.forwards_left ) :
-            print "I can only turn backwards or forwards, and either left or right."
-            print "\tHINT: check the direction."
+            messages.printMessage('bad_direction_turn')
             self.blinkLEDs_error()
             return -1
 
@@ -503,14 +483,12 @@ class Tortoise:
     def shuffleOnTheSpot(self, steps, direction):
 
         if(steps < 0):
-            print "I can't move a negative number of steps!"
-            print "\tHINT: check the number of steps."
+            messages.printMessage('bad_steps')
             self.blinkLEDs_error()
             return -1
 
         if( direction != enums.Direction.clockwise and direction != enums.Direction.counterClockwise ) :
-            print "I can only shuffle clockwise or counter clockwise."
-            print "\tHINT: check the direction."
+            messages.printMessage('bad_shuffle')
             self.blinkLEDs_error()
             return -1
 
@@ -526,26 +504,22 @@ class Tortoise:
 
         if( direction != enums.Direction.backwards_right and direction != enums.Direction.backwards_left and
             direction != enums.Direction.forwards_right and direction != enums.Direction.forwards_left ) :
-            print "I can only turn backwards or forwards, and either left or right."
-            print "\tHINT: check the direction."
+            messages.printMessage('bad_direction_turn')
             self.blinkLEDs_error()
             return -1
 
         if (direction == enums.Direction.backwards_right or direction == enums.Direction.forwards_right) and (stepsWheelB >= stepsWheelA):
-            print "I won't turn the way you want."
-            print "\tHINT: check the direction and number of steps."
+            messages.printMessage('bad_turn')
             self.blinkLEDs_error()
             return -1
 
         if (direction == enums.Direction.backwards_left or direction == enums.Direction.forwards_left) and (stepsWheelA >= stepsWheelB):
-            print "I can't turn the way you want."
-            print "\tHINT: check the direction and number of steps."
+            messages.printMessage('bad_turn')
             self.blinkLEDs_error()
             return -1
 
         if(stepsWheelA < 0 or stepsWheelB < 0):
-            print "I can't move a negative number of steps!"
-            print "\tHINT: check the number of steps."
+            messages.printMessage('bad_steps')
             self.blinkLEDs_error()
             return -1
 
