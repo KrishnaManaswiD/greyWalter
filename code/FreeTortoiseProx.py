@@ -5,11 +5,11 @@ Name=Tortoise()
 
 while True:
 
-    touchSensor = Name.getSensorData(SensorType.touch,1)
-    if touchSensor == 1:
-        print "Switch is on"
-        Name.moveForwards(30)
+    proxSensor = Name.getSensorData(SensorType.proximity,1)
+    if proxSensor == 1:
+        print "Obstacle dected"
         Name.setLEDValue(1, 1) #self.setLEDValue(position, value)
     else:
-        print "Switch is off"
+        print "No obstacle detected"
+        Name.moveForwards(30)
         Name.setLEDValue(1, 0) #self.setLEDValue(position, value)

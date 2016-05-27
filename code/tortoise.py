@@ -198,15 +198,15 @@ class Tortoise:
         if sensor_type == enums.SensorType.light:
             return value
             if (upperBoundLight - lowerBoundLight) == 0:
-                messages.printMessage('no_calibration') 
+                messages.printMessage('no_calibration')
                 self.blinkLEDs_error()
                 return -1
 
-            # Scale 
+            # Scale
             lightVal = int(9 - round(abs(value-upperBoundLight)/(abs(upperBoundLight - lowerBoundLight)/9)))
 
             if lightVal < 0:
-                messages.printMessage('no_calibration') 
+                messages.printMessage('no_calibration')
                 self.blinkLEDs_error()
                 return -1
 
@@ -222,30 +222,30 @@ class Tortoise:
 
 
 
-    def getLEDState(self, position):
-        
+    def getLEDValue(self, position):
+
         if (position < 1 or position > 4):
-            messages.printMessage('bad_LED') 
+            messages.printMessage('bad_LED')
             self.blinkLEDs_error()
             return -1
 
-        return self.actuators.getActuatorState(enums.ActuatorType.led, position)
+        return self.actuators.getActuatorValue(enums.ActuatorType.led, position)
 
 
 
     def setLEDValue(self, position, value):
 
         if(position < 1 or position > 4):
-            messages.printMessage('bad_LED') 
+            messages.printMessage('bad_LED')
             self.blinkLEDs_error()
             return -1
 
         if(value != 0 and value != 1):
-            messages.printMessage('bad_LED_value') 
+            messages.printMessage('bad_LED_value')
             self.blinkLEDs_error()
             return -1
 
-        self.actuators.setActuator(enums.ActuatorType.led, position, value)
+        self.actuators.setActuatorValue(enums.ActuatorType.led, position, value)
         return 0
 
 
@@ -253,17 +253,17 @@ class Tortoise:
     def blinkLEDs(self, positions, numberOfBlinks, delay, blocking = False):
 
         if numberOfBlinks < 0:
-            messages.printMessage('blinks_negative') 
+            messages.printMessage('blinks_negative')
             self.blinkLEDs_error()
             return -1
 
         if numberOfBlinks == 0:
-            messages.printMessage('blinks_zero') 
+            messages.printMessage('blinks_zero')
             self.blinkLEDs_error()
             return -1
 
         if delay < 0:
-            messages.printMessage('blinking_fast') 
+            messages.printMessage('blinking_fast')
             self.blinkLEDs_error()
             return -1
 
@@ -272,14 +272,14 @@ class Tortoise:
             for y in range(0, len(positions)):
 
                 if positions[y] < 0 or positions[y] > 4:
-                    messages.printMessage('bad_LED') 
+                    messages.printMessage('bad_LED')
                     self.blinkLEDs_error()
                     return -1
 
         except TypeError: # It's not an array but an integer
 
             if positions < 0 or positions > 4:
-                messages.printMessage('bad_LED') 
+                messages.printMessage('bad_LED')
                 self.blinkLEDs_error()
                 return -1
 
@@ -297,31 +297,31 @@ class Tortoise:
                 try:
                     for y in range(0, len(positions)):
 
-                        self.actuators.setActuator(enums.ActuatorType.led, positions[y], 1)
+                        self.actuators.setActuatorValue(enums.ActuatorType.led, positions[y], 1)
 
                     time.sleep(delay)
 
                     for y in range(0, len(positions)):
-                        self.actuators.setActuator(enums.ActuatorType.led, positions[y], 0)
+                        self.actuators.setActuatorValue(enums.ActuatorType.led, positions[y], 0)
 
                     time.sleep(delay)
 
                 except TypeError: # It's not an array but an integer
 
-                    self.actuators.setActuator(enums.ActuatorType.led, positions, 1)
+                    self.actuators.setActuatorValue(enums.ActuatorType.led, positions, 1)
                     time.sleep(delay)
-                    self.actuators.setActuator(enums.ActuatorType.led, positions, 0)
+                    self.actuators.setActuatorValue(enums.ActuatorType.led, positions, 0)
                     time.sleep(delay)
 
-                
+
             cont = blocking
 
 
-        
+
         # If it doesn't block, the previous state of the LEDs is restored
         for x in range(1, 5):
             self.setLEDValue(x, previousStateLEDs[x - 1])
-            
+
         return 0
 
 
@@ -372,7 +372,7 @@ class Tortoise:
 
 
             if direction == enums.Direction.backwards_left or direction == enums.Direction.backwards or direction == enums.Direction.backwards_right:
-                
+
                 if stepsWheelA > 0:
                     motorAprocess_backwards.start()
 
@@ -405,7 +405,7 @@ class Tortoise:
 
 
 #            if direction == enums.Direction.backwards_left or direction == enums.Direction.backwards or direction == enums.Direction.counterClockwise:
-#                
+#
 #                motorAprocess_backwards.start()
 
 #            if direction == enums.Direction.backwards_right or direction == enums.Direction.backwards or direction == enums.Direction.clockwise:
@@ -447,7 +447,7 @@ class Tortoise:
                         if motorBprocess_forwards.is_alive():
                             motorBprocess_forwards.terminate()
                             motorBprocess_forwards.join()
-                        
+
                 elif self.getStateTortoise() == enums.State.paused:
                     self.setStateTortoise(enums.State.running)
                     print "[TORTOISE RESUMED]"
@@ -483,15 +483,15 @@ class Tortoise:
             self.blinkLEDs_error()
             return -1
 
-        if( direction != enums.Direction.backwards_right and direction != enums.Direction.backwards_left and 
+        if( direction != enums.Direction.backwards_right and direction != enums.Direction.backwards_left and
             direction != enums.Direction.forwards_right and direction != enums.Direction.forwards_left ) :
             print "I can only turn backwards or forwards, and either left or right."
             print "\tHINT: check the direction."
             self.blinkLEDs_error()
             return -1
 
-    
-        
+
+
         if direction == enums.Direction.backwards_right or direction == enums.Direction.forwards_right:
             return self.moveMotors(steps, 0, self.minDelayMotors, 0, direction)
 
@@ -514,8 +514,8 @@ class Tortoise:
             self.blinkLEDs_error()
             return -1
 
-    
-        
+
+
         return self.moveMotors(steps, steps, self.minDelayMotors, self.minDelayMotors, direction)
 
 
@@ -524,7 +524,7 @@ class Tortoise:
 
     def turn(self, stepsWheelA, stepsWheelB, direction):
 
-        if( direction != enums.Direction.backwards_right and direction != enums.Direction.backwards_left and 
+        if( direction != enums.Direction.backwards_right and direction != enums.Direction.backwards_left and
             direction != enums.Direction.forwards_right and direction != enums.Direction.forwards_left ) :
             print "I can only turn backwards or forwards, and either left or right."
             print "\tHINT: check the direction."
@@ -562,7 +562,7 @@ class Tortoise:
             delay = (stepsWheelB * self.minDelayMotors) / stepsWheelA
 
             return self.moveMotors(stepsWheelA, stepsWheelB, delay, self.minDelayMotors, direction)
-        
+
 
 
 
