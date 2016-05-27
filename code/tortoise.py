@@ -112,6 +112,8 @@ class Tortoise:
         self.actuators.initActuator(enums.ActuatorType.led, 3, ledPins[2]) # Previous: x
         self.actuators.initActuator(enums.ActuatorType.led, 4, ledPins[3]) # Previous: x
 
+        self.lastTouch = [-1,-1,-1]
+
         #print "light sensor value:"
         #print self.sensors.readSensor(enums.SensorType.light, 1)
         #if not isLightCalibrated:
@@ -219,14 +221,26 @@ class Tortoise:
 
             return lightVal
 
-        elif sensor_type == enums.SensorType.touch or sensor_type == enums.SensorType.emergencyStop:
+        elif sensor_type == enums.SensorType.touch:
+
+            return self.getSwitchTriggered(position,value)
+
+        elif sensor_type == enums.SensorType.emergencyStop:
 
             return value % 2
 
         else:
             return value
 
-
+    def getSwitchTriggered(self, position, value):
+        if self.lastTouch[position-1]<0:
+            self.lastTouch[position-1]=value
+            return 0
+        elif self.lastTouch[position-1]==value:
+            return 0
+        else:
+            self.lastTouch[position-1]=value
+            return 1
 
 
     def getLEDValue(self, position):

@@ -1,50 +1,33 @@
 from tortoise import Tortoise
 from enums import Direction, SensorType, ActuatorType
-
-# F  B 
-# 0  0  move forwards
-# 1  0  move backwards
-# 1  1  move forwards
-# 0  1  move backwards
-
 Walter=Tortoise()
+
+lastMove = "forward"
 
 while True:
 
-    forwardSwitch = Walter.getSensorData(SensorType.touch, 1)
-    backwardSwitch = Walter.getSensorData(SensorType.touch, 2)
-#    if (forwardSwitch == backwardSwitch):
-    if (forwardSwitch == 0 and backwardSwitch == 0) or (forwardSwitch == 1 and backwardSwitch == 1):
-	print "Moving forwards"
-	if forwardSwitch == 1:
-                print "Switch 1 is on"
-        else:
-                print "Switch 1 is off"
+    frontSwitch = Walter.getSensorData(SensorType.touch, 1)
+    backSwitch = Walter.getSensorData(SensorType.touch, 2)
 
-        if backwardSwitch == 1:
-                print "Switch 2 is on"
-        else:
-                print "Switch 2 is off"
-
-	print " "
-        Walter.setLEDValue(1, 1) #self.setLEDValue(position, value)
-        Walter.setLEDValue(2, 0) #self.setLEDValue(position, value)
-	Walter.moveForwards(100)
-
-#    if (forwardSwitch != backwardSwitch):
-    if (forwardSwitch == 1 and backwardSwitch == 0) or (forwardSwitch == 0 and backwardSwitch == 1):
-	print "Moving backwards"
-	if forwardSwitch == 1:
-                print "Switch 1 is on"
-        else:
-                print "Switch 1 is off"
-
-        if backwardSwitch == 1:
-                print "Switch 2 is on"
-        else:
-                print "Switch 2 is off"
-
-	print " "
+    if frontSwitch ==1 and backSwitch ==0:
+        print "Obstacle in front - moving backwards"    
         Walter.setLEDValue(1, 0) #self.setLEDValue(position, value)
         Walter.setLEDValue(2, 1) #self.setLEDValue(position, value)
         Walter.moveBackwards(100)
+        lastMove = "back"
+    elif backSwitch ==1 and frontSwitch ==1:
+        print "Can't move!"    
+    elif frontSwitch ==0 and backSwitch ==1:
+        print "Obstacle behind - moving forwards"    
+        Walter.setLEDValue(1, 1) #self.setLEDValue(position, value)
+        Walter.setLEDValue(2, 0) #self.setLEDValue(position, value)
+        Walter.moveForwards(100)
+        lastMove = "forward"
+    else:
+        print "Exploring"
+        Walter.setLEDValue(1, 1) #self.setLEDValue(position, value)
+        Walter.setLEDValue(2, 1) #self.setLEDValue(position, value)
+	if lastMove == "forward":
+	        Walter.moveForwards(100)
+	else:
+		Walter.moveBackwards(100)
