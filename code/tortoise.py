@@ -526,8 +526,7 @@ class Tortoise:
 
     def moveMotors(self, stepsWheelA, stepsWheelB, delayWheelA, delayWheelB, direction):
 
-        if( direction != enums.Direction.backwards_right and direction != enums.Direction.backwards_left and 
-        direction != enums.Direction.forwards_right and direction != enums.Direction.forwards_left and direction != enums.Direction.forwards and direction != enums.Direction.backwards ) :
+        if( direction != enums.Direction.backwards_right and direction != enums.Direction.backwards_left and direction != enums.Direction.forwards_right and direction != enums.Direction.forwards_left and direction != enums.Direction.forwards and direction != enums.Direction.backwards  and direction != enums.Direction.clockwise and direction != enums.Direction.counterClockwise  ) :
 
             print "I can only move backwards or forwards, and either left or right."
             print "\tHINT: check the direction."

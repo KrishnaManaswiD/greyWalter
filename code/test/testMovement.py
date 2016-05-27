@@ -112,7 +112,7 @@ def main():
         raw_input()
 
         print "Gyrating clockwise"
-        wanderer.gyrateOnTheSpot(500, 500, enums.Direction.clockwise)
+        wanderer.gyrateOnTheSpot(500, enums.Direction.clockwise)
         time.sleep(0.5)
 
         print
@@ -121,7 +121,7 @@ def main():
         raw_input()
 
         print "Gyrating counter clockwise"
-        wanderer.gyrateOnTheSpot(500, 500, enums.Direction.counterClockwise)
+        wanderer.gyrateOnTheSpot(500, enums.Direction.counterClockwise)
         time.sleep(0.5)
 
         print
