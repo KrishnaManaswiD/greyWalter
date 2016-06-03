@@ -20,20 +20,20 @@ from actuators import Actuators
 import enums
 import time
 import numpy as np
-import thread
-import threading
+#import thread
+#import threading
 import RPi.GPIO as GPIO
 
 GPIO.setmode(GPIO.BCM)
 
-def synchronized(method):
+#def synchronized(method):
 
-    def new_method(self, *arg, **kws):
-        with self.lock:
-            return method(self, *arg, **kws)
+#    def new_method(self, *arg, **kws):
+#        with self.lock:
+#            return method(self, *arg, **kws)
 
 
-    return new_method
+#    return new_method
 
 
 
@@ -45,15 +45,34 @@ class Tortoise:
         global lowerBoundLight
         global upperBoundLight
 
-        self.lock = threading.RLock()
+#        self.lock = threading.RLock()
 
         isLightCalibrated = False
         lowerBoundLight = 0
         upperBoundLight = 0
 
-        self.A = Motor(4, 17, 23, 24)
-        #self.B = Motor(5, 18, 22, 27) 
-        self.B = Motor(27,22,18,5)
+        motor.pins = [4, 17, 23, 24, 27, 22, 18, 5]
+
+        # CREATING FILE WITH PID
+
+        # PID of process
+        pid = os.getpid()
+
+        # ~/.tortoise_pids/
+        directory = os.path.expanduser("~") + "/.tortoise_pids/"
+
+        # Filename: [PID].pid
+        f = open(directory + str(pid) + ".pid", "w")
+
+        f.write(motor.pins[0] + " " + motor.pins[1] + " " + motor.pins[2] + " " + motor.pins[3] + " " + motor.pins[4] + " " + motor.pins[5] + " " + motor.pins[6] + " " + motor.pins[7] + "\n")
+
+        f.close()
+        # ----------------------
+
+
+        # TODO: change to self.Motor.Left
+        self.A = Motor(motor.pins[0], motor.pins[1], motor.pins[2], motor.pins[3])
+        self.B = Motor(motor.pins[4], motor.pins[5], motor.pins[6], motor.pins[7])
         self.sensors = Sensors()
         self.actuators = Actuators()
         self.delay = 2
@@ -171,23 +190,30 @@ class Tortoise:
     
             # If a stop command has been sent, the turtle will stop its movement
             if self.getSensorData(enums.SensorType.emergencySwitch, 1) % 2 == 0:
-                self.setStateTortoise(enums.State.paused)
-                print "Tortoise paused!"
+                
+                if self.getStateTortoise() == enums.State.running:
+                    self.setStateTortoise(enums.State.paused)
+
                 break;
-            else:
+
+
+            if self.getStateTortoise() == enums.State.paused:
                 self.setStateTortoise(enums.State.running)
 
+            
             if direction == enums.Direction.backward_left or direction == enums.Direction.backward or direction == enums.Direction.counterClockwise:
                 self.A.backwards(int(self.delay) / 1000.00, int(1))
-            if direction == enums.Direction.backward_right or direction == enums.Direction.backward or direction == enums.Direction.clockwise:
+            elif direction == enums.Direction.backward_right or direction == enums.Direction.backward or direction == enums.Direction.clockwise:
                 self.B.backwards(int(self.delay) / 1000.00, int(1))
-            if direction == enums.Direction.forward_right or direction == enums.Direction.forward or direction == enums.Direction.clockwise:
+            elif direction == enums.Direction.forward_right or direction == enums.Direction.forward or direction == enums.Direction.clockwise:
                 self.A.forward(int(self.delay) / 1000.00, int(1))
-            if direction == enums.Direction.forward_left or direction == enums.Direction.forward or direction == enums.Direction.counterClockwise:
+            elif direction == enums.Direction.forward_left or direction == enums.Direction.forward or direction == enums.Direction.counterClockwise:
                 self.B.forward(int(self.delay) / 1000.00, int(1))
 
         self.A.stopMotors()
         self.B.stopMotors()
+
+
 
     def naturalTurn(self, totalSteps, straightStep, sideStep, direction):
 
