@@ -36,7 +36,6 @@ GPIO.setmode(GPIO.BCM)
 #    return new_method
 
 
-
 class Tortoise:
 
     def __init__(self):
@@ -90,11 +89,10 @@ class Tortoise:
         #self.sensors.setSensor(enums.SensorType.proximity, 2, 11)
         self.sensors.setSensor(enums.SensorType.emergencySwitch, 1, 6)
 
-	self.actuators.initActuator(enums.ActuatorType.led,1,19)
-	self.actuators.initActuator(enums.ActuatorType.led,2,26)
+        self.actuators.initActuator(enums.ActuatorType.led,1,19)
+        self.actuators.initActuator(enums.ActuatorType.led,2,26)
 
-
-        #print "light sensor value:"        
+        #print "light sensor value:"
         #print self.sensors.readSensor(enums.SensorType.light, 1)
         if not isLightCalibrated:
             self.calibrateLight()
@@ -108,13 +106,13 @@ class Tortoise:
         print "Tortoise alive! Press the pause/resume button to set me going."
         while self.getSensorData(enums.SensorType.emergencySwitch, 1) == 0:
             time.sleep(0.1)
-    
+
         self.state = enums.State.running
 
 #    def pauseAndResume(self):
 
 #        while True:
-#    
+#
 #            if self.getSensorData(enums.SensorType.emergencySwitch, 1):
 #                if self.getStateTortoise() == enums.State.running:
 #                    self.setStateTortoise(enums.State.paused)
@@ -155,22 +153,21 @@ class Tortoise:
 
         print("Finished")
 
-
     def getSensorData(self,sensor_type,pos):
         #if self.getStateTortoise() == enums.State.running:
         value = self.sensors.readSensor(sensor_type,pos)
+        #added error checking + LED blinking
+        if value<0:
+            blinkLED()
+            return -1
         #print "value", value
         if sensor_type == enums.SensorType.light:
             # Scale #TODO fix division by 0
             lightVal = int(9 - round(abs(value-upperBoundLight)/(abs(upperBoundLight - lowerBoundLight)/9)))
-
             # TODO What the heck?
             if lightVal < 0:
                 lightVal = 0
-
             return lightVal
-        
-
         elif sensor_type == enums.SensorType.touch or sensor_type == enums.SensorType.emergencySwitch:
             return value % 2
         else:
@@ -178,19 +175,36 @@ class Tortoise:
 
     def setActuatorValue(self,actuator_type,pos,value):
         #if self.getStateTortoise() == enums.State.running:
-        self.actuators.setActuator(actuator_type,pos,value)
+        #added error checking + LED blinking
+        if self.actuators.setActuator(actuator_type,pos,value)<0:
+            blinkLED()
+            return -1
+
+    #internal function for LED error signal
+    def blinkLED():
+        self.actuators.setActuator(enums.ActuatorType.led, 1,1)
+        time.sleep(0.5)
+        self.actuators.setActuator(enums.ActuatorType.led, 1,0)
+        time.sleep(0.5)
+        self.actuators.setActuator(enums.ActuatorType.led, 1,1)
+        time.sleep(0.5)
+        self.actuators.setActuator(enums.ActuatorType.led, 1,0)
 
     def moveMotors(self, steps, direction):
-
-        if direction == enums.Direction.static:
-            print "Are you kiddin' me??"
-            return
+        if steps<0:
+            raise RuntimeError('Motor delay can only be a positive number!')
+            blinkLED()
+            return -1
+        elif direction == enums.Direction.static or abs(direction)>4:
+            raise RuntimeError('Illegal Direction Type!')
+            blinkLED()
+            return -1
 
         for x in range(0,steps):
-    
+
             # If a stop command has been sent, the turtle will stop its movement
             if self.getSensorData(enums.SensorType.emergencySwitch, 1) == 0:
-                
+
                 if self.getStateTortoise() == enums.State.running:
                     self.setStateTortoise(enums.State.paused)
 
@@ -201,7 +215,6 @@ class Tortoise:
             if self.getStateTortoise() == enums.State.paused:
                 self.setStateTortoise(enums.State.running)
 
-            
             if direction == enums.Direction.backward_left or direction == enums.Direction.backward or direction == enums.Direction.counterClockwise:
                 self.A.backwards(int(self.delay) / 1000.00, int(1))
             elif direction == enums.Direction.backward_right or direction == enums.Direction.backward or direction == enums.Direction.clockwise:
@@ -220,8 +233,9 @@ class Tortoise:
 
         if straightStep < 0 or sideStep < 0: return
         if not direction == enums.Direction.forward_left and not direction == enums.Direction.forward_right and not direction == enums.Direction.backward_left and not direction == enums.Direction.backward_right:
-            print "Don't mess around."
-            return
+            raise RuntimeError('Illegal Direction Type!')
+            blinkLED()
+            return -1
 
         for x in range(0, int(totalSteps/(straightStep+sideStep))):
             if direction == enums.Direction.forward_left:
@@ -255,7 +269,7 @@ class Tortoise:
         numberOfSteps = int(509/4*np.random.random_sample() + 15)
 
         # Random number between 0 and 1
-        randomNumber = np.random.random_sample()        
+        randomNumber = np.random.random_sample()
 
         if(randomNumber < 0.4):
             self.moveMotors(numberOfSteps, enums.Direction.forward)
@@ -265,7 +279,7 @@ class Tortoise:
                 direction = enums.Direction.forward_left
             else:
                 direction = enums.Direction.forward_right
-        
+
 
             if(randomNumber < 0.7):
                 self.gentleTurn(numberOfSteps, direction)
