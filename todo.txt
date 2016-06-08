@@ -1,0 +1,12 @@
+- Blink LEDs for feedback: red ones for errors, blue one for switched on, green ones for switches... -> ASK
+- Set a flag for HINT mode -> ask activities, and how much hint should be printed ("check second argument", "check number of steps", "I can't travel back in time"...)
+- Improve random motion
+- Improve comments and function names
+    - Colours
+    - Random greetings
+- Comment and clean code
+- Check pos of error checking with final number of sensors/actuators
+- User defined way to turn on LEDs
+- LEDs in a thread?
+- Change
+- Improve sensors.py to arrays
