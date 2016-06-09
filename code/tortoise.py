@@ -288,7 +288,7 @@ class Tortoise:
 
 
 
-    def moveMotors(self, steps, direction):
+    def moveMotors_oldVersion(self, steps, direction):
 
         if( direction != enums.Direction.backward_right and direction != enums.Direction.backward_left and 
             direction != enums.Direction.forward_right and direction != enums.Direction.forward_left and direction != enums.Direction.forward and direction != enums.Direction.backward ) :
@@ -374,7 +374,7 @@ class Tortoise:
 
 
 
-    def moveMotors_improved1(self, steps, direction):
+    def moveMotors_improved1_oldversion(self, steps, direction):
 
         if( direction != enums.Direction.backward_right and direction != enums.Direction.backward_left and 
             direction != enums.Direction.forward_right and direction != enums.Direction.forward_left and direction != enums.Direction.forward and direction != enums.Direction.backward ) :
@@ -456,7 +456,7 @@ class Tortoise:
 
 
 
-    def moveMotors_improved2(self, steps, direction):
+    def moveMotors(self, steps, direction):
 
             if( direction != enums.Direction.backward_right and direction != enums.Direction.backward_left and 
             direction != enums.Direction.forward_right and direction != enums.Direction.forward_left and direction != enums.Direction.forward and direction != enums.Direction.backward ) :
