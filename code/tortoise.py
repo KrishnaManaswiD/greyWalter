@@ -308,6 +308,9 @@ class Tortoise:
         numberOfLoops = steps/numberOfstepsCommanded
         numberOfStepsRemaining = steps % numberOfstepsCommanded
 
+        motorAprocess = multiprocessing.Process(target=self.A.forward, args=(int(self.delay) / 1000.00, numberOfstepsCommanded))
+        motorBprocess = multiprocessing.Process(target=self.B.forward, args=(int(self.delay) / 1000.00, numberOfstepsCommanded))
+
         for x in range(0,numberOfLoops):
 
             # If a stop command has been sent, the turtle will stop its movement
@@ -334,11 +337,14 @@ class Tortoise:
 
             if direction == enums.Direction.forward_right or direction == enums.Direction.forward or direction == enums.Direction.clockwise:
 
-                self.A.forward(int(self.delay) / 1000.00, numberOfstepsCommanded)
+                motorAprocess.start()
 
             if direction == enums.Direction.forward_left or direction == enums.Direction.forward or direction == enums.Direction.counterClockwise:
 
-                self.B.forward(int(self.delay) / 1000.00, numberOfstepsCommanded)
+                motorBprocess.start()
+
+            motorAprocess.join()
+            motorBprocess.join()
 
 
         if numberOfStepsRemaining > 0:
