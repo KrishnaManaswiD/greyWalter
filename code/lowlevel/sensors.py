@@ -18,17 +18,19 @@ class Sensors:
 
         self.lightSensor_pin1 = -1
         self.lightSensor_pin2 = -1
+
         self.touchSensor_pin1 = -1
         self.touchSensor_pin2 = -1
         self.touchSensor_pin3 = -1
-        self.touchSensor_pin4 = -1
-        self.touchSensor_pin5 = -1
-        self.touchSensor_pin6 = -1
 
         self.proximitySensor_pin1 = -1
         self.proximitySensor_pin2 = -1
         self.proximitySensor_pin3 = -1
         self.proximitySensor_pin4 = -1
+<<<<<<< HEAD
+=======
+
+>>>>>>> errorChecking
         self.emergencySwitch_pin1 = -1
 
         self.light1_value = -1 #self.read_light(self.lightSensor_pin1)
@@ -36,13 +38,20 @@ class Sensors:
         self.touch1_timesPressed = 0
         self.touch2_timesPressed = 0
         self.touch3_timesPressed = 0
+<<<<<<< HEAD
         self.touch4_timesPressed = 0
         self.touch5_timesPressed = 0
         self.touch6_timesPressed = 0
+=======
+>>>>>>> errorChecking
         self.proximity1_state = -1 
         self.proximity2_state = -1
         self.proximity3_state = -1
         self.proximity4_state = -1
+<<<<<<< HEAD
+=======
+
+>>>>>>> errorChecking
         self.emergency1_timesPressed = 0
 
 #        try:
@@ -68,23 +77,8 @@ class Sensors:
                 GPIO.setup(pin, GPIO.IN, pull_up_down = GPIO.PUD_UP)
                 GPIO.add_event_detect(pin, GPIO.FALLING, callback = self.callback_touch, bouncetime = 300)
                 return 0
-            elif pos == 4:
-                self.touchSensor_pin4 = pin
-                GPIO.setup(pin, GPIO.IN, pull_up_down = GPIO.PUD_UP)
-                GPIO.add_event_detect(pin, GPIO.FALLING, callback = self.callback_touch, bouncetime = 300)
-                return 0
-            elif pos == 5:
-                self.touchSensor_pin5 = pin
-                GPIO.setup(pin, GPIO.IN, pull_up_down = GPIO.PUD_UP)
-                GPIO.add_event_detect(pin, GPIO.FALLING, callback = self.callback_touch, bouncetime = 300)
-                return 0
-            elif pos == 6:
-                self.touchSensor_pin6 = pin
-                GPIO.setup(pin, GPIO.IN, pull_up_down = GPIO.PUD_UP)
-                GPIO.add_event_detect(pin, GPIO.FALLING, callback = self.callback_touch, bouncetime = 300)
-                return 0
             else:
-                raise RuntimeError('Touch sensor can only be assigned to position 1-6')
+                raise RuntimeError('Touch sensor can only be assigned to position 1-3')
                 return -1
 
         elif sensor_type == enums.SensorType.light:
@@ -103,30 +97,60 @@ class Sensors:
         elif sensor_type == enums.SensorType.proximity:
             if pos == 1:
                 self.proximitySensor_pin1 = pin
+<<<<<<< HEAD
                 
                 GPIO.setup(pin, GPIO.IN, pull_up_down = GPIO.PUD_UP)
                 self.proximity1_state = GPIO.input(pin)
+=======
+                GPIO.setup(pin, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+
+                if GPIO.input(pin) == GPIO.LOW:
+                        self.proximity1_state = 1
+                else:
+                        self.proximity1_state = 0
+
+>>>>>>> errorChecking
                 GPIO.add_event_detect(pin, GPIO.BOTH, callback = self.callback_proximity, bouncetime = 300)
                 return 0
             elif pos == 2:
                 self.proximitySensor_pin2 = pin
+<<<<<<< HEAD
                 
                 GPIO.setup(pin, GPIO.IN, pull_up_down = GPIO.PUD_UP)
                 self.proximity2_state = GPIO.input(pin)
+=======
+                GPIO.setup(pin, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+
+                if GPIO.input(pin) == GPIO.LOW:
+                        self.proximity1_state = 1
+                else:
+                        self.proximity1_state = 0
+
+>>>>>>> errorChecking
                 GPIO.add_event_detect(pin, GPIO.BOTH, callback = self.callback_proximity, bouncetime = 300)
                 return 0
             elif pos == 3:
                 self.proximitySensor_pin3 = pin
+<<<<<<< HEAD
                 
                 GPIO.setup(pin, GPIO.IN, pull_up_down = GPIO.PUD_UP)
                 self.proximity3_state = GPIO.input(pin)
+=======
+                GPIO.setup(pin, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+                self.proximity1_state = GPIO.input(pin)
+>>>>>>> errorChecking
                 GPIO.add_event_detect(pin, GPIO.BOTH, callback = self.callback_proximity, bouncetime = 300)
                 return 0
             elif pos == 4:
                 self.proximitySensor_pin4 = pin
+<<<<<<< HEAD
                 
                 GPIO.setup(pin, GPIO.IN, pull_up_down = GPIO.PUD_UP)
                 self.proximity4_state = GPIO.input(pin)
+=======
+                GPIO.setup(pin, GPIO.IN, pull_up_down = GPIO.PUD_UP)
+                self.proximity1_state = GPIO.input(pin)
+>>>>>>> errorChecking
                 GPIO.add_event_detect(pin, GPIO.BOTH, callback = self.callback_proximity, bouncetime = 300)
                 return 0
             else:
@@ -155,12 +179,6 @@ class Sensors:
             self.touch2_timesPressed = self.touch2_timesPressed + 1
         elif channel == self.touchSensor_pin3:
             self.touch3_timesPressed = self.touch3_timesPressed + 1
-        elif channel == self.touchSensor_pin4:
-            self.touch4_timesPressed = self.touch4_timesPressed + 1
-        elif channel == self.touchSensor_pin5:
-            self.touch5_timesPressed = self.touch5_timesPressed + 1
-        elif channel == self.touchSensor_pin6:
-            self.touch6_timesPressed = self.touch6_timesPressed + 1
         elif channel == self.emergencySwitch_pin1:
             self.emergency1_timesPressed = self.emergency1_timesPressed + 1
 
@@ -174,6 +192,23 @@ class Sensors:
             self.proximity3_state =  GPIO.input(channel)
         elif channel == self.proximitySensor_pin4:
             self.proximity4_state =  GPIO.input(channel)
+
+    def callback_proximity(self,channel):
+        time.sleep(0.1)
+        if channel == self.proximitySensor_pin1:
+                if GPIO.input(channel) == GPIO.LOW:
+                        self.proximity1_state = 1
+                else:
+                        self.proximity1_state = 0
+         #   self.proximity1_state =  GPIO.input(channel) == GPIO.LOW
+        elif channel == self.proximitySensor_pin2:
+            self.proximity2_state =  GPIO.input(channel) == GPIO.LOW
+        elif channel == self.proximitySensor_pin3:
+            self.proximity3_state =  GPIO.input(channel) == GPIO.LOW
+        elif channel == self.proximitySensor_pin4:
+            self.proximity4_state =  GPIO.input(channel) == GPIO.LOW
+
+
 
     #if everything OK, return sensor value. If sensor type unknown or position > limit, return -1
     def readSensor(self,sensor_type,pos):
@@ -200,28 +235,7 @@ class Sensors:
                 else:
                     return self.touch3_timesPressed
 
-            elif pos == 4:
-                if(self.touchSensor_pin4 == -1):
-                    raise RuntimeError('Pin for touch sensor in position 4 is not assigned')
-                    return -1
-                else:
-                    return self.touch4_timesPressed
-
-            elif pos == 5:
-                if(self.touchSensor_pin5 == -1):
-                    raise RuntimeError('Pin for touch sensor in position 5 is not assigned')
-                    return -1
-                else:
-                    return self.touch5_timesPressed
-
-            elif pos == 6:
-                if(self.touchSensor_pin6 == -1):
-                    raise RuntimeError('Pin for touch sensor in position 6 is not assigned')
-                    return -1
-                else:
-                    return self.touch6_timesPressed
-            else:
-                raise RuntimeError('Touch sensor can only be assigned to position 1-6')
+                raise RuntimeError('Touch sensor can only be assigned to position 1-3')
                 return -1
 
         elif sensor_type == enums.SensorType.light:
@@ -231,6 +245,10 @@ class Sensors:
                     raise RuntimeError('Pin for light sensor in position 1 is not assigned')
                     return -1
                 else:
+<<<<<<< HEAD
+=======
+                    #print GPIO.input(self.read_light(self.lightSensor_pin1))
+>>>>>>> errorChecking
                     return self.read_light(self.lightSensor_pin1)
 
             elif pos == 2:
@@ -251,24 +269,40 @@ class Sensors:
                     return -1
                 else:
                     return self.proximity1_state
+<<<<<<< HEAD
+=======
+
+>>>>>>> errorChecking
             elif pos == 2:
                 if(self.proximitySensor_pin2 == -1):
                     raise RuntimeError('Pin for proximity sensor in position 2 is not assigned')
                     return -1
                 else:
                     return self.proximity2_state
+<<<<<<< HEAD
+=======
+
+>>>>>>> errorChecking
             elif pos == 3:
                 if(self.proximitySensor_pin3 == -1):
                     raise RuntimeError('Pin for proximity sensor in position 3 is not assigned')
                     return -1
                 else:
                     return self.proximity3_state
+<<<<<<< HEAD
+=======
+
+>>>>>>> errorChecking
             elif pos == 4:
                 if(self.proximitySensor_pin4 == -1):
                     raise RuntimeError('Pin for proximity sensor in position 4 is not assigned')
                     return -1
                 else:
                     return self.proximity4_state
+<<<<<<< HEAD
+=======
+
+>>>>>>> errorChecking
             else:
                 raise RuntimeError('Proximity sensor can only be assigned to position 1-4')
                 return -1
@@ -296,10 +330,11 @@ class Sensors:
         time.sleep(0.1)
         GPIO.setup(lspin, GPIO.IN)
         # This takes about 1 millisecond per loop cycle
-        #print "Entering loop"
+        print "Entering loop"
         while (GPIO.input(lspin) == GPIO.LOW):
             reading += 1
-        #print "Leaving loop"
+            #print reading
+        print "Leaving loop"
         #print "read light"
         return reading
 
