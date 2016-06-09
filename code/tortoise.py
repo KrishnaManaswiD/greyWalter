@@ -304,7 +304,7 @@ class Tortoise:
             return -1
 
 
-        numberOfstepsCommanded = int(50)
+        numberOfstepsCommanded = int(1)
         numberOfLoops = steps/numberOfstepsCommanded
         numberOfStepsRemaining = steps % numberOfstepsCommanded
 
@@ -312,9 +312,6 @@ class Tortoise:
        # motorBprocess = Process(target=self.B.forward, args=(int(self.delay) / 1000.00, numberOfstepsCommanded))
 
         for x in range(0,numberOfLoops):
-
-            motorAprocess = Process(target=self.A.forward, args=(int(self.delay) / 1000.00, numberOfstepsCommanded))
-            motorBprocess = Process(target=self.B.forward, args=(int(self.delay) / 1000.00, numberOfstepsCommanded))
 
             # If a stop command has been sent, the turtle will stop its movement
             if self.getSensorData(enums.SensorType.emergencySwitch, 1) == 0:
@@ -340,17 +337,11 @@ class Tortoise:
 
             if direction == enums.Direction.forward_right or direction == enums.Direction.forward or direction == enums.Direction.clockwise:
 
-                motorAprocess.start()
-                #self.A.forward(int(self.delay) / 1000.00, numberOfstepsCommanded)
+                self.A.forward(int(self.delay) / 1000.00, numberOfstepsCommanded)
 
             if direction == enums.Direction.forward_left or direction == enums.Direction.forward or direction == enums.Direction.counterClockwise:
 
-                motorBprocess.start()
-                #self.B.forward(int(self.delay) / 1000.00, numberOfstepsCommanded)
-
-            if motorAprocess.is_alive() and motorBprocess.is_alive():
-                    motorAprocess.join()
-                    motorBprocess.join()
+                self.B.forward(int(self.delay) / 1000.00, numberOfstepsCommanded)
 
 
 
@@ -371,6 +362,171 @@ class Tortoise:
                     if direction == enums.Direction.forward_left or direction == enums.Direction.forward or direction == enums.Direction.counterClockwise:
 
                         self.B.forward(int(self.delay) / 1000.00, numberOfStepsRemaining)
+
+
+        self.A.stopMotors()
+        self.B.stopMotors()
+
+        return 0
+
+
+
+
+
+
+    def moveMotors_improved1(self, steps, direction):
+
+        if( direction != enums.Direction.backward_right and direction != enums.Direction.backward_left and 
+            direction != enums.Direction.forward_right and direction != enums.Direction.forward_left and direction != enums.Direction.forward and direction != enums.Direction.backward ) :
+            print "Hey, my master! I can only move backward or forward, and either left or right."
+            print "\tHINT: check the direction ;)"
+            self.blinkLED(1, 3, 0.5)
+            return -1
+
+        if(steps < 0):
+            print "How am I going to move a negative number of steps? I can't travel back in time!"
+            print "\tHINT: check the number of steps ;)"
+            self.blinkLED(1, 3, 0.5)
+            return -1
+
+
+        numberOfstepsCommanded = int(50)
+        numberOfLoops = steps/numberOfstepsCommanded
+        numberOfStepsRemaining = steps % numberOfstepsCommanded
+
+        
+       # motorBprocess = Process(target=self.B.forward, args=(int(self.delay) / 1000.00, numberOfstepsCommanded))
+
+        for x in range(0,numberOfLoops):
+
+            # If a stop command has been sent, the turtle will stop its movement
+            if self.getSensorData(enums.SensorType.emergencySwitch, 1) == 0:
+
+                if self.getStateTortoise() == enums.State.running:
+                    self.setStateTortoise(enums.State.paused)
+                    print "[TORTOISE PAUSED]"
+                    
+                break;
+
+            if self.getStateTortoise() == enums.State.paused:
+                self.setStateTortoise(enums.State.running)
+                print "[TORTOISE RESUMED]"
+             
+
+            if direction == enums.Direction.backward_left or direction == enums.Direction.backward or direction == enums.Direction.counterClockwise:
+
+                motorAprocess_backward = Process(target=self.A.forward, args=(int(self.delay) / 1000.00, numberOfstepsCommanded))
+                motorAprocess_backward.start()
+
+            if direction == enums.Direction.backward_right or direction == enums.Direction.backward or direction == enums.Direction.clockwise:
+
+                motorBprocess_backward = Process(target=self.B.forward, args=(int(self.delay) / 1000.00, numberOfstepsCommanded))
+                motorBprocess_backward.start()
+
+            if direction == enums.Direction.forward_right or direction == enums.Direction.forward or direction == enums.Direction.clockwise:
+
+                motorAprocess_forward = Process(target=self.A.forward, args=(int(self.delay) / 1000.00, numberOfstepsCommanded))
+                motorAprocess_forward.start()
+
+            if direction == enums.Direction.forward_left or direction == enums.Direction.forward or direction == enums.Direction.counterClockwise:
+
+                motorBprocess_forward = Process(target=self.B.forward, args=(int(self.delay) / 1000.00, numberOfstepsCommanded))
+                motorBprocess_forward.start()
+
+
+            if motorAprocess_forward.is_alive()
+                motorAprocess_forward.join()
+
+            if motorBprocess_forward.is_alive()
+                motorBprocess_forward.join()
+
+            if motorAprocess_backward.is_alive()
+                motorAprocess_backward.join()
+
+            if motorBprocess_backward.is_alive()
+                motorBprocess_backward.join()
+
+
+        self.A.stopMotors()
+        self.B.stopMotors()
+
+        return 0
+
+
+
+
+    def moveMotors_improved2(self, steps, direction):
+
+        if( direction != enums.Direction.backward_right and direction != enums.Direction.backward_left and 
+            direction != enums.Direction.forward_right and direction != enums.Direction.forward_left and direction != enums.Direction.forward and direction != enums.Direction.backward ) :
+            print "Hey, my master! I can only move backward or forward, and either left or right."
+            print "\tHINT: check the direction ;)"
+            self.blinkLED(1, 3, 0.5)
+            return -1
+
+        if(steps < 0):
+            print "How am I going to move a negative number of steps? I can't travel back in time!"
+            print "\tHINT: check the number of steps ;)"
+            self.blinkLED(1, 3, 0.5)
+            return -1
+
+
+        motorAprocess_backward = Process(target=self.A.forward, args=(int(self.delay) / 1000.00, numberOfstepsCommanded))
+        motorBprocess_backward = Process(target=self.B.forward, args=(int(self.delay) / 1000.00, numberOfstepsCommanded))
+        motorAprocess_forward = Process(target=self.A.forward, args=(int(self.delay) / 1000.00, numberOfstepsCommanded))
+        motorBprocess_forward = Process(target=self.B.forward, args=(int(self.delay) / 1000.00, numberOfstepsCommanded))
+
+
+        if direction == enums.Direction.backward_left or direction == enums.Direction.backward or direction == enums.Direction.counterClockwise:
+            
+            motorAprocess_backward.start()
+
+        if direction == enums.Direction.backward_right or direction == enums.Direction.backward or direction == enums.Direction.clockwise:
+
+            motorBprocess_backward.start()
+
+        if direction == enums.Direction.forward_right or direction == enums.Direction.forward or direction == enums.Direction.clockwise:
+
+            motorAprocess_forward.start()
+
+        if direction == enums.Direction.forward_left or direction == enums.Direction.forward or direction == enums.Direction.counterClockwise:
+
+            motorBprocess_forward.start()
+
+
+        # The main loop pools the emergencySwitch
+        while motorAprocess_backward.is_alive() or motorBprocess_backward.is_alive() or motorAprocess_forward.is_alive() or motorBprocess_forward.is_alive():
+
+            # If a stop command has been sent, the turtle will stop its movement
+            if self.getSensorData(enums.SensorType.emergencySwitch, 1) == 0:
+
+                if self.getStateTortoise() == enums.State.running:
+
+                    self.setStateTortoise(enums.State.paused)
+                    print "[TORTOISE PAUSED]"
+
+                    if motorAprocess_backward.is_alive():
+                        motorAprocess_backward.terminate()
+                        motorAprocess_backward.join()
+
+                    if motorBprocess_backward.is_alive():
+                        motorBprocess_backward.terminate()
+                        motorBprocess_backward.join()
+
+                    if motorAprocess_forward.is_alive():
+                        motorAprocess_forward.terminate()
+                        motorAprocess_forward.join()
+
+                    if motorBprocess_forward.is_alive():
+                        motorBprocess_forward.terminate()
+                        motorBprocess_forward.join()
+                    
+            elif self.getStateTortoise() == enums.State.paused:
+                self.setStateTortoise(enums.State.running)
+                print "[TORTOISE RESUMED]"
+
+
+            time.sleep(1)
 
 
         self.A.stopMotors()

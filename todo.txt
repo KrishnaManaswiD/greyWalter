@@ -13,3 +13,4 @@
 - change self.A to motorLeft
 - run motors in parallel
 - debug proximity sensor
+- change emergencySwitch to eStop
