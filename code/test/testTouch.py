@@ -19,7 +19,6 @@ def main():
 
     while True:
 
-        emergencySwitch = wanderer.getSensorData(enums.SensorType.emergencySwitch, 1)
         touchSensor_1 = wanderer.getSensorData(enums.SensorType.touch, 1)
         touchSensor_2 = wanderer.getSensorData(enums.SensorType.touch, 2)
         touchSensor_3 = wanderer.getSensorData(enums.SensorType.touch, 3)
@@ -38,11 +37,6 @@ def main():
                 print "Switch 3 is on"
         else:
                 print "Switch 3 is off"
-
-        if emergencySwitch == 1:
-                print "Emergency switch is on"
-        else:
-                print "Emergency switch is off"
 
         print
 

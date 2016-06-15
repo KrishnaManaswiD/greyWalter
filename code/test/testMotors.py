@@ -15,22 +15,22 @@ import enums
 import time
 
 def main():
-        wanderer = Tortoise()
+    wanderer = Tortoise()
 
-	while True:
+    while True:
 
-                wanderer.moveForward(500)
-                time.sleep(0.5)
-                #wanderer.gentleTurn(1000, enums.Direction.forward_left)
-                #time.sleep(1)
-                #wanderer.moveMotors(1000, enums.Direction.forward_right)
-                #time.sleep(1)
-                wanderer.moveBackward(500)
-                time.sleep(0.5)
-                #wanderer.gentleTurn(1000, enums.Direction.backward_left)
-                #time.sleep(1)
-                #wanderer.moveMotors(1000, enums.Direction.backward_right)
-                #time.sleep(1)
+        wanderer.moveForward(500)
+        time.sleep(0.5)
+        #wanderer.gentleTurn(1000, enums.Direction.forward_left)
+        #time.sleep(1)
+        #wanderer.moveMotors(1000, enums.Direction.forward_right)
+        #time.sleep(1)
+        wanderer.moveBackward(500)
+        time.sleep(0.5)
+        #wanderer.gentleTurn(1000, enums.Direction.backward_left)
+        #time.sleep(1)
+        #wanderer.moveMotors(1000, enums.Direction.backward_right)
+        #time.sleep(1)
         
 
 if __name__ == "__main__":

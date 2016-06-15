@@ -20,22 +20,22 @@ def main():
     while True:
 
         print "Blinking LED 1"
-        wanderer.blinkLED(enums.LED.red, 3, 0.5)
+        wanderer.blinkLEDs(1, 3, 0.5, blocking = False)
         print "\tPress enter to continue"
         raw_input()
 
         print "Blinking LED 2"
-        wanderer.blinkLED(enums.LED.yellow, 3, 0.5)
+        wanderer.blinkLEDs(2, 3, 0.5, blocking = False)
         print "\tPress enter to continue"
         raw_input()
 
         print "Blinking LED 3"
-        wanderer.blinkLED(enums.LED.green, 3, 0.5)
+        wanderer.blinkLEDs(3, 3, 0.5, blocking = False)
         print "\tPress enter to continue"
         raw_input()
 
         print "Blinking LED 4"
-        wanderer.blinkLED(enums.LED.white, 3, 0.5)
+        wanderer.blinkLEDs(4, 3, 0.5, blocking = False)
         print "\tPress enter to continue"
         raw_input()
 

@@ -12,7 +12,7 @@ class Sensors:
         self.touch = 0
         self.light = 1
         self.proximity = 2
-        self.emergencySwitch = 3
+        self.emergencyStop = 3
 
         self.touchPressed = 0
 
@@ -28,7 +28,7 @@ class Sensors:
         self.proximitySensor_pin3 = -1
         self.proximitySensor_pin4 = -1
 
-        self.emergencySwitch_pin1 = -1
+        self.emergencyStop_pin1 = -1
 
         self.light1_value = -1 #self.read_light(self.lightSensor_pin1)
         self.light2_value = -1 #self.read_light(self.lightSensor_pin2)
@@ -121,9 +121,9 @@ class Sensors:
                 raise RuntimeError('Proximity sensor can only be assigned to position 1-4')
                 return -1
 
-        elif sensor_type == enums.SensorType.emergencySwitch:
+        elif sensor_type == enums.SensorType.emergencyStop:
             if pos == 1:
-                self.emergencySwitch_pin1 = pin
+                self.emergencyStop_pin1 = pin
                 GPIO.setup(pin, GPIO.IN, pull_up_down = GPIO.PUD_UP)
                 GPIO.add_event_detect(pin, GPIO.FALLING, callback = self.callback_touch, bouncetime = 300)
                 return 0
@@ -143,7 +143,7 @@ class Sensors:
             self.touch2_timesPressed = self.touch2_timesPressed + 1
         elif channel == self.touchSensor_pin3:
             self.touch3_timesPressed = self.touch3_timesPressed + 1
-        elif channel == self.emergencySwitch_pin1:
+        elif channel == self.emergencyStop_pin1:
             self.emergency1_timesPressed = self.emergency1_timesPressed + 1
 
 
@@ -246,10 +246,10 @@ class Sensors:
                 raise RuntimeError('Proximity sensor can only be assigned to position 1-4')
                 return -1
 
-        elif sensor_type == enums.SensorType.emergencySwitch:
+        elif sensor_type == enums.SensorType.emergencyStop:
 
             if pos == 1:
-                if(self.emergencySwitch_pin1 == -1):
+                if(self.emergencyStop_pin1 == -1):
                     raise RuntimeError('Pin for emergency switch in position 1 is not assigned')
                     return -1
                 else:
