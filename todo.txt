@@ -11,30 +11,12 @@ V run motors in parallel
 V add moveForward functions
 - Add installation of gedit and timeUpdate to setup.sh
 - test new eStop
-
+- CHECK CONVENTION FOR NAMES "toTo" or "to_to"
 - IMPORTANT: remove "return" in getSensorData, light
 
+TURN ON THE SPOT 
+TURN A BIT MORE NATURALLY
 
-WITH THE ACTIVITIES TEAM:
-
-    - Function names
-
-    - Convection for movement
-    
-        Consider other inputs to move functions (time, fraction of wheel...)
-
-    - Error messages
-
-        Set a flag for HINT mode? 
-        
-        How much hint should be printed ("check second argument", "check number of steps", "I can't travel back in time"...)
-        
-        Colours and random greetings
-
-    - How to blink LEDs (in parallel?, which ones?, ...)
-
-        Blink LEDs for feedback: red ones for errors, blue one for switched on, green ones for switches...
-
-        LEDs in a thread?
-
+ERROR: all LEDs blink and infinite loop
+TRY and CATCH lowlevel messages and say "Tortoise is broken. Please return it to BRL for help."
 

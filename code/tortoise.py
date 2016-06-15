@@ -155,84 +155,73 @@ class Tortoise:
     def calibrateLight(self):
         global lowerBoundLight, upperBoundLight, isLightCalibrated
 
-        raw_input("Base condition press enter.")
+        raw_input("Press enter to take a reading at normal light levels.")
         #lowerBoundLight = max(self.sensors.readSensor(enums.SensorType.light, 1), self.sensors.readSensor(enums.SensorType.light, 2))
         lowerBoundLight = self.sensors.readSensor(enums.SensorType.light, 1)
-        print "Light in dark conditions is: ", lowerBoundLight
+        #print "Light in normal conditions is: ", lowerBoundLight
 
-        raw_input("Now please place a light source in front of the tortoise's eyes and press enter.")
+        raw_input("Now please place a light source in front of the light sensor and press enter.")
         #upperBoundLight = min((self.sensors.readSensor(enums.SensorType.light, 1), self.sensors.readSensor(enums.SensorType.light, 2)))
         upperBoundLight = self.sensors.readSensor(enums.SensorType.light, 1)
-        print "Light when there is a light source is:", upperBoundLight
+#        print "Light when there is a light source is:", upperBoundLight
 
         isLightCalibrated = True
 
-        print("Finished")
+        print("Calibration complete!")
 
 
 
-    def getSensorData(self,sensor_type,pos):
+    def getSensorData(self, sensor_type, position):
 
         if (sensor_type == enums.SensorType.touch):
 
-            if (pos < 1 or pos > 3):
+            if (position < 1 or position > 3):
 
-                print "Master, I only have three touch sensors."
-                print "\tHINT: check the position of the sensor you want to set ;)"
-                self.blinkLED(enums.LED.red, 3, 0.3)
+                print "You've asked for a touch sensor that doesn't exist."
+                print "\tHINT: check the position of the sensor you want to set."
+                self.blinkLED(1, 3, 0.3)
                 return -1
 
         elif (sensor_type == enums.SensorType.light):
 
-            if (pos != 1 and pos!=2):
+            if (position != 1 and position!=2):
 
-                print "Master, I only have one light sensor."
-                print "\tHINT: check the position of the sensor you want to set ;)"
-                self.blinkLED(enums.LED.red, 3, 0.3)
+                print "I only have one light sensor."
+                print "\tHINT: check the position of the sensor you want to set."
+                self.blinkLED(1, 3, 0.3)
                 return -1
 
         elif (sensor_type == enums.SensorType.proximity):
 
-            if (pos < 1 or pos > 4):
+            if (position < 1 or position > 4):
 
-                print "Master, I only have two proximity sensors."
-                print "\tHINT: check the position of the sensor you want to set ;)"
-                self.blinkLED(enums.LED.red, 3, 0.3)
-                return -1
-
-        elif (sensor_type == enums.SensorType.emergencySwitch):
-
-            if (pos != 1):
-
-                print "Master, I only have two touch sensors."
-                print "\tHINT: check the position of the sensor you want to set ;)"
-                self.blinkLED(enums.LED.red, 3, 0.3)
+                print "You've asked for a proximity sensor that doesn't exist."
+                print "\tHINT: check the position of the sensor you want to set."
+                self.blinkLED(1, 3, 0.3)
                 return -1
 
         else:
-            print "Glubdhrtfarrrg! I only have touch, light and proximity sensors. Oh, well, and an emergency button that stops my limbs."
-            print "\tHINT: check the type of sensor ;)"
-            self.blinkLED(enums.LED.red, 3, 0.3)
-            return -1
+                print "You've asked for a sensor that doesn't exist."
+                print "\tHINT: check the type of the sensor you want to read."
+                self.blinkLED(1, 3, 0.3)
+                return -1
 
 
-        value = self.sensors.readSensor(sensor_type,pos)
+        value = self.sensors.readSensor(sensor_type, position)
 
         if sensor_type == enums.SensorType.light:
             return value
             if (upperBoundLight - lowerBoundLight) == 0:
-                print "I am blind!"
-                print "\tHINT: the light sensor seems to be not calibrated ;)"
-                self.blinkLED(enums.LED.red, 3, 0.3)
+                print "The light sensor hasn't been calibrated properly. Try calibrating again."
+                self.blinkLED(1, 3, 0.3)
                 return -1
 
             # Scale 
             lightVal = int(9 - round(abs(value-upperBoundLight)/(abs(upperBoundLight - lowerBoundLight)/9)))
 
             if lightVal < 0:
-                print "I am blind!"
-                print "\tHINT: the light sensor seems to be not calibrated ;)"
-                self.blinkLED(enums.LED.red, 3, 0.3)
+                print "The light sensor hasn't been calibrated properly. Try calibrating again."
+                self.blinkLED(1, 3, 0.3)
                 return -1
 
             return lightVal
@@ -247,61 +236,55 @@ class Tortoise:
 
 
 
-    def getActuatorState(self, actuator_type, pos):
+    def getLEDState(self, position):
         
-        if (actuator_type != enums.ActuatorType.led):
-            print "Glubdhrtfarrrg! I only have LEDs!"
-            print "\tHINT: check the type of actuator ;)"
-            self.blinkLED(enums.LED.red, 3, 0.3)
+        if (position < 1 or position > 4):
+            print "You've asked for an LED that doesn't exist."
+            print "\tHINT: check the position of the LED you want to set."
+            self.blinkLED(1, 3, 0.3)
             return -1
 
-        if (pos < 1 or pos > 4):
-            print "Master, I only have four LEDs."
-            print "\tHINT: check the actuator you want to set ;)"
-            self.blinkLED(enums.LED.red, 3, 0.3)
-            return -1
-
-        return self.actuators.getActuatorState(actuator_type, pos)
+        return self.actuators.getActuatorState(enums.ActuatorType.led, position)
 
 
 
-    def setActuatorValue(self, actuator_type, pos, value):
+    def setLEDValue(self, position, value):
 
-        if(actuator_type != enums.ActuatorType.led):
-            print "Glubdhrtfarrrg! I can only set my LEDs!"
-            print "\tHINT: check the type of actuator ;)"
-            self.blinkLED(enums.LED.red, 3, 0.3)
-            return -1
-
-        if(pos < 1 or pos > 4):
-            print "Master, I only have four LEDs."
-            print "\tHINT: check the actuator you want to set ;)"
-            self.blinkLED(enums.LED.red, 3, 0.3)
+        if(position < 1 or position > 4):
+            print "You've asked for an LED that doesn't exist."
+            print "\tHINT: check the position of the LED you want to set."
+            self.blinkLED(1, 3, 0.3)
             return -1
 
         if(value != 0 and value != 1):
             print "In binary code, we only have 0s and 1s."
-            print "\tHINT: check the value you want to set ;)"
-            self.blinkLED(enums.LED.red, 3, 0.3)
+            print "\tHINT: check the value you want to set (0 = OFF, 1 = ON)."
+            self.blinkLED(1, 3, 0.3)
             return -1
 
-        self.actuators.setActuator(actuator_type, pos, value)
+        self.actuators.setActuator(enums.ActuatorType.led, position, value)
         return 0
 
 
 
-    def blinkLED(self, positions, numberOfBlinks, delay):
+    def blinkLEDs(self, positions, numberOfBlinks, delay):
 
-        if numberOfBlinks < 1:
-            print "Hey, if you ask me to blink a negative number of times we may create a hole in the universe!"
-            print "\tHINT: check the number of blinks ;)"
-            self.blinkLED(enums.LED.red, 3, 0.3)
+        if numberOfBlinks < 0:
+            print "I can't blink a negative number of times!"
+            print "\tHINT: check the number of blinks."
+            self.blinkLED(1, 3, 0.3)
+            return -1
+
+        if numberOfBlinks == 0:
+            print "Do you want me to blink or not?"
+            print "\tHINT: check the number of blinks."
+            self.blinkLED(1, 3, 0.3)
             return -1
 
         if delay < 0:
-            print "You, human, won't be able to see me blinking at the speed of light."
-            print "\tHINT: check the delay ;)"
-            self.blinkLED(enums.LED.red, 3, 0.3)
+            print "I can't blink that fast."
+            print "\tHINT: check the delay."
+            self.blinkLED(1, 3, 0.3)
             return -1
 
 
@@ -309,17 +292,17 @@ class Tortoise:
             for y in range(0, len(positions)):
 
                 if positions[y] < 0 or positions[y] > 4:
-                    print "Master, I only have four LEDs."
-                    print "\tHINT: check the actuator you want to set ;)"
-                    self.blinkLED(enums.LED.red, 3, 0.3)
+                    print "You've asked for an LED that doesn't exist."
+                    print "\tHINT: check the position of the LED you want to set."
+                    self.blinkLED(1, 3, 0.3)
                     return -1
 
         except TypeError: # It's not an array but an integer
 
             if positions < 0 or positions > 4:
-                print "Master, I only have four LEDs."
-                print "\tHINT: check the actuator you want to set ;)"
-                self.blinkLED(enums.LED.red, 3, 0.3)
+                print "You've asked for an LED that doesn't exist."
+                print "\tHINT: check the position of the LED you want to set."
+                self.blinkLED(1, 3, 0.3)
                 return -1
 
 
@@ -356,317 +339,317 @@ class Tortoise:
         return 0
 
 
-    def moveMotors_oldVersion(self, steps, direction):
+#    def moveMotors_oldVersion(self, steps, direction):
 
-        if( direction != enums.Direction.backward_right and direction != enums.Direction.backward_left and 
-            direction != enums.Direction.forward_right and direction != enums.Direction.forward_left and direction != enums.Direction.forward and direction != enums.Direction.backward ) :
-            print "Hey, my master! I can only move backward or forward, and either left or right."
-            print "\tHINT: check the direction ;)"
-            self.blinkLED(enums.LED.red, 3, 0.3)
-            return -1
+#        if( direction != enums.Direction.backwards_right and direction != enums.Direction.backwards_left and 
+#            direction != enums.Direction.forwards_right and direction != enums.Direction.forwards_left and direction != enums.Direction.forwards and direction != enums.Direction.backwards ) :
+#            print "Hey, my master! I can only move backwards or forwards, and either left or right."
+#            print "\tHINT: check the direction ;)"
+#            self.blinkLED(1, 3, 0.3)
+#            return -1
 
-        if(steps < 0):
-            print "How am I going to move a negative number of steps? I can't travel back in time!"
-            print "\tHINT: check the number of steps ;)"
-            self.blinkLED(enums.LED.red, 3, 0.3)
-            return -1
-
-
-        numberOfstepsCommanded = int(1)
-        numberOfLoops = steps/numberOfstepsCommanded
-        numberOfStepsRemaining = steps % numberOfstepsCommanded
-
-        
-       # motorBprocess = Process(target=self.B.forward, args=(int(self.delay) / 1000.00, numberOfstepsCommanded))
-
-        for x in range(0,numberOfLoops):
-
-            # If a stop command has been sent, the turtle will stop its movement
-            if self.getSensorData(enums.SensorType.emergencySwitch, 1) == 0:
-
-                if self.getStateTortoise() == enums.State.running:
-                    self.setStateTortoise(enums.State.paused)
-                    print "[TORTOISE PAUSED]"
-                    
-                break;
-
-            if self.getStateTortoise() == enums.State.paused:
-                self.setStateTortoise(enums.State.running)
-                print "[TORTOISE RESUMED]"
-             
-
-            if direction == enums.Direction.backward_left or direction == enums.Direction.backward or direction == enums.Direction.counterClockwise:
-
-                self.A.backward(int(self.delay) / 1000.00, 1)
-
-            if direction == enums.Direction.backward_right or direction == enums.Direction.backward or direction == enums.Direction.clockwise:
-
-                self.B.backward(int(self.delay) / 1000.00, 1)
-
-            if direction == enums.Direction.forward_right or direction == enums.Direction.forward or direction == enums.Direction.clockwise:
-
-                self.A.forward(int(self.delay) / 1000.00, numberOfstepsCommanded)
-
-            if direction == enums.Direction.forward_left or direction == enums.Direction.forward or direction == enums.Direction.counterClockwise:
-
-                self.B.forward(int(self.delay) / 1000.00, numberOfstepsCommanded)
+#        if(steps < 0):
+#            print "How am I going to move a negative number of steps? I can't travel back in time!"
+#            print "\tHINT: check the number of steps ;)"
+#            self.blinkLED(1, 3, 0.3)
+#            return -1
 
 
+#        numberOfstepsCommanded = int(1)
+#        numberOfLoops = steps/numberOfstepsCommanded
+#        numberOfStepsRemaining = steps % numberOfstepsCommanded
 
-        if self.getStateTortoise() == enums.State.running and numberOfStepsRemaining > 0:
+#        
+#       # motorBprocess = Process(target=self.B.forwards, args=(int(self.delay) / 1000.00, numberOfstepsCommanded))
 
-                    if direction == enums.Direction.backward_left or direction == enums.Direction.backward or direction == enums.Direction.counterClockwise:
+#        for x in range(0,numberOfLoops):
 
-                        self.A.backward(int(self.delay) / 1000.00, numberOfStepsRemaining)
+#            # If a stop command has been sent, the turtle will stop its movement
+#            if self.getSensorData(enums.SensorType.emergencySwitch, 1) == 0:
 
-                    if direction == enums.Direction.backward_right or direction == enums.Direction.backward or direction == enums.Direction.clockwise:
+#                if self.getStateTortoise() == enums.State.running:
+#                    self.setStateTortoise(enums.State.paused)
+#                    print "[TORTOISE PAUSED]"
+#                    
+#                break;
 
-                        self.B.backward(int(self.delay) / 1000.00, numberOfStepsRemaining)
+#            if self.getStateTortoise() == enums.State.paused:
+#                self.setStateTortoise(enums.State.running)
+#                print "[TORTOISE RESUMED]"
+#             
 
-                    if direction == enums.Direction.forward_right or direction == enums.Direction.forward or direction == enums.Direction.clockwise:
+#            if direction == enums.Direction.backwards_left or direction == enums.Direction.backwards or direction == enums.Direction.counterClockwise:
 
-                        self.A.forward(int(self.delay) / 1000.00, numberOfStepsRemaining)
+#                self.A.backwards(int(self.delay) / 1000.00, 1)
 
-                    if direction == enums.Direction.forward_left or direction == enums.Direction.forward or direction == enums.Direction.counterClockwise:
+#            if direction == enums.Direction.backwards_right or direction == enums.Direction.backwards or direction == enums.Direction.clockwise:
 
-                        self.B.forward(int(self.delay) / 1000.00, numberOfStepsRemaining)
+#                self.B.backwards(int(self.delay) / 1000.00, 1)
+
+#            if direction == enums.Direction.forwards_right or direction == enums.Direction.forwards or direction == enums.Direction.clockwise:
+
+#                self.A.forwards(int(self.delay) / 1000.00, numberOfstepsCommanded)
+
+#            if direction == enums.Direction.forwards_left or direction == enums.Direction.forwards or direction == enums.Direction.counterClockwise:
+
+#                self.B.forwards(int(self.delay) / 1000.00, numberOfstepsCommanded)
 
 
-        self.A.stopMotors()
-        self.B.stopMotors()
 
-        return 0
+#        if self.getStateTortoise() == enums.State.running and numberOfStepsRemaining > 0:
+
+#                    if direction == enums.Direction.backwards_left or direction == enums.Direction.backwards or direction == enums.Direction.counterClockwise:
+
+#                        self.A.backwards(int(self.delay) / 1000.00, numberOfStepsRemaining)
+
+#                    if direction == enums.Direction.backwards_right or direction == enums.Direction.backwards or direction == enums.Direction.clockwise:
+
+#                        self.B.backwards(int(self.delay) / 1000.00, numberOfStepsRemaining)
+
+#                    if direction == enums.Direction.forwards_right or direction == enums.Direction.forwards or direction == enums.Direction.clockwise:
+
+#                        self.A.forwards(int(self.delay) / 1000.00, numberOfStepsRemaining)
+
+#                    if direction == enums.Direction.forwards_left or direction == enums.Direction.forwards or direction == enums.Direction.counterClockwise:
+
+#                        self.B.forwards(int(self.delay) / 1000.00, numberOfStepsRemaining)
 
 
+#        self.A.stopMotors()
+#        self.B.stopMotors()
+
+#        return 0
 
 
 
 
-    def moveMotors_improved1_oldversion(self, steps, direction):
-
-        if( direction != enums.Direction.backward_right and direction != enums.Direction.backward_left and 
-            direction != enums.Direction.forward_right and direction != enums.Direction.forward_left and direction != enums.Direction.forward and direction != enums.Direction.backward ) :
-            print "Hey, my master! I can only move backward or forward, and either left or right."
-            print "\tHINT: check the direction ;)"
-            self.blinkLED(enums.LED.red, 3, 0.3)
-            return -1
-
-        if(steps < 0):
-            print "How am I going to move a negative number of steps? I can't travel back in time!"
-            print "\tHINT: check the number of steps ;)"
-            self.blinkLED(enums.LED.red, 3, 0.3)
-            return -1
 
 
-        numberOfstepsCommanded = int(50)
-        numberOfLoops = steps/numberOfstepsCommanded
-        numberOfStepsRemaining = steps % numberOfstepsCommanded
+#    def moveMotors_improved1_oldversion(self, steps, direction):
 
-        
-       # motorBprocess = Process(target=self.B.forward, args=(int(self.delay) / 1000.00, numberOfstepsCommanded))
+#        if( direction != enums.Direction.backwards_right and direction != enums.Direction.backwards_left and 
+#            direction != enums.Direction.forwards_right and direction != enums.Direction.forwards_left and direction != enums.Direction.forwards and direction != enums.Direction.backwards ) :
+#            print "Hey, my master! I can only move backwards or forwards, and either left or right."
+#            print "\tHINT: check the direction ;)"
+#            self.blinkLED(1, 3, 0.3)
+#            return -1
 
-        for x in range(0,numberOfLoops):
-
-            # If a stop command has been sent, the turtle will stop its movement
-            if self.getSensorData(enums.SensorType.emergencySwitch, 1) == 0:
-
-                if self.getStateTortoise() == enums.State.running:
-                    self.setStateTortoise(enums.State.paused)
-                    print "[TORTOISE PAUSED]"
-                    
-                break;
-
-            if self.getStateTortoise() == enums.State.paused:
-                self.setStateTortoise(enums.State.running)
-                print "[TORTOISE RESUMED]"
-             
-            motorAprocess_backward = Process(target=self.A.backward, args=(int(self.delay) / 1000.00, numberOfstepsCommanded))
-            motorBprocess_backward = Process(target=self.B.backward, args=(int(self.delay) / 1000.00, numberOfstepsCommanded))
-            motorAprocess_forward = Process(target=self.A.forward, args=(int(self.delay) / 1000.00, numberOfstepsCommanded))
-            motorBprocess_forward = Process(target=self.B.forward, args=(int(self.delay) / 1000.00, numberOfstepsCommanded))
+#        if(steps < 0):
+#            print "How am I going to move a negative number of steps? I can't travel back in time!"
+#            print "\tHINT: check the number of steps ;)"
+#            self.blinkLED(1, 3, 0.3)
+#            return -1
 
 
-            if direction == enums.Direction.backward_left or direction == enums.Direction.backward or direction == enums.Direction.counterClockwise:
+#        numberOfstepsCommanded = int(50)
+#        numberOfLoops = steps/numberOfstepsCommanded
+#        numberOfStepsRemaining = steps % numberOfstepsCommanded
 
-                motorAprocess_backward.start()
+#        
+#       # motorBprocess = Process(target=self.B.forwards, args=(int(self.delay) / 1000.00, numberOfstepsCommanded))
 
-            if direction == enums.Direction.backward_right or direction == enums.Direction.backward or direction == enums.Direction.clockwise:
+#        for x in range(0,numberOfLoops):
 
-                motorBprocess_backward.start()
+#            # If a stop command has been sent, the turtle will stop its movement
+#            if self.getSensorData(enums.SensorType.emergencySwitch, 1) == 0:
 
-            if direction == enums.Direction.forward_right or direction == enums.Direction.forward or direction == enums.Direction.clockwise:
+#                if self.getStateTortoise() == enums.State.running:
+#                    self.setStateTortoise(enums.State.paused)
+#                    print "[TORTOISE PAUSED]"
+#                    
+#                break;
 
-                motorAprocess_forward.start()
-
-            if direction == enums.Direction.forward_left or direction == enums.Direction.forward or direction == enums.Direction.counterClockwise:
-
-                motorBprocess_forward.start()
-
-
-            if motorAprocess_forward.is_alive():
-                motorAprocess_forward.join()
-
-            if motorBprocess_forward.is_alive():
-                motorBprocess_forward.join()
-
-            if motorAprocess_backward.is_alive():
-                motorAprocess_backward.join()
-
-            if motorBprocess_backward.is_alive():
-                motorBprocess_backward.join()
+#            if self.getStateTortoise() == enums.State.paused:
+#                self.setStateTortoise(enums.State.running)
+#                print "[TORTOISE RESUMED]"
+#             
+#            motorAprocess_backwards = Process(target=self.A.backwards, args=(int(self.delay) / 1000.00, numberOfstepsCommanded))
+#            motorBprocess_backwards = Process(target=self.B.backwards, args=(int(self.delay) / 1000.00, numberOfstepsCommanded))
+#            motorAprocess_forwards = Process(target=self.A.forwards, args=(int(self.delay) / 1000.00, numberOfstepsCommanded))
+#            motorBprocess_forwards = Process(target=self.B.forwards, args=(int(self.delay) / 1000.00, numberOfstepsCommanded))
 
 
-        self.A.stopMotors()
-        self.B.stopMotors()
+#            if direction == enums.Direction.backwards_left or direction == enums.Direction.backwards or direction == enums.Direction.counterClockwise:
 
-        return 0
+#                motorAprocess_backwards.start()
+
+#            if direction == enums.Direction.backwards_right or direction == enums.Direction.backwards or direction == enums.Direction.clockwise:
+
+#                motorBprocess_backwards.start()
+
+#            if direction == enums.Direction.forwards_right or direction == enums.Direction.forwards or direction == enums.Direction.clockwise:
+
+#                motorAprocess_forwards.start()
+
+#            if direction == enums.Direction.forwards_left or direction == enums.Direction.forwards or direction == enums.Direction.counterClockwise:
+
+#                motorBprocess_forwards.start()
+
+
+#            if motorAprocess_forwards.is_alive():
+#                motorAprocess_forwards.join()
+
+#            if motorBprocess_forwards.is_alive():
+#                motorBprocess_forwards.join()
+
+#            if motorAprocess_backwards.is_alive():
+#                motorAprocess_backwards.join()
+
+#            if motorBprocess_backwards.is_alive():
+#                motorBprocess_backwards.join()
+
+
+#        self.A.stopMotors()
+#        self.B.stopMotors()
+
+#        return 0
 
 
 
 
     def moveMotors(self, stepsLeft, stepsRight, direction):
 
-            if( direction != enums.Direction.backward_right and direction != enums.Direction.backward_left and 
-            direction != enums.Direction.forward_right and direction != enums.Direction.forward_left and direction != enums.Direction.forward and direction != enums.Direction.backward ) :
+        if( direction != enums.Direction.backwards_right and direction != enums.Direction.backwards_left and 
+        direction != enums.Direction.forwards_right and direction != enums.Direction.forwards_left and direction != enums.Direction.forwards and direction != enums.Direction.backwards ) :
 
-                    print "Hey, my master! I can only move backward or forward, and either left or right."
-                    print "\tHINT: check the direction ;)"
-                    self.blinkLED(enums.LED.red, 3, 0.3)
-                    return -1
+            print "I can only move backwards or forwards, and either left or right."
+            print "\tHINT: check the direction."
+            self.blinkLED(1, 3, 0.3)
+            return -1
 
-            if(stepsLeft < 0 or stepsRight < 0):
-                    print "How am I going to move a negative number of steps? I can't travel back in time!"
-                    print "\tHINT: check the number of steps ;)"
-                    self.blinkLED(enums.LED.red, 3, 0.3)
-                    return -1
+        if(stepsLeft < 0 or stepsRight < 0):
+            print "I can't move a negative number of steps!"
+            print "\tHINT: check the number of steps."
+            self.blinkLED(1, 3, 0.3)
+            return -1
 
-            # If a stop command has been sent, the turtle will stop its movement
-            if self.getSensorData(enums.SensorType.emergencySwitch, 1) == 0:
+        # If a stop command has been sent, the turtle will stop its movement
+        if self.getSensorData(enums.SensorType.emergencySwitch, 1) == 0:
 
-                if self.getStateTortoise() == enums.State.running:
+            if self.getStateTortoise() == enums.State.running:
 
-                    self.setStateTortoise(enums.State.paused)
-                    print "[TORTOISE PAUSED]"
+                self.setStateTortoise(enums.State.paused)
+                print "[TORTOISE PAUSED]"
 
-            else:
-                if self.getStateTortoise() == enums.State.paused:
-                        self.setStateTortoise(enums.State.running)
-                        print "[TORTOISE RESUMED]"
+        else:
+            if self.getStateTortoise() == enums.State.paused:
+                    self.setStateTortoise(enums.State.running)
+                    print "[TORTOISE RESUMED]"
 
-                motorAprocess_backward = Process(target=self.A.backward, args=(int(self.delay) / 1000.00, stepsRight))
-                motorBprocess_backward = Process(target=self.B.backward, args=(int(self.delay) / 1000.00, stepsLeft))
-                motorAprocess_forward = Process(target=self.A.forward, args=(int(self.delay) / 1000.00, stepsLeft))
-                motorBprocess_forward = Process(target=self.B.forward, args=(int(self.delay) / 1000.00, stepsRight))
-
-
-                if direction == enums.Direction.backward_left or direction == enums.Direction.backward or direction == enums.Direction.counterClockwise:
-                    
-                    motorAprocess_backward.start()
-
-                if direction == enums.Direction.backward_right or direction == enums.Direction.backward or direction == enums.Direction.clockwise:
-
-                    motorBprocess_backward.start()
-
-                if direction == enums.Direction.forward_right or direction == enums.Direction.forward or direction == enums.Direction.clockwise:
-
-                    motorAprocess_forward.start()
-
-                if direction == enums.Direction.forward_left or direction == enums.Direction.forward or direction == enums.Direction.counterClockwise:
-
-                    motorBprocess_forward.start()
+            motorAprocess_backwards = Process(target=self.A.backwards, args=(int(self.delay) / 1000.00, stepsRight))
+            motorBprocess_backwards = Process(target=self.B.backwards, args=(int(self.delay) / 1000.00, stepsLeft))
+            motorAprocess_forwards = Process(target=self.A.forwards, args=(int(self.delay) / 1000.00, stepsLeft))
+            motorBprocess_forwards = Process(target=self.B.forwards, args=(int(self.delay) / 1000.00, stepsRight))
 
 
-                # The main loop pools the emergencySwitch
-                while motorAprocess_backward.is_alive() or motorBprocess_backward.is_alive() or motorAprocess_forward.is_alive() or motorBprocess_forward.is_alive():
+            if direction == enums.Direction.backwards_left or direction == enums.Direction.backwards or direction == enums.Direction.counterClockwise:
+                
+                motorAprocess_backwards.start()
 
-                    # If a stop command has been sent, the turtle will stop its movement
-                    if self.getSensorData(enums.SensorType.emergencySwitch, 1) == 0:
+            if direction == enums.Direction.backwards_right or direction == enums.Direction.backwards or direction == enums.Direction.clockwise:
 
-                        if self.getStateTortoise() == enums.State.running:
+                motorBprocess_backwards.start()
 
-                            self.setStateTortoise(enums.State.paused)
-                            print "[TORTOISE PAUSED]"
+            if direction == enums.Direction.forwards_right or direction == enums.Direction.forwards or direction == enums.Direction.clockwise:
 
-                            if motorAprocess_backward.is_alive():
-                                motorAprocess_backward.terminate()
-                                motorAprocess_backward.join()
+                motorAprocess_forwards.start()
 
-                            if motorBprocess_backward.is_alive():
-                                motorBprocess_backward.terminate()
-                                motorBprocess_backward.join()
+            if direction == enums.Direction.forwards_left or direction == enums.Direction.forwards or direction == enums.Direction.counterClockwise:
 
-                            if motorAprocess_forward.is_alive():
-                                motorAprocess_forward.terminate()
-                                motorAprocess_forward.join()
-
-                            if motorBprocess_forward.is_alive():
-                                motorBprocess_forward.terminate()
-                                motorBprocess_forward.join()
-                            
-                    elif self.getStateTortoise() == enums.State.paused:
-                        self.setStateTortoise(enums.State.running)
-                        print "[TORTOISE RESUMED]"
+                motorBprocess_forwards.start()
 
 
-                    time.sleep(0.5)
+            # The main loop pools the emergencySwitch
+            while motorAprocess_backwards.is_alive() or motorBprocess_backwards.is_alive() or motorAprocess_forwards.is_alive() or motorBprocess_forwards.is_alive():
+
+                # If a stop command has been sent, the turtle will stop its movement
+                if self.getSensorData(enums.SensorType.emergencySwitch, 1) == 0:
+
+                    if self.getStateTortoise() == enums.State.running:
+
+                        self.setStateTortoise(enums.State.paused)
+                        print "[TORTOISE PAUSED]"
+
+                        if motorAprocess_backwards.is_alive():
+                            motorAprocess_backwards.terminate()
+                            motorAprocess_backwards.join()
+
+                        if motorBprocess_backwards.is_alive():
+                            motorBprocess_backwards.terminate()
+                            motorBprocess_backwards.join()
+
+                        if motorAprocess_forwards.is_alive():
+                            motorAprocess_forwards.terminate()
+                            motorAprocess_forwards.join()
+
+                        if motorBprocess_forwards.is_alive():
+                            motorBprocess_forwards.terminate()
+                            motorBprocess_forwards.join()
+                        
+                elif self.getStateTortoise() == enums.State.paused:
+                    self.setStateTortoise(enums.State.running)
+                    print "[TORTOISE RESUMED]"
 
 
-            self.A.stopMotors()
-            self.B.stopMotors()
-
-            return 0
+                time.sleep(0.5)
 
 
+        self.A.stopMotors()
+        self.B.stopMotors()
 
-    def moveForward(self, steps):
-
-        return self.move(steps, steps, enums.Direction.forward)
+        return 0
 
 
 
-    def moveBackward(self, steps):
+    def moveForwards(self, steps):
 
-        return self.move(steps, steps, enums.Direction.backward)
+        return self.move(steps, steps, enums.Direction.forwards)
+
+
+
+    def moveBackwards(self, steps):
+
+        return self.move(steps, steps, enums.Direction.backwards)
 
 
 
 
     def naturalTurn(self, totalSteps, straightStep, sideStep, direction):
 
-        if( direction != enums.Direction.backward_right and direction != enums.Direction.backward_left and 
-            direction != enums.Direction.forward_right and direction != enums.Direction.forward_left ) :
-            print "Hey, my master! I can only turn backward or forward, and either left or right."
-            print "\tHINT: check the direction ;)"
-            self.blinkLED(enums.LED.red, 3, 0.3)
+        if( direction != enums.Direction.backwards_right and direction != enums.Direction.backwards_left and 
+            direction != enums.Direction.forwards_right and direction != enums.Direction.forwards_left ) :
+            print "I can only turn backwards or forwards, and either left or right."
+            print "\tHINT: check the direction."
+            self.blinkLED(1, 3, 0.3)
             return -1
 
         if(totalSteps < 0 or straightStep < 0 or sideStep < 0):
             print "How am I going to move a negative number of steps? I can't travel back in time!"
-            print "\tHINT: check the number of steps ;)"
-            self.blinkLED(enums.LED.red, 3, 0.3)
+            print "\tHINT: check the number of steps."
+            self.blinkLED(1, 3, 0.3)
             return -1
 
 
         if (straightStep + sideStep) > totalSteps: 
-            print "I can't move as you wish."
-            print "\tHINT: check the number of straight steps, side steps and total steps ;)"
-            self.blinkLED(enums.LED.red, 3, 0.3)
+#            print "I can't move as you wish."
+#            print "\tHINT: check the number of straight steps, side steps and total steps ;)"
+            self.blinkLED(1, 3, 0.3)
             return -1
 
 
         for x in range(0, int(totalSteps/(straightStep+sideStep))):
-            if direction == enums.Direction.forward_left:
-                self.moveMotors(straightStep, enums.Direction.forward)
-                self.moveMotors(sideStep, enums.Direction.forward_left)
-            if direction == enums.Direction.forward_right:
-                self.moveMotors(straightStep, enums.Direction.forward)
-                self.moveMotors(sideStep, enums.Direction.forward_right)
-            if direction == enums.Direction.backward_left:
-                self.moveMotors(straightStep, enums.Direction.backward)
-                self.moveMotors(sideStep, enums.Direction.backward_left)
-            if direction == enums.Direction.backward_right:
-                self.moveMotors(straightStep, enums.Direction.backward)
-                self.moveMotors(sideStep, enums.Direction.backward_right)
+            if direction == enums.Direction.forwards_left:
+                self.moveMotors(straightStep, enums.Direction.forwards)
+                self.moveMotors(sideStep, enums.Direction.forwards_left)
+            if direction == enums.Direction.forwards_right:
+                self.moveMotors(straightStep, enums.Direction.forwards)
+                self.moveMotors(sideStep, enums.Direction.forwards_right)
+            if direction == enums.Direction.backwards_left:
+                self.moveMotors(straightStep, enums.Direction.backwards)
+                self.moveMotors(sideStep, enums.Direction.backwards_left)
+            if direction == enums.Direction.backwards_right:
+                self.moveMotors(straightStep, enums.Direction.backwards)
+                self.moveMotors(sideStep, enums.Direction.backwards_right)
 
         return 0
 
@@ -684,20 +667,20 @@ class Tortoise:
     def tryCircle(self, direction):
 
         if( direction != enums.Direction.clockwise and direction != enums.Direction.counterClockwise):
-            print "Hey, my master! I can only rotate clockwise or counterclockwise."
-            print "\tHINT: check the direction ;)"
-            self.blinkLED(enums.LED.red, 3, 0.3)
+            print "I can only rotate clockwise or counterclockwise."
+            print "\tHINT: check the direction."
+            self.blinkLED(1, 3, 0.3)
             return -1
 
         return self.gentleTurn(2000, direction)
 
 
     def defaultCircle(self):
-        self.tryCircle(enums.Direction.forward_right)
+        self.tryCircle(enums.Direction.forwards_right)
 
 
     # TODO: improve random motion
-    def doRandomStep(self):
+    def doRandomMovement(self):
 
         # Random number between 15 and (503/2 + 15)
         numberOfSteps = int(509/4*np.random.random_sample() + 15)
@@ -706,13 +689,13 @@ class Tortoise:
         randomNumber = np.random.random_sample()
 
         if(randomNumber < 0.4):
-            self.moveMotors(numberOfSteps, enums.Direction.forward)
+            self.moveMotors(numberOfSteps, enums.Direction.forwards)
         else:
             # Random enums.Direction: left of right
             if(np.random.random_sample() < 0.5):
-                direction = enums.Direction.forward_left
+                direction = enums.Direction.forwards_left
             else:
-                direction = enums.Direction.forward_right
+                direction = enums.Direction.forwards_right
 
 
             if(randomNumber < 0.7):

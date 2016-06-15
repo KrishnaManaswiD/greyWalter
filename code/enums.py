@@ -8,26 +8,19 @@ class SensorType(Enum):
     touch = 0
     light = 1
     proximity = 2
-    emergencySwitch = 3
+    emergencyStop = 3
 
 class ActuatorType(Enum):
-   led = 0
-
-class LED(Enum):
-    red = 1
-    yellow = 2
-    green = 3
-    white = 4
+    led = 0
 
 class Direction(Enum):
     counterClockwise = -4
-    backward_right = -3
-    backward_left = -2
-    backward = -1
-    static = 0
-    forward = 1
-    forward_left = 2
-    forward_right = 3
+    backwards_right = -3
+    backwards_left = -2
+    backwards = -1
+    forwards = 1
+    forwards_left = 2
+    forwards_right = 3
     clockwise = 4
 
 
