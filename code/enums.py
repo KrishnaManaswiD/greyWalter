@@ -13,6 +13,12 @@ class SensorType(Enum):
 class ActuatorType(Enum):
    led = 0
 
+class LED(Enum):
+    red = 1
+    yellow = 2
+    green = 3
+    white = 4
+
 class Direction(Enum):
     counterClockwise = -4
     backward_right = -3

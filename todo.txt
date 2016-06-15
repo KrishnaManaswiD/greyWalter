@@ -2,7 +2,7 @@
 - Improve turns
 - Improve comments and clean code
 V Check pos of error checking with final number of sensors/actuators
-- User defined way to turn on LEDs (create enum to redifine position of LEDs to colours)
+V User defined way to turn on LEDs (create enum to redifine position of LEDs to colours)
 - Improve sensors.py to arrays
 - change self.A to motorLeft
 V run motors in parallel
@@ -10,6 +10,7 @@ V run motors in parallel
 - change emergencySwitch to eStop
 V add moveForward functions
 - Add installation of gedit and timeUpdate to setup.sh
+- test new eStop
 
 - IMPORTANT: remove "return" in getSensorData, light
 

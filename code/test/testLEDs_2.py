@@ -20,47 +20,47 @@ def main():
     while True:
 
         print "Blinking LED 1 and 2"
-        wanderer.blinkLED([1, 2], 3, 0.3)
+        wanderer.blinkLED([enums.LED.red, enums.LED.yellow], 3, 0.3)
 #        print "\tPress enter to continue"
 #        raw_input()
 
         print "Blinking LED 1 and 3"
-        wanderer.blinkLED([3, 1], 3, 0.3)
+        wanderer.blinkLED([enums.LED.green, enums.LED.red], 3, 0.3)
 #        print "\tPress enter to continue"
 #        raw_input()
 
         print "Blinking LED 1 and 4"
-        wanderer.blinkLED([1, 4], 3, 0.3)
+        wanderer.blinkLED([enums.LED.red, enums.LED.white], 3, 0.3)
 #        print "\tPress enter to continue"
 #        raw_input()
 
         print "Blinking LED 2 and 4"
-        wanderer.blinkLED([4, 2], 3, 0.3)
+        wanderer.blinkLED([enums.LED.white, enums.LED.yellow], 3, 0.3)
 #        print "\tPress enter to continue"
 #        raw_input()
 
         print "Blinking LED 3 and 4"
-        wanderer.blinkLED([3, 4], 3, 0.3)
+        wanderer.blinkLED([enums.LED.green, enums.LED.white], 3, 0.3)
 #        print "\tPress enter to continue"
 #        raw_input()
 
         print "Blinking LED 1, 2 and 4"
-        wanderer.blinkLED([2, 1, 4], 3, 0.3)
+        wanderer.blinkLED([enums.LED.yellow, enums.LED.red, enums.LED.white], 3, 0.3)
 #        print "\tPress enter to continue"
 #        raw_input()
 
         print "Blinking LED 1, 3 and 4"
-        wanderer.blinkLED([3, 4, 1], 3, 0.3)
+        wanderer.blinkLED([enums.LED.green, enums.LED.red, enums.LED.red], 3, 0.3)
 #        print "\tPress enter to continue"
 #        raw_input()
 
         print "Blinking LED 2, 3 and 4"
-        wanderer.blinkLED([4, 2, 3], 3, 0.3)
+        wanderer.blinkLED([enums.LED.white, enums.LED.yellow, enums.LED.green], 3, 0.3)
 #        print "\tPress enter to continue"
 #        raw_input()
 
         print "Blinking LED 1, 2, 3 and 4"
-        wanderer.blinkLED([3, 4, 1, 2], 3, 0.3)
+        wanderer.blinkLED([enums.LED.green, enums.LED.white, enums.LED.red, enums.LED.yellow], 3, 0.3)
 #        print "\tPress enter to continue"
 #        raw_input()
 
