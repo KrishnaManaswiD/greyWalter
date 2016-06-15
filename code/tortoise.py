@@ -56,6 +56,7 @@ class Tortoise:
 
         # Previous: [4, 17, 23, 24, 27, 22, 18, 5]
         motorPins = [13, 6, 5, 7, 20, 10, 9, 11]
+        ledPins = [8, 16, 25, 12]
 
         # CREATING FILE WITH PID
 
@@ -68,7 +69,11 @@ class Tortoise:
         # Filename: [PID].pid
         f = open(directory + str(pid) + ".pid", "w")
 
+        # First line: motor pins
         f.write(str(motorPins[0]) + " " + str(motorPins[1]) + " " + str(motorPins[2]) + " " + str(motorPins[3]) + " " + str(motorPins[4]) + " " + str(motorPins[5]) + " " + str(motorPins[6]) + " " + str(motorPins[7]) + "\n")
+
+        # Second line: LED pins
+        f.write(str(ledPins[0]) + " " + str(ledPins[1]) + " " + str(ledPins[2]) + " " + str(ledPins[3]) + "\n")
 
         f.close()
         # ----------------------
@@ -94,10 +99,10 @@ class Tortoise:
         self.sensors.setSensor(enums.SensorType.proximity, 3, 22) # Previous: x
         self.sensors.setSensor(enums.SensorType.proximity, 4, 26) # Previous: x
 
-        self.actuators.initActuator(enums.ActuatorType.led,1, 8) # Previous: 19
-        self.actuators.initActuator(enums.ActuatorType.led,2, 16) # Previous: 26
-        self.actuators.initActuator(enums.ActuatorType.led,3, 25) # Previous: x
-        self.actuators.initActuator(enums.ActuatorType.led,4, 12) # Previous: x
+        self.actuators.initActuator(enums.ActuatorType.led,1, ledPins[0]) # Previous: 19
+        self.actuators.initActuator(enums.ActuatorType.led,2, ledPins[1]) # Previous: 26
+        self.actuators.initActuator(enums.ActuatorType.led,3, ledPins[2]) # Previous: x
+        self.actuators.initActuator(enums.ActuatorType.led,4, ledPins[3]) # Previous: x
 
         #print "light sensor value:"
         #print self.sensors.readSensor(enums.SensorType.light, 1)

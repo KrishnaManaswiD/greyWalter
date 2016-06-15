@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# TODO: launch script to .bashrc
-
 # Directory of this file
 BASEDIR=$(dirname `readlink -f $0`)
 
@@ -34,18 +32,17 @@ do
             # If it doesn't exist, it means the process has been stopped
             if [ $EXISTS -eq 0 ]
             then
-                MOTOR_PINS=`head -n 1 $f`
+                MOTOR_PINS=`sed '1!d' $f`
+                LED_PINS=`sed '2!d' $f`
 
 		echo "The process doesn't exist. Killing motors pins: $MOTOR_PINS"
 
-                if [ `echo $MOTOR_PINS | wc -w` -eq 8 ]
+                if [ `echo $MOTOR_PINS | wc -w` -eq 8 -a `echo $LED_PINS | wc -w` -eq 4 ]
                 then
-                        # TODO: change to final directory
-                        python $BASEDIR/tortoise_cleanup.py $MOTOR_PINS
+                        python $BASEDIR/tortoise_cleanup.py $MOTOR_PINS $LED_PINS
                 fi
 
                 # Removes the .pid file
-                # TODO: uncomment
                 rm $f
             fi
         done

@@ -16,5 +16,6 @@ V run motors in parallel
 - change emergencySwitch to eStop
 V add moveForward functions
 - Consider other inputs to move functions (time, fraction of wheel...)
+- Add installaion of gedit and timeUpdate to setup.sh
 
 - IMPORTANT: remove "return" in getSensroData, light
