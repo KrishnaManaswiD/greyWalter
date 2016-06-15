@@ -179,7 +179,7 @@ class Tortoise:
 
                 print "You've asked for a touch sensor that doesn't exist."
                 print "\tHINT: check the position of the sensor you want to set."
-                self.blinkLED(1, 3, 0.3)
+                self.blinkLED([1, 2, 3, 4], 3, 0.2)
                 return -1
 
         elif (sensor_type == enums.SensorType.light):
@@ -188,7 +188,7 @@ class Tortoise:
 
                 print "I only have one light sensor."
                 print "\tHINT: check the position of the sensor you want to set."
-                self.blinkLED(1, 3, 0.3)
+                self.blinkLED([1, 2, 3, 4], 3, 0.2)
                 return -1
 
         elif (sensor_type == enums.SensorType.proximity):
@@ -197,13 +197,13 @@ class Tortoise:
 
                 print "You've asked for a proximity sensor that doesn't exist."
                 print "\tHINT: check the position of the sensor you want to set."
-                self.blinkLED(1, 3, 0.3)
+                self.blinkLED([1, 2, 3, 4], 3, 0.2)
                 return -1
 
         else:
                 print "You've asked for a sensor that doesn't exist."
                 print "\tHINT: check the type of the sensor you want to read."
-                self.blinkLED(1, 3, 0.3)
+                self.blinkLED([1, 2, 3, 4], 3, 0.2)
                 return -1
 
 
@@ -213,7 +213,7 @@ class Tortoise:
             return value
             if (upperBoundLight - lowerBoundLight) == 0:
                 print "The light sensor hasn't been calibrated properly. Try calibrating again."
-                self.blinkLED(1, 3, 0.3)
+                self.blinkLED([1, 2, 3, 4], 3, 0.2)
                 return -1
 
             # Scale 
@@ -221,7 +221,7 @@ class Tortoise:
 
             if lightVal < 0:
                 print "The light sensor hasn't been calibrated properly. Try calibrating again."
-                self.blinkLED(1, 3, 0.3)
+                self.blinkLED([1, 2, 3, 4], 3, 0.2)
                 return -1
 
             return lightVal
@@ -241,7 +241,7 @@ class Tortoise:
         if (position < 1 or position > 4):
             print "You've asked for an LED that doesn't exist."
             print "\tHINT: check the position of the LED you want to set."
-            self.blinkLED(1, 3, 0.3)
+            self.blinkLED([1, 2, 3, 4], 3, 0.2)
             return -1
 
         return self.actuators.getActuatorState(enums.ActuatorType.led, position)
@@ -253,13 +253,13 @@ class Tortoise:
         if(position < 1 or position > 4):
             print "You've asked for an LED that doesn't exist."
             print "\tHINT: check the position of the LED you want to set."
-            self.blinkLED(1, 3, 0.3)
+            self.blinkLED([1, 2, 3, 4], 3, 0.2)
             return -1
 
         if(value != 0 and value != 1):
             print "In binary code, we only have 0s and 1s."
             print "\tHINT: check the value you want to set (0 = OFF, 1 = ON)."
-            self.blinkLED(1, 3, 0.3)
+            self.blinkLED([1, 2, 3, 4], 3, 0.2)
             return -1
 
         self.actuators.setActuator(enums.ActuatorType.led, position, value)
@@ -272,19 +272,19 @@ class Tortoise:
         if numberOfBlinks < 0:
             print "I can't blink a negative number of times!"
             print "\tHINT: check the number of blinks."
-            self.blinkLED(1, 3, 0.3)
+            self.blinkLED([1, 2, 3, 4], 3, 0.2)
             return -1
 
         if numberOfBlinks == 0:
             print "Do you want me to blink or not?"
             print "\tHINT: check the number of blinks."
-            self.blinkLED(1, 3, 0.3)
+            self.blinkLED([1, 2, 3, 4], 3, 0.2)
             return -1
 
         if delay < 0:
             print "I can't blink that fast."
             print "\tHINT: check the delay."
-            self.blinkLED(1, 3, 0.3)
+            self.blinkLED([1, 2, 3, 4], 3, 0.2)
             return -1
 
 
@@ -294,7 +294,7 @@ class Tortoise:
                 if positions[y] < 0 or positions[y] > 4:
                     print "You've asked for an LED that doesn't exist."
                     print "\tHINT: check the position of the LED you want to set."
-                    self.blinkLED(1, 3, 0.3)
+                    self.blinkLED([1, 2, 3, 4], 3, 0.2)
                     return -1
 
         except TypeError: # It's not an array but an integer
@@ -302,39 +302,45 @@ class Tortoise:
             if positions < 0 or positions > 4:
                 print "You've asked for an LED that doesn't exist."
                 print "\tHINT: check the position of the LED you want to set."
-                self.blinkLED(1, 3, 0.3)
+                self.blinkLED([1, 2, 3, 4], 3, 0.2)
                 return -1
 
 
 
         previousStateLEDs = [ self.getActuatorState(enums.ActuatorType.led, x) for x in range(1, 5)]
 
-        for x in range(0, numberOfBlinks):
 
-            try:
-                for y in range(0, len(positions)):
+        # Infinite loop to "stop" the execution of the program and keep blinkind the LEDs
+        while True:
 
-                    self.actuators.setActuator(enums.ActuatorType.led, positions[y], 1)
+            for x in range(0, numberOfBlinks):
 
-                time.sleep(delay)
+                try:
+                    for y in range(0, len(positions)):
 
-                for y in range(0, len(positions)):
-                    self.actuators.setActuator(enums.ActuatorType.led, positions[y], 0)
+                        self.actuators.setActuator(enums.ActuatorType.led, positions[y], 1)
 
-            except TypeError: # It's not an array but an integer
+                    time.sleep(delay)
 
-                self.actuators.setActuator(enums.ActuatorType.led, positions, 1)
-                time.sleep(delay)
-                self.actuators.setActuator(enums.ActuatorType.led, positions, 0)
+                    for y in range(0, len(positions)):
+                        self.actuators.setActuator(enums.ActuatorType.led, positions[y], 0)
 
-            # TODO: remove if threaded
-            if x != (numberOfBlinks - 1):
-                time.sleep(delay)
+                    time.sleep(delay)
 
-    
-        # The previous state of the LEDs are restored
-        for x in range(1, 5):
-            self.setActuatorValue(enums.ActuatorType.led, x, previousStateLEDs[x - 1])
+                except TypeError: # It's not an array but an integer
+
+                    self.actuators.setActuator(enums.ActuatorType.led, positions, 1)
+                    time.sleep(delay)
+                    self.actuators.setActuator(enums.ActuatorType.led, positions, 0)
+                    time.sleep(delay)
+
+#                if x != (numberOfBlinks - 1):
+                
+
+        
+#            # The previous state of the LEDs are restored
+#            for x in range(1, 5):
+#                self.setActuatorValue(enums.ActuatorType.led, x, previousStateLEDs[x - 1])
             
         return 0
 
@@ -345,13 +351,13 @@ class Tortoise:
 #            direction != enums.Direction.forwards_right and direction != enums.Direction.forwards_left and direction != enums.Direction.forwards and direction != enums.Direction.backwards ) :
 #            print "Hey, my master! I can only move backwards or forwards, and either left or right."
 #            print "\tHINT: check the direction ;)"
-#            self.blinkLED(1, 3, 0.3)
+#            self.blinkLED([1, 2, 3, 4], 3, 0.2)
 #            return -1
 
 #        if(steps < 0):
 #            print "How am I going to move a negative number of steps? I can't travel back in time!"
 #            print "\tHINT: check the number of steps ;)"
-#            self.blinkLED(1, 3, 0.3)
+#            self.blinkLED([1, 2, 3, 4], 3, 0.2)
 #            return -1
 
 
@@ -431,13 +437,13 @@ class Tortoise:
 #            direction != enums.Direction.forwards_right and direction != enums.Direction.forwards_left and direction != enums.Direction.forwards and direction != enums.Direction.backwards ) :
 #            print "Hey, my master! I can only move backwards or forwards, and either left or right."
 #            print "\tHINT: check the direction ;)"
-#            self.blinkLED(1, 3, 0.3)
+#            self.blinkLED([1, 2, 3, 4], 3, 0.2)
 #            return -1
 
 #        if(steps < 0):
 #            print "How am I going to move a negative number of steps? I can't travel back in time!"
 #            print "\tHINT: check the number of steps ;)"
-#            self.blinkLED(1, 3, 0.3)
+#            self.blinkLED([1, 2, 3, 4], 3, 0.2)
 #            return -1
 
 
@@ -514,13 +520,13 @@ class Tortoise:
 
             print "I can only move backwards or forwards, and either left or right."
             print "\tHINT: check the direction."
-            self.blinkLED(1, 3, 0.3)
+            self.blinkLED([1, 2, 3, 4], 3, 0.2)
             return -1
 
         if(stepsLeft < 0 or stepsRight < 0):
             print "I can't move a negative number of steps!"
             print "\tHINT: check the number of steps."
-            self.blinkLED(1, 3, 0.3)
+            self.blinkLED([1, 2, 3, 4], 3, 0.2)
             return -1
 
         # If a stop command has been sent, the turtle will stop its movement
@@ -620,20 +626,20 @@ class Tortoise:
             direction != enums.Direction.forwards_right and direction != enums.Direction.forwards_left ) :
             print "I can only turn backwards or forwards, and either left or right."
             print "\tHINT: check the direction."
-            self.blinkLED(1, 3, 0.3)
+            self.blinkLED([1, 2, 3, 4], 3, 0.2)
             return -1
 
         if(totalSteps < 0 or straightStep < 0 or sideStep < 0):
             print "How am I going to move a negative number of steps? I can't travel back in time!"
             print "\tHINT: check the number of steps."
-            self.blinkLED(1, 3, 0.3)
+            self.blinkLED([1, 2, 3, 4], 3, 0.2)
             return -1
 
 
         if (straightStep + sideStep) > totalSteps: 
 #            print "I can't move as you wish."
 #            print "\tHINT: check the number of straight steps, side steps and total steps ;)"
-            self.blinkLED(1, 3, 0.3)
+            self.blinkLED([1, 2, 3, 4], 3, 0.2)
             return -1
 
 
@@ -669,7 +675,7 @@ class Tortoise:
         if( direction != enums.Direction.clockwise and direction != enums.Direction.counterClockwise):
             print "I can only rotate clockwise or counterclockwise."
             print "\tHINT: check the direction."
-            self.blinkLED(1, 3, 0.3)
+            self.blinkLED([1, 2, 3, 4], 3, 0.2)
             return -1
 
         return self.gentleTurn(2000, direction)
