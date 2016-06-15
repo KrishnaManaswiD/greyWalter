@@ -1,21 +1,39 @@
-- Blink LEDs for feedback: red ones for errors, blue one for switched on, green ones for switches... -> ASK
-- Set a flag for HINT mode -> ask activities, and how much hint should be printed ("check second argument", "check number of steps", "I can't travel back in time"...)
 - Improve random motion
 - Improve turns
-- Improve comments and function names
-    - Colours
-    - Random greetings
-- Comment and clean code
+- Improve comments and clean code
 V Check pos of error checking with final number of sensors/actuators
-- User defined way to turn on LEDs
-- LEDs in a thread?
+- User defined way to turn on LEDs (create enum to redifine position of LEDs to colours)
 - Improve sensors.py to arrays
 - change self.A to motorLeft
 V run motors in parallel
 - debug proximity sensor
 - change emergencySwitch to eStop
 V add moveForward functions
-- Consider other inputs to move functions (time, fraction of wheel...)
-- Add installaion of gedit and timeUpdate to setup.sh
+- Add installation of gedit and timeUpdate to setup.sh
 
-- IMPORTANT: remove "return" in getSensroData, light
+- IMPORTANT: remove "return" in getSensorData, light
+
+
+WITH THE ACTIVITIES TEAM:
+
+    - Function names
+
+    - Convection for movement
+    
+        Consider other inputs to move functions (time, fraction of wheel...)
+
+    - Error messages
+
+        Set a flag for HINT mode? 
+        
+        How much hint should be printed ("check second argument", "check number of steps", "I can't travel back in time"...)
+        
+        Colours and random greetings
+
+    - How to blink LEDs (in parallel?, which ones?, ...)
+
+        Blink LEDs for feedback: red ones for errors, blue one for switched on, green ones for switches...
+
+        LEDs in a thread?
+
+
