@@ -15,20 +15,25 @@ import enums
 import time
 
 def main():
-    wanderer = Tortoise()
+        wanderer = Tortoise()
 
-    while True:
+	while True:
 
-        proximitySensor_1 = wanderer.getSensorData(enums.SensorType.proximity, 4)
+        wanderer.setActuator(enums.ActuatorType.led, 1, 1)
+        wanderer.setActuator(enums.ActuatorType.led, 1, 0)
+        wanderer.setActuator(enums.ActuatorType.led, 1, 0)
+        wanderer.setActuator(enums.ActuatorType.led, 1, 1)
 
-        if proximitySensor_1 == 1:
-                print "Proximity sensor 1 is ON"
-        else:
-                print "Proximity sensor 1 is OFF"
+        print "LEDs 1 and 3 set"
 
-        print
+        time.sleep(3)
 
-        time.sleep(0.1)
+        print "Blinking LED 1, 2, 3 and 4"
+        wanderer.blinkLED([3, 4, 1, 2], 3, 0.3):
+
+        print "Check status of LEDs after blinking"
+        raw_input()
+
 
 if __name__ == "__main__":
 	main()

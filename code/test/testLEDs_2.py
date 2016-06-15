@@ -20,24 +20,49 @@ def main():
 	while True:
 
         print "Blinking LED 1 and 2"
-        wanderer.blinkLED(1, 3, 0.5):
-        print "\tPress enter to continue"
-        raw_input()
+        wanderer.blinkLED([1, 2], 3, 0.3):
+#        print "\tPress enter to continue"
+#        raw_input()
 
-        print "Blinking LED 2"
-        wanderer.blinkLED(2, 3, 0.5):
-        print "\tPress enter to continue"
-        raw_input()
+        print "Blinking LED 1 and 3"
+        wanderer.blinkLED([3, 1], 3, 0.3):
+#        print "\tPress enter to continue"
+#        raw_input()
 
-        print "Blinking LED 3"
-        wanderer.blinkLED(3, 3, 0.5):
-        print "\tPress enter to continue"
-        raw_input()
+        print "Blinking LED 1 and 4"
+        wanderer.blinkLED([1, 4], 3, 0.3):
+#        print "\tPress enter to continue"
+#        raw_input()
 
-        print "Blinking LED 4"
-        wanderer.blinkLED(4, 3, 0.5):
-        print "\tPress enter to continue"
-        raw_input()
+        print "Blinking LED 2 and 4"
+        wanderer.blinkLED([4, 2], 3, 0.3):
+#        print "\tPress enter to continue"
+#        raw_input()
+
+        print "Blinking LED 3 and 4"
+        wanderer.blinkLED([3, 4], 3, 0.3):
+#        print "\tPress enter to continue"
+#        raw_input()
+
+        print "Blinking LED 1, 2 and 4"
+        wanderer.blinkLED([2, 1, 4], 3, 0.3):
+#        print "\tPress enter to continue"
+#        raw_input()
+
+        print "Blinking LED 1, 3 and 4"
+        wanderer.blinkLED([3, 4, 1], 3, 0.3):
+#        print "\tPress enter to continue"
+#        raw_input()
+
+        print "Blinking LED 2, 3 and 4"
+        wanderer.blinkLED([4, 2, 3], 3, 0.3):
+#        print "\tPress enter to continue"
+#        raw_input()
+
+        print "Blinking LED 1, 2, 3 and 4"
+        wanderer.blinkLED([3, 4, 1, 2], 3, 0.3):
+#        print "\tPress enter to continue"
+#        raw_input()
 
 if __name__ == "__main__":
 	main()

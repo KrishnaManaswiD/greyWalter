@@ -55,7 +55,7 @@ class Tortoise:
         upperBoundLight = 0
 
         # Previous: [4, 17, 23, 24, 27, 22, 18, 5]
-        motorPins = [13, 6, 5, 7, 20, 10, 9,11]
+        motorPins = [13, 6, 5, 7, 20, 10, 9, 11]
 
         # CREATING FILE WITH PID
 
@@ -165,6 +165,7 @@ class Tortoise:
         print("Finished")
 
 
+
     def getSensorData(self,sensor_type,pos):
 
         if (sensor_type == enums.SensorType.touch):
@@ -204,7 +205,7 @@ class Tortoise:
                 return -1
 
         else:
-            print "Glubdhrtfarrrg! I only have touch, light and proximity sensors. Oh, well, and an eergency button that stops my limbs."
+            print "Glubdhrtfarrrg! I only have touch, light and proximity sensors. Oh, well, and an emergency button that stops my limbs."
             print "\tHINT: check the type of sensor ;)"
             self.blinkLED(1, 3, 0.5)
             return -1
@@ -218,7 +219,7 @@ class Tortoise:
                 print "I am blind!"
                 print "\tHINT: the light sensor seems to be not calibrated ;)"
                 self.blinkLED(1, 3, 0.5)
-                #return -1
+                return -1
 
             # Scale 
             lightVal = int(9 - round(abs(value-upperBoundLight)/(abs(upperBoundLight - lowerBoundLight)/9)))
@@ -239,6 +240,26 @@ class Tortoise:
             return value
 
 
+
+
+    def getActuatorState(self, actuator_type, pos):
+        
+        if (sensor_type != enums.ActuatorType.led):
+            print "Glubdhrtfarrrg! I only have LEDs!"
+            print "\tHINT: check the type of actuator ;)"
+            self.blinkLED(1, 3, 0.5)
+            return -1
+
+        if (pos < 1 or pos > 4):
+            print "Master, I only have four LEDs."
+            print "\tHINT: check the actuator you want to set ;)"
+            self.blinkLED(1, 3, 0.5)
+            return -1
+
+        return self.actuators.getActuatorState(actuator_type, pos)
+
+
+
     def setActuatorValue(self, actuator_type, pos, value):
 
         if(actuator_type != enums.ActuatorType.led):
@@ -247,8 +268,8 @@ class Tortoise:
             self.blinkLED(1, 3, 0.5)
             return -1
 
-        if(pos < 1 or pos > 2):
-            print "Master, I only have two LEDs."
+        if(pos < 1 or pos > 4):
+            print "Master, I only have four LEDs."
             print "\tHINT: check the actuator you want to set ;)"
             self.blinkLED(1, 3, 0.5)
             return -1
@@ -263,12 +284,50 @@ class Tortoise:
         return 0
 
 
+
     def blinkLED(self, positions, numberOfBlinks, delay):
+
+        if numberOfBlinks < 1:
+            print "Hey, if you ask me to blink a negative number of times we may create a hole in the universe!"
+            print "\tHINT: check the number of blinks ;)"
+            self.blinkLED(1, 3, 0.5)
+            return -1
+
+        if delay < 0:
+            print "You, human, won't be able to see me blinking at the speed of light."
+            print "\tHINT: check the delay ;)"
+            self.blinkLED(1, 3, 0.5)
+            return -1
+
+
+        try:
+            for y in range(0, len(positions)):
+
+                if positions[y] < 0 or positions[y] > 4:
+                    print "Master, I only have four LEDs."
+                    print "\tHINT: check the actuator you want to set ;)"
+                    self.blinkLED(1, 3, 0.5)
+                    return -1
+
+        except TypeError: # It's not an array but an integer
+
+            if positions < 0 or positions > 4:
+                print "Master, I only have four LEDs."
+                print "\tHINT: check the actuator you want to set ;)"
+                self.blinkLED(1, 3, 0.5)
+                return -1
+
+
+
+        previousStateLEDs = [ self.getActuatorState(enums.ActuatorType.led, x) for x in range(1, 5)]
 
         for x in range(0, numberOfBlinks):
 
             try:
                 for y in range(0, len(positions)):
+
+                    if 
+
                     self.actuators.setActuator(enums.ActuatorType.led, positions[y], 1)
 
                 time.sleep(delay)
@@ -286,6 +345,12 @@ class Tortoise:
             if x != (numberOfBlinks - 1):
                 time.sleep(delay)
 
+    
+        # The previous state of the LEDs are restored
+        for x in range(1, 5):
+            self.setActuatorValue(enums.ActuatorType.led, x, previousStateLEDs[x - 1])
+            
+        return 0
 
 
     def moveMotors_oldVersion(self, steps, direction):
@@ -456,7 +521,7 @@ class Tortoise:
 
 
 
-    def moveMotors(self, steps, direction):
+    def moveMotors(self, stepsLeft, stepsRight, direction):
 
             if( direction != enums.Direction.backward_right and direction != enums.Direction.backward_left and 
             direction != enums.Direction.forward_right and direction != enums.Direction.forward_left and direction != enums.Direction.forward and direction != enums.Direction.backward ) :
@@ -466,7 +531,7 @@ class Tortoise:
                     self.blinkLED(1, 3, 0.5)
                     return -1
 
-            if(steps < 0):
+            if(stepsLeft < 0 or stepsRight < 0):
                     print "How am I going to move a negative number of steps? I can't travel back in time!"
                     print "\tHINT: check the number of steps ;)"
                     self.blinkLED(1, 3, 0.5)
@@ -485,10 +550,10 @@ class Tortoise:
                         self.setStateTortoise(enums.State.running)
                         print "[TORTOISE RESUMED]"
 
-                motorAprocess_backward = Process(target=self.A.backward, args=(int(self.delay) / 1000.00, steps))
-                motorBprocess_backward = Process(target=self.B.backward, args=(int(self.delay) / 1000.00, steps))
-                motorAprocess_forward = Process(target=self.A.forward, args=(int(self.delay) / 1000.00, steps))
-                motorBprocess_forward = Process(target=self.B.forward, args=(int(self.delay) / 1000.00, steps))
+                motorAprocess_backward = Process(target=self.A.backward, args=(int(self.delay) / 1000.00, stepsRight))
+                motorBprocess_backward = Process(target=self.B.backward, args=(int(self.delay) / 1000.00, stepsLeft))
+                motorAprocess_forward = Process(target=self.A.forward, args=(int(self.delay) / 1000.00, stepsLeft))
+                motorBprocess_forward = Process(target=self.B.forward, args=(int(self.delay) / 1000.00, stepsRight))
 
 
                 if direction == enums.Direction.backward_left or direction == enums.Direction.backward or direction == enums.Direction.counterClockwise:
@@ -547,6 +612,19 @@ class Tortoise:
             self.B.stopMotors()
 
             return 0
+
+
+
+    def moveForward(self, steps):
+
+        return self.move(steps, steps, enums.Direction.forward)
+
+
+
+    def moveBackward(self, steps):
+
+        return self.move(steps, steps, enums.Direction.backward)
+
 
 
 

@@ -8,10 +8,10 @@ def main():
 			Bob.doRandomStep()
 			print "where are you?"
 		elif Bob.getSensorData(SensorType.light,1)<9:
-			Bob.moveMotors(30,Direction.forward)
+			Bob.moveForward(30)
 			print "ah-ha!"
 		else :
-			Bob.moveMotors(30,Direction.backward)
+			Bob.moveBackward(30)
 			print "Burning burning!"
 
 if __name__ =="__main__":

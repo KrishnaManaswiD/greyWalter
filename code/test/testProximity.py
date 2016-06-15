@@ -15,38 +15,38 @@ import enums
 import time
 
 def main():
-        wanderer = Tortoise()
+    wanderer = Tortoise()
 
-	while True:
+    while True:
 
-                proximitySensor_1 = wanderer.getSensorData(enums.SensorType.proximity, 1)
-                proximitySensor_2 = wanderer.getSensorData(enums.SensorType.proximity, 2)
-                proximitySensor_3 = wanderer.getSensorData(enums.SensorType.proximity, 3)
-                proximitySensor_4 = wanderer.getSensorData(enums.SensorType.proximity, 4)
+        proximitySensor_1 = wanderer.getSensorData(enums.SensorType.proximity, 1)
+        proximitySensor_2 = wanderer.getSensorData(enums.SensorType.proximity, 2)
+        proximitySensor_3 = wanderer.getSensorData(enums.SensorType.proximity, 3)
+        proximitySensor_4 = wanderer.getSensorData(enums.SensorType.proximity, 4)
 
-                if proximitySensor_1 == 1:
-                        print "Proximity sensor 1 is on"
-                else:
-                        print "Proximity sensor 1 is off"
+        if proximitySensor_1 == 1:
+                print "Proximity sensor 1 is on"
+        else:
+                print "Proximity sensor 1 is off"
 
-                if proximitySensor_2 == 1:
-                        print "Proximity sensor 2 is on"
-                else:
-                        print "Proximity sensor 2 is off"
+        if proximitySensor_2 == 1:
+                print "Proximity sensor 2 is on"
+        else:
+                print "Proximity sensor 2 is off"
 
-                if proximitySensor_3 == 1:
-                        print "Proximity sensor 3 is on"
-                else:
-                        print "Proximity sensor 3 is off"
+        if proximitySensor_3 == 1:
+                print "Proximity sensor 3 is on"
+        else:
+                print "Proximity sensor 3 is off"
 
-                if proximitySensor_4 == 1:
-                        print "Proximity sensor is on"
-                else:
-                        print "Proximity sensor is off"
+        if proximitySensor_4 == 1:
+                print "Proximity sensor is on"
+        else:
+                print "Proximity sensor is off"
 
-                print
+        print
 
-                time.sleep(1)
+        time.sleep(1)
 
 if __name__ == "__main__":
 	main()

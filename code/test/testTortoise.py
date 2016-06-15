@@ -15,13 +15,13 @@ import enums
 import time
 
 def main():
-        wanderer = Tortoise()
+    wanderer = Tortoise()
 
-	while True:
-		#pass
-		wanderer.moveMotors(100, enums.Direction.forward)
-		print wanderer.getSensorData(enums.SensorType.light, 1)
-		#time.sleep(0.1)
+    while True:
+        #pass
+        wanderer.moveForward(100)
+        print wanderer.getSensorData(enums.SensorType.light, 1)
+        #time.sleep(0.1)
 
 if __name__ == "__main__":
 	main()

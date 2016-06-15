@@ -15,19 +15,19 @@ import enums
 import time
 
 def main():
-        wanderer = Tortoise()
+    wanderer = Tortoise()
 
-	while True:
-		#pass
-		wanderer.moveMotors(100, enums.Direction.forward)
-		#print wanderer.getSensorData(enums.SensorType.light, 1)
-		if wanderer.getSensorData(enums.SensorType.emergencySwitch, 1) == 1:
+    while True:
+        #pass
+        wanderer.moveForward(100)
+        #print wanderer.getSensorData(enums.SensorType.light, 1)
+        if wanderer.getSensorData(enums.SensorType.emergencySwitch, 1) == 1:
                         #print "1"
-			wanderer.setActuatorValue(enums.ActuatorType.led, 1,1)
-		else:
+	        wanderer.setActuatorValue(enums.ActuatorType.led, 1,1)
+        else:
                         #print "0"
-			wanderer.setActuatorValue(enums.ActuatorType.led, 1,0)
-		#time.sleep(0.1)
+	        wanderer.setActuatorValue(enums.ActuatorType.led, 1,0)
+        #time.sleep(0.1)
 
 if __name__ == "__main__":
 	main()

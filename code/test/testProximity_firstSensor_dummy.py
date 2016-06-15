@@ -16,22 +16,22 @@ import time
 import
 
 def main():
-        #wanderer = Tortoise()
+#    wanderer = Tortoise()
 
-	while True:
+    while True:
 
-                GPIO.input(channel)
+        GPIO.input(channel)
 
-                #proximitySensor_1 = wanderer.getSensorData(enums.SensorType.proximity, 1)
+        #proximitySensor_1 = wanderer.getSensorData(enums.SensorType.proximity, 1)
 
-                if proximitySensor_1 == 1:
-                        print "Proximity sensor 1 is ON"
-                else:
-                        print "Proximity sensor 1 is OFF"
+        if proximitySensor_1 == 1:
+                print "Proximity sensor 1 is ON"
+        else:
+                print "Proximity sensor 1 is OFF"
 
-                print
+        print
 
-                time.sleep(1)
+        time.sleep(1)
 
 if __name__ == "__main__":
 	main()

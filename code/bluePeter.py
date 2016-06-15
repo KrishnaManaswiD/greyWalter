@@ -11,10 +11,10 @@ def main():
 			print "Where's the light?"
 		elif 6<= Mike.getSensorData(SensorType.light, 1)  and Mike.getSensorData(SensorType.light, 1) <9:
 			print "Found Light"
-			Mike.moveMotors(30, Direction.forward)	
+			Mike.moveForward(30)	
 		else: 
 			print "Argh! Too much light!"
-			Mike.moveMotors(30, Direction.backward)
+			Mike.moveBackward(30)
 
 if __name__=="__main__":
 	main()

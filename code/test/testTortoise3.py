@@ -15,10 +15,10 @@ import enums
 import time
 
 def main():
-        wanderer = Tortoise()
+    wanderer = Tortoise()
 
-	while True:
-		wanderer.moveMotors(100, enums.Direction.forward)
+    while True:
+	    wanderer.moveForward(100)
 
 if __name__ == "__main__":
 	main()

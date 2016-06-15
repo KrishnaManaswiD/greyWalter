@@ -30,8 +30,8 @@ while True and (calibrated==1):
 	elif 4<= lightSensorReading  and lightSensorReading <9:
 		# What should we be printing here?
 		print "I am a happy turtle"
-		Frankie.moveMotors(30, Direction.forward)	
+		Frankie.moveForward(30)	
 	else: 
 		print "Argh! Too much light!"
 		# So your tortoise has found too much light. How should they move now?
-		Frankie.moveMotors(30, Direction.backward)	
+		Frankie.moveBackward(30)	

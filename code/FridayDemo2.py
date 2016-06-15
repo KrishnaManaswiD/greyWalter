@@ -23,11 +23,11 @@ while True and (calibrated==1):
 	
 	# Can you tune the light sensor values for the conditions based on your calibration findings?
 	if lightSensorReading < 1:
-		Name.moveMotors(30, Direction.forwards)
+		Name.moveForward(30, Direction)
 		print "Where's the light?"
 	elif 1<= lightSensorReading  and lightSensorReading <2:
 		print "Found the light!"
-		Name.moveMotors(30, Direction.backwards)	
+		Name.moveBackward(30)	
 	else: 
 		print "Argh! Too much light!"
 		Name.doRandomStep()
