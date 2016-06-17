@@ -74,6 +74,43 @@ def main():
         print "\tPress enter to continue"
         print
         raw_input()
+
+        print "Turning naturally forwards_left"
+        wanderer.turnNaturally(200, 500, enums.Direction.forwards_left)
+        time.sleep(0.5)
+
+        print
+        print "\tPress enter to continue"
+        print
+        raw_input()
+
+        print "Turning naturally backwards_left"
+        wanderer.turnNaturally(200, 500, enums.Direction.backwards_left)
+        time.sleep(0.5)
+
+        print
+        print "\tPress enter to continue"
+        print
+        raw_input()
+
+        print "Turning naturally forwards_right"
+        wanderer.turnNaturally(500, 200, enums.Direction.forwards_right)
+        time.sleep(0.5)
+
+        print
+        print "\tPress enter to continue"
+        print
+        raw_input()
+
+        print "Turning naturally backwards_right"
+        wanderer.turnNaturally(500, 200, enums.Direction.backwards_right)
+        time.sleep(0.5)
+
+        print
+        print "\tPress enter to continue"
+        print
+        raw_input()
+
         
 
 if __name__ == "__main__":

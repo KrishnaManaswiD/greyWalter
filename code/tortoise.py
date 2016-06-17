@@ -686,7 +686,6 @@ class Tortoise:
             return -1
 
     
-
         
         if direction == enums.Direction.backwards_right or direction == enums.Direction.forwards_right:
             return self.moveMotors(steps, 0, self.minDelayMotors, 0, direction)
@@ -694,6 +693,50 @@ class Tortoise:
         elif direction == enums.Direction.backwards_left or direction == enums.Direction.forwards_left:
             return self.moveMotors(0, steps, 0, self.minDelayMotors, direction)
 
+
+
+
+    def turnNaturally(self, stepsWheelA, stepsWheelB, direction):
+
+        if( direction != enums.Direction.backwards_right and direction != enums.Direction.backwards_left and 
+            direction != enums.Direction.forwards_right and direction != enums.Direction.forwards_left ) :
+            print "I can only turn backwards or forwards, and either left or right."
+            print "\tHINT: check the direction."
+            self.blinkLEDs([1, 2, 3, 4], 3, 0.2)
+            return -1
+
+        if (direction == enums.Direction.backwards_right or direction == enums.Direction.forwards_right) and (stepsWheelA >= stepsWheelB):
+            print "I won't turn the way you want."
+            print "\tHINT: check the direction and number of steps."
+            self.blinkLEDs([1, 2, 3, 4], 3, 0.2)
+            return -1
+
+        if (direction == enums.Direction.backwards_left or direction == enums.Direction.forwards_left) and (stepsWheelB >= stepsWheelA):
+            print "I won't turn the way you want."
+            print "\tHINT: check the direction and number of steps."
+            self.blinkLEDs([1, 2, 3, 4], 3, 0.2)
+            return -1
+
+        if(stepsWheelA < 0 or stepsWheelB < 0):
+            print "I can't move a negative number of steps!"
+            print "\tHINT: check the number of steps."
+            self.blinkLEDs([1, 2, 3, 4], 3, 0.2)
+            return -1
+
+
+
+        if direction == enums.Direction.backwards_right or direction == enums.Direction.forwards_right:
+
+            delay = (stepsWheelA * self.minDelayMotors) / stepsWheelB
+
+            return self.moveMotors(stepsWheelA, stepsWheelB, self.minDelayMotors, delay, direction)
+
+        elif direction == enums.Direction.backwards_left or direction == enums.Direction.forwards_left:
+
+            delay = (stepsWheelB * self.minDelayMotors) / stepsWheelA
+
+            return self.moveMotors(stepsWheelA, stepsWheelB, delay, self.minDelayMotors, direction)
+        
 
 #    def naturalTurn(self, totalSteps, straightStep, sideStep, direction):
 
