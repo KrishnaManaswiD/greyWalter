@@ -111,6 +111,24 @@ def main():
         print
         raw_input()
 
+        print "Gyrating clockwise"
+        wanderer.gyrateOnTheSpot(500, 500, enums.Direction.clockwise)
+        time.sleep(0.5)
+
+        print
+        print "\tPress enter to continue"
+        print
+        raw_input()
+
+        print "Gyrating counter clockwise"
+        wanderer.gyrateOnTheSpot(500, 500, enums.Direction.counterClockwise)
+        time.sleep(0.5)
+
+        print
+        print "\tPress enter to continue"
+        print
+        raw_input()
+
         
 
 if __name__ == "__main__":

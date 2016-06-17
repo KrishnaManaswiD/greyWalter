@@ -695,6 +695,27 @@ class Tortoise:
 
 
 
+    def gyrateOnTheSpot(self, steps, direction):
+
+        if(steps < 0):
+            print "I can't move a negative number of steps!"
+            print "\tHINT: check the number of steps."
+            self.blinkLEDs([1, 2, 3, 4], 3, 0.2)
+            return -1
+
+        if( direction != enums.Direction.clockwise and direction != enums.Direction.counterClockwise ) :
+            print "I can only gyrate clockwise or counter clockwise."
+            print "\tHINT: check the direction."
+            self.blinkLEDs([1, 2, 3, 4], 3, 0.2)
+            return -1
+
+    
+        
+        return self.moveMotors(steps, steps, self.minDelayMotors, self.minDelayMotors, direction)
+
+
+
+
 
     def turnNaturally(self, stepsWheelA, stepsWheelB, direction):
 
