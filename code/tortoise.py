@@ -123,31 +123,11 @@ class Tortoise:
 
         self.state = enums.State.running
 
-#    def pauseAndResume(self):
 
-#        while True:
-#
-#            if self.getSensorData(enums.SensorType.emergencyStop, 1):
-#                if self.getStateTortoise() == enums.State.running:
-#                    self.setStateTortoise(enums.State.paused)
-#                    print "Tortoise paused!"
-#                elif self.getStateTortoise() == enums.State.paused:
-#                    self.setStateTortoise(enums.State.running)
-#                    print "Tortoise running!"
-
-#                # For having time to switch state
-#                time.sleep(0.5)
-
-#            time.sleep(0.1)
-
-
-
-#    @synchronized
     def getStateTortoise(self):
         return self.state
 
 
-#    @synchronized
     def setStateTortoise(self, toState):
         self.state = toState
 
@@ -155,12 +135,14 @@ class Tortoise:
     def calibrateLight(self):
         global lowerBoundLight, upperBoundLight, isLightCalibrated
 
-        raw_input("Press enter to take a reading at normal light levels.")
+        messages.printMessage('calibration_ambient')
+        raw_input()
         #lowerBoundLight = max(self.sensors.readSensor(enums.SensorType.light, 1), self.sensors.readSensor(enums.SensorType.light, 2))
         lowerBoundLight = self.sensors.readSensor(enums.SensorType.light, 1)
         #print "Light in normal conditions is: ", lowerBoundLight
 
-        raw_input("Now please place a light source in front of the light sensor and press enter.")
+        messages.printMessage('calibration_light_source')
+        raw_input()
         #upperBoundLight = min((self.sensors.readSensor(enums.SensorType.light, 1), self.sensors.readSensor(enums.SensorType.light, 2)))
         upperBoundLight = self.sensors.readSensor(enums.SensorType.light, 1)
 #        print "Light when there is a light source is:", upperBoundLight
