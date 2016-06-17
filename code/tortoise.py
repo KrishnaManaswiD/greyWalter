@@ -705,13 +705,13 @@ class Tortoise:
             self.blinkLEDs([1, 2, 3, 4], 3, 0.2)
             return -1
 
-        if (direction == enums.Direction.backwards_right or direction == enums.Direction.forwards_right) and (stepsWheelA >= stepsWheelB):
+        if (direction == enums.Direction.backwards_right or direction == enums.Direction.forwards_right) and (stepsWheelB >= stepsWheelA):
             print "I won't turn the way you want."
             print "\tHINT: check the direction and number of steps."
             self.blinkLEDs([1, 2, 3, 4], 3, 0.2)
             return -1
 
-        if (direction == enums.Direction.backwards_left or direction == enums.Direction.forwards_left) and (stepsWheelB >= stepsWheelA):
+        if (direction == enums.Direction.backwards_left or direction == enums.Direction.forwards_left) and (stepsWheelA >= stepsWheelB):
             print "I won't turn the way you want."
             print "\tHINT: check the direction and number of steps."
             self.blinkLEDs([1, 2, 3, 4], 3, 0.2)
