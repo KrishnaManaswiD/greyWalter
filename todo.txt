@@ -1,17 +1,38 @@
-- Turns
-- Arrays in sensors
-- Comments in a new module
+- Comments in a new module - Dani
+
+- Arrays in sensors - Dito
+    Instead of hardcoded "lightSensor1, lightSensor2, ...", have an array indexed by position in Sensors.py and Actuators.py    
+
+- Tune steps for turning 90º
+
+    ONCE THE TORTOISE IS COMPLETELY BUILT AND WITHOUT WIRES
+    Tune number of steps in turnOnTheSpot (tortoise.py) so that tortoise turns 90º
 
 - Improve random motion
+
+    ONCE THE TORTOISE IS COMPLETELY BUILT AND WITHOUT WIRES
+    Wise combination to moveForwards, moveBackwards, and turn so that it goes smoothly and natural.
+
 - Improve comments and clean code
-- change self.A to motorLeft
-- debug proximity sensor
-- test new eStop
+
+    Dito: sensors.py and actuators.py
+    Dani: tortoise.py
+    
+    Investigate Epydoc - Karam
+    
+- debug proximity sensor : Mike (NOW!)
+
+V test new eStop - Dito
+
 - CHECK CONVENTION FOR NAMES "toTo" or "to_to"
+
 - IMPORTANT: remove "return" in getSensorData, light
 
-TURN ON THE SPOT 
-TURN A BIT MORE NATURALLY
+- TRY and CATCH lowlevel messages and say "Tortoise is broken. Please return it to BRL for help."
 
-TRY and CATCH lowlevel messages and say "Tortoise is broken. Please return it to BRL for help."
+    Investigate exceptions from GPIO library - Mike
+
+    Remove raising exceptions in lowlevel
+    Try and catch Exception in every function inside tortoise.py, and then print the message because it's a hardware problem (the exception comes from the GPIO library)
+
 
