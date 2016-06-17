@@ -1,15 +1,11 @@
+- Turns
+- Arrays in sensors
+- Comments in a new module
+
 - Improve random motion
-- Improve turns
 - Improve comments and clean code
-V Check pos of error checking with final number of sensors/actuators
-V User defined way to turn on LEDs (create enum to redifine position of LEDs to colours)
-- Improve sensors.py to arrays
 - change self.A to motorLeft
-V run motors in parallel
 - debug proximity sensor
-- change emergencySwitch to eStop
-V add moveForward functions
-- Add installation of gedit and timeUpdate to setup.sh
 - test new eStop
 - CHECK CONVENTION FOR NAMES "toTo" or "to_to"
 - IMPORTANT: remove "return" in getSensorData, light
@@ -17,6 +13,5 @@ V add moveForward functions
 TURN ON THE SPOT 
 TURN A BIT MORE NATURALLY
 
-ERROR: all LEDs blink and infinite loop
 TRY and CATCH lowlevel messages and say "Tortoise is broken. Please return it to BRL for help."
 
