@@ -16,6 +16,7 @@ if cmd_subfolder not in sys.path:
 from motors import Motor
 from sensors import Sensors
 from actuators import Actuators
+import messages
 
 import enums
 import time
@@ -114,12 +115,11 @@ class Tortoise:
 #        except:
 #            print "Error: unable to start thread"
 
-        print(chr(27) + "[2J")
-        print "Tortoise alive! Press the pause/resume button to set me going."
+        messages.printMessage('greetings')
         while self.getSensorData(enums.SensorType.emergencyStop, 1) == 0:
             time.sleep(0.1)
 
-        print "[TORTOISE RUNNING]"
+        messages.printMessage('running')
 
         self.state = enums.State.running
 
