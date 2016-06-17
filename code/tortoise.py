@@ -149,7 +149,7 @@ class Tortoise:
 
         isLightCalibrated = True
 
-        print("Calibration complete!")
+        messages.printMessage('calibration_complete')
 
 
 
@@ -159,8 +159,7 @@ class Tortoise:
 
             if (position < 1 or position > 3):
 
-                print "You've asked for a touch sensor that doesn't exist."
-                print "\tHINT: check the position of the sensor you want to set."
+                messages.printMessage('bad_touch_sensor')
                 self.blinkLEDs([1, 2, 3, 4], 3, 0.2)
                 return -1
 
