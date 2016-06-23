@@ -1,6 +1,6 @@
 - Comments in a new module - Dani
 
-- Arrays in sensors - Dito
+- Arrays in sensors - Dito -- DONE!!
     Instead of hardcoded "lightSensor1, lightSensor2, ...", have an array indexed by position in Sensors.py and Actuators.py    
 
 - Tune steps for turning 90º
@@ -22,7 +22,7 @@
     
 - debug proximity sensor : Mike (NOW!)
 
-V test new eStop - Dito
+V test new eStop - Dito --- DONE!!!
 
 - CHECK CONVENTION FOR NAMES "toTo" or "to_to"
 
