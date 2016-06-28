@@ -1,6 +1,6 @@
-- Comments in a new module - Dani
+V Comments in a new module - Dani
 
-- Arrays in sensors - Dito -- DONE!!
+V Arrays in sensors - Dito -- DONE!!
     Instead of hardcoded "lightSensor1, lightSensor2, ...", have an array indexed by position in Sensors.py and Actuators.py    
 
 - Tune steps for turning 90º
@@ -20,7 +20,7 @@
     
     Investigate Epydoc - Karam
     
-- debug proximity sensor : Mike (NOW!)
+V debug proximity sensor : Mike (NOW!)
 
 V test new eStop - Dito --- DONE!!!
 

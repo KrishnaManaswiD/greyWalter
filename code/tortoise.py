@@ -100,10 +100,10 @@ class Tortoise:
         self.sensors.setSensor(enums.SensorType.proximity, 3, 22) # Previous: x
         self.sensors.setSensor(enums.SensorType.proximity, 4, 26) # Previous: x
 
-        self.actuators.initActuator(enums.ActuatorType.led,1, ledPins[0]) # Previous: 19
-        self.actuators.initActuator(enums.ActuatorType.led,2, ledPins[1]) # Previous: 26
-        self.actuators.initActuator(enums.ActuatorType.led,3, ledPins[2]) # Previous: x
-        self.actuators.initActuator(enums.ActuatorType.led,4, ledPins[3]) # Previous: x
+        self.actuators.initActuator(enums.ActuatorType.led, 1, ledPins[0]) # Previous: 19
+        self.actuators.initActuator(enums.ActuatorType.led, 2, ledPins[1]) # Previous: 26
+        self.actuators.initActuator(enums.ActuatorType.led, 3, ledPins[2]) # Previous: x
+        self.actuators.initActuator(enums.ActuatorType.led, 4, ledPins[3]) # Previous: x
 
         #print "light sensor value:"
         #print self.sensors.readSensor(enums.SensorType.light, 1)
