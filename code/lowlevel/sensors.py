@@ -84,7 +84,7 @@ class Sensors:
 
     def callback_touch(self, channel):
         for pos in range(1,len(self.touchSensor_pin)-1):
-            if channel == self.touchSensor_pin[num]:
+            if channel == self.touchSensor_pin[pos]:
                 self.touch_timesPressed[pos] = self.touch_timesPressed[pos] + 1
                 break
         for pos in range(1,len(self.emergencyStop_pin)-1):
