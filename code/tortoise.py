@@ -51,6 +51,13 @@ class Tortoise:
 
 #        self.lock = threading.RLock()
 
+        self.lastRandomCommand = None
+        self.timesSameRandomCommandExecuted = 0
+        self.numberRepeatsRandomCommand = -1
+        self.lastRandomStepsWheelA = None
+        self.lastRandomStepsWheelB = None
+        self.lastRandomDirection = None
+
         isLightCalibrated = False
         lowerBoundLight = 0
         upperBoundLight = 0
@@ -539,10 +546,78 @@ class Tortoise:
 
 
 
-    def doRandomMovement2():
+    def doRandomMovement2(self):
 
-        numberOfSteps = int()        
+        maxTimesCommandRepeated = 3
 
+        # New random command
+        if self.numberRepeatsRandomCommand == -1 or self.timesSameRandomCommandExecuted == self.numberRepeatsRandomCommand:
+
+            self.numberRepeatsRandomCommand = np.random.randint(maxTimesCommandRepeated + 1)
+            self.timesSameRandomCommandExecuted = 0
+    
+
+            # Random number between 30 and 180
+            numberOfSteps = np.random.randint(30, 180)
+
+            self.lastRandomStepsWheelA = numberOfSteps
+            self.lastRandomStepsWheelB = numberOfSteps
+            
+
+            # Random number between 0 and 1
+            randomNumber = np.random.random_sample()
+
+            if(randomNumber < 0.4):
+
+                if(randomNumber < 0.2):
+
+                    self.moveForwards(numberOfSteps)
+                    self.lastRandomCommand = self.moveForwards
+
+                else:
+
+                    self.moveBackwards(numberOfSteps)
+                    self.lastRandomCommand = self.moveBackwards
+
+            else:
+
+                # Random enums.Direction: left of right
+                if(np.random.random_sample() < 0.5):
+                    direction = enums.Direction.forwards_left
+                else:
+                    direction = enums.Direction.forwards_right
+
+                self.lastRandomDirection = direction
+
+
+                if(randomNumber < 0.7):
+                    self.turnOnTheSpot(numberOfSteps, direction)
+                else:
+                    self.turnOnTheSpot(numberOfSteps, direction)   
+
+    
+                self.lastRandomCommand = self.turnOnTheSpot
+
+
+
+        # Repeat last command
+        else:
+    
+            self.timesSameRandomCommandExecuted = self.timesSameRandomCommandExecuted + 1
+
+            # TODO: change wheel A/B!
+
+            if self.lastRandomCommand == self.moveForwards:
+
+                self.moveForwards(self.lastRandomStepsWheelA)
+
+            elif self.lastRandomCommand == self.moveBackwards:
+
+                self.moveBackwards(self.lastRandomStepsWheelA)
+
+            elif self.lastRandomCommand == self.turnOnTheSpot:
+
+                self.turnOnTheSpot(self.lastRandomStepsWheelA, self.lastRandomDirection)  
 
 
 
