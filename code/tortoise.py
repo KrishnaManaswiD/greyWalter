@@ -539,8 +539,14 @@ class Tortoise:
 
 
 
+    def doRandomMovement():
 
-    def doRandomMovement(self):
+        number        
+
+
+
+
+    def doRandomMovement2(self):
 
         # Random number between 15 and (503/2 + 15)
         numberOfSteps = int(509/4*np.random.random_sample() + 15)

@@ -5,7 +5,7 @@ Elsie=Tortoise()
 
 while True:
 
-    proxSensor = Elsie.getSensorData(SensorType.proximity,1)
+    proxSensor = Elsie.getSensorData(SensorType.proximity,2)
     if proxSensor == 1:
         print "Obstacle detected behind"
         Elsie.setLEDValue(1, 1) #self.setLEDValue(position, value)
