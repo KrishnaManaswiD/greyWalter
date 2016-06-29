@@ -35,4 +35,5 @@ V test new eStop - Dito --- DONE!!!
     Remove raising exceptions in lowlevel
     Try and catch THE EXCEPTION THAT THE GPIO LIBRARY RAISES in every function inside tortoise.py, and then print the message because it's a hardware problem (the exception comes from the GPIO library)
 
+- Create python package
 
