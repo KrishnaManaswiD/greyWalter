@@ -549,8 +549,17 @@ class Tortoise:
         randomNumber = np.random.random_sample()
 
         if(randomNumber < 0.4):
-            self.moveMotors(numberOfSteps, enums.Direction.forwards)
+
+            if(randomNumber < 0.2):
+
+                self.moveForwards(numberOfSteps)
+
+            else:
+
+                self.moveBackwards(numberOfSteps)
+
         else:
+
             # Random enums.Direction: left of right
             if(np.random.random_sample() < 0.5):
                 direction = enums.Direction.forwards_left
@@ -559,8 +568,8 @@ class Tortoise:
 
 
             if(randomNumber < 0.7):
-                self.gentleTurn(numberOfSteps, direction)
+                self.turnOnTheSpot(numberOfSteps, direction)
             else:
-                self.sharpTurn(numberOfSteps, direction)
+                self.turnOnTheSpot(numberOfSteps, direction)
 
 
