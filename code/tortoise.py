@@ -560,6 +560,24 @@ class Tortoise:
 
 
 
+
+    def turn90degrees_sharp(self, direction):
+
+        if direction == enums.Direction.backwards_right or direction == enums.Direction.forwards_right:
+
+            return self.turn(50, 200, direction)
+
+        elif direction == enums.Direction.backwards_left or direction == enums.Direction.forwards_left:
+
+            return self.turn(200, 50, direction)
+
+
+
+    def turn90degrees_widely(self, direction):
+        
+        
+
+
     def doRandomMovement2(self):
 
         maxTimesCommandRepeated = 3
