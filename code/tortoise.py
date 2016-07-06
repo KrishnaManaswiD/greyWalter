@@ -561,20 +561,27 @@ class Tortoise:
 
 
 
-    def turn90degrees_sharp(self, direction):
+    def turn45degrees_sharp(self, direction):
 
         if direction == enums.Direction.backwards_right or direction == enums.Direction.forwards_right:
 
-            return self.turn(50, 200, direction)
+            return self.turn(400, 75, direction)
 
         elif direction == enums.Direction.backwards_left or direction == enums.Direction.forwards_left:
 
-            return self.turn(200, 50, direction)
+            return self.turn(75, 400, direction)
 
 
 
-    def turn90degrees_widely(self, direction):
-        
+    def turn30degrees_wide(self, direction):
+
+        if direction == enums.Direction.backwards_right or direction == enums.Direction.forwards_right:
+
+            return self.turn(450, 250, direction)
+
+        elif direction == enums.Direction.backwards_left or direction == enums.Direction.forwards_left:
+
+            return self.turn(250, 450, direction)
         
 
 

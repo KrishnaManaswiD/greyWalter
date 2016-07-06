@@ -18,6 +18,18 @@ t = Tortoise()
 
 while(True):
 
-    t.turn90degrees_sharp(enums.Direction.forwards_left)
+    t.turn45degrees_sharp(enums.Direction.forwards_left)
+    t.turn45degrees_sharp(enums.Direction.forwards_left)
+    time.sleep(1)
 
+    t.turn45degrees_sharp(enums.Direction.backwards_left)
+    t.turn45degrees_sharp(enums.Direction.backwards_left)
+    time.sleep(1)
+
+    t.turn45degrees_sharp(enums.Direction.forwards_right)
+    t.turn45degrees_sharp(enums.Direction.forwards_right)
+    time.sleep(1)
+
+    t.turn45degrees_sharp(enums.Direction.backwards_right)
+    t.turn45degrees_sharp(enums.Direction.backwards_right)
     time.sleep(1)
