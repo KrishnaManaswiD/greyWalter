@@ -604,7 +604,7 @@ class Tortoise:
             # 40% of moving forwards/backwards
             if(randomNumber < 0.4):
 
-                if(randomNumber < 0.2):
+                if(randomNumber < 0.30):
 
                     self.moveForwards(self.lastRandomStepsWheelA)
                     self.lastRandomCommand = self.moveForwards
