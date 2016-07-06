@@ -23,6 +23,11 @@ sudo pip install enum34 >>/dev/null
 echo "DONE"
 echo
 
+echo "Installing Sphinx (python module)"
+sudo pip install Sphinx >>/dev/null
+echo "DONE"
+echo
+
 # Directory of this file
 BASEDIR=$(dirname `readlink -f $0`)
 

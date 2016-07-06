@@ -1,5 +1,5 @@
-TORTOISE DOCUMENTATION
-=======================
+tortoise.py documentation
+=============================
 
 :mod: `Tortoise` -- Main
 

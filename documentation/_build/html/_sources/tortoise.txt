@@ -1,7 +1,7 @@
-TORTOISE DOCUMENTATION
-=======================
+tortoise.py documentation
+=============================
 
 :mod: `Tortoise` -- Main
 
-.. automodule:: tortoise.py
+.. automodule:: tortoise
 	:members:

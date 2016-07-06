@@ -1,9 +1,0 @@
-SENSORS DOCUMENTATION
-=======================
-
-:mod: `Sensors` -- sens
-
-.. automodule:: lowlevel.sensors.py
-	:members:
-	:undoc-members:
-	:show-inheritance:
