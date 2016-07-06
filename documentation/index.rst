@@ -6,20 +6,12 @@
 Welcome to greyWalter's documentation!
 ======================================
 
-Contents:
-
 .. toctree::
-   :maxdepth: 2
+	:maxdepth: 2
 
-.. automodule:: tortoise
+	tortoise
+	sensors
 
-.. automodule:: sensors
-
-.. autoclass:: Tortoise
-   :members:
-
-.. autoclass:: Sensors
-   :members:
 
 Indices and tables
 ==================

@@ -6,10 +6,10 @@ GPIO.setmode(GPIO.BCM)
 
 
 class Sensors:
-"""Class Sensors. Explanation:"""
+    """Class Sensors. Explanation:"""
 
     def __init__(self):
-"""returns (arg1 / arg2) + arg3
+        """returns (arg1 / arg2) + arg3
 
         This is a longer explanation, which may include math with latex syntax
         :math:`\\alpha`.
@@ -56,7 +56,6 @@ class Sensors:
             important feature
         .. seealso:: :class:`MainClass2`
         .. warning:: arg2 must be non-zero.
-        .. todo:: check that arg2 is non zero.
         """
 
         self.dictionaryPinsToPositions = {}
@@ -73,7 +72,7 @@ class Sensors:
 
     #if everything OK, return 0. If sensor type unknown or position > limit, return -1
     def setSensor(self, sensor_type, pos, pin):
-"""returns (arg1 / arg2) + arg3
+        """returns (arg1 / arg2) + arg3
 
         This is a longer explanation, which may include math with latex syntax
         :math:`\\alpha`.
@@ -120,7 +119,6 @@ class Sensors:
             important feature
         .. seealso:: :class:`MainClass2`
         .. warning:: arg2 must be non-zero.
-        .. todo:: check that arg2 is non zero.
         """
 
         idx = pos - 1

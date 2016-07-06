@@ -29,7 +29,7 @@ GPIO.setmode(GPIO.BCM)
 
 
 class Tortoise:
-"""Class Tortoise. Explanation:"""
+    """Class Tortoise. Explanation:"""
 
     def __init__(self):
 
@@ -172,7 +172,7 @@ class Tortoise:
 
 
     def getStateTortoise(self):
-"""returns (arg1 / arg2) + arg3
+        """returns (arg1 / arg2) + arg3
 
         This is a longer explanation, which may include math with latex syntax
         :math:`\\alpha`.
@@ -219,13 +219,12 @@ class Tortoise:
             important feature
         .. seealso:: :class:`MainClass2`
         .. warning:: arg2 must be non-zero.
-        .. todo:: check that arg2 is non zero.
         """
         return self.state
 
 
     def setStateTortoise(self, toState):
-"""returns (arg1 / arg2) + arg3
+        """returns (arg1 / arg2) + arg3
 
         This is a longer explanation, which may include math with latex syntax
         :math:`\\alpha`.
@@ -272,7 +271,6 @@ class Tortoise:
             important feature
         .. seealso:: :class:`MainClass2`
         .. warning:: arg2 must be non-zero.
-        .. todo:: check that arg2 is non zero.
         """
         self.state = toState
 
