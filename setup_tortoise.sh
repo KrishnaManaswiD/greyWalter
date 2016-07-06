@@ -28,13 +28,15 @@ BASEDIR=$(dirname `readlink -f $0`)
 
 chmod +x $BASEDIR/code/lowlevel/watchdog.sh
 
+grep -q "$BASEDIR/code/lowlevel/watchdog.sh >/dev/null &" ~/.bashrc
+
 # If the watchdog is not in the .bashrc file, it is added
-if ! grep -Fxq "$BASEDIR/code/lowlevel/watchdog.sh >/dev/null &" ~/.bashrc
+if [ $?  -eq 1 ]
 then
     echo "Updating ~/.bashrc"
 
     echo  >> ~/.bashrc
-    echo "# Only one instance of the weatchdog is created" >> ~/.bashrc
+    echo "# Only one instance of the watchdog is created" >> ~/.bashrc
     echo "if [ \`ps aux | grep watchdog.sh | wc -l\` -eq 1 ]" >> ~/.bashrc
     echo "then" >> ~/.bashrc
     echo -e "\t$BASEDIR/code/lowlevel/watchdog.sh >/dev/null &" >> ~/.bashrc
