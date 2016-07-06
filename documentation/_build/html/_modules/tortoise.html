@@ -1,0 +1,877 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>tortoise &mdash; greyWalter 1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="greyWalter 1 documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for tortoise</h1><div class="highlight"><pre>
+<span></span><span class="c1"># IMPORT MODULES FROM SUBFOLDERS #</span>
+<span class="sd">&quot;&quot;&quot; It&#39;s neccesary in order to import modules not in the same folder, but in a different one.</span>
+<span class="sd">This is the way to tell python the location on those subfolders: &quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">inspect</span>
+
+<span class="n">cmd_folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">getfile</span><span class="p">(</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span> <span class="p">))[</span><span class="mi">0</span><span class="p">]))</span>
+<span class="k">if</span> <span class="n">cmd_folder</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">cmd_folder</span><span class="p">)</span>
+
+<span class="c1"># Subfolder &quot;lowlevel&quot;</span>
+<span class="n">cmd_subfolder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">getfile</span><span class="p">(</span> <span class="n">inspect</span><span class="o">.</span><span class="n">currentframe</span><span class="p">()</span> <span class="p">))[</span><span class="mi">0</span><span class="p">],</span><span class="s2">&quot;lowlevel&quot;</span><span class="p">)))</span>
+<span class="k">if</span> <span class="n">cmd_subfolder</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">cmd_subfolder</span><span class="p">)</span>
+<span class="c1"># ------------------------------ #</span>
+
+<span class="kn">from</span> <span class="nn">motors</span> <span class="kn">import</span> <span class="n">Motor</span>
+<span class="kn">from</span> <span class="nn">sensors</span> <span class="kn">import</span> <span class="n">Sensors</span>
+<span class="kn">from</span> <span class="nn">actuators</span> <span class="kn">import</span> <span class="n">Actuators</span>
+<span class="kn">import</span> <span class="nn">messages</span>
+<span class="kn">import</span> <span class="nn">enums</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">RPi.GPIO</span> <span class="kn">as</span> <span class="nn">GPIO</span>
+<span class="kn">from</span> <span class="nn">multiprocessing</span> <span class="kn">import</span> <span class="n">Process</span>
+
+<span class="c1"># Numbering of the pins</span>
+<span class="n">GPIO</span><span class="o">.</span><span class="n">setmode</span><span class="p">(</span><span class="n">GPIO</span><span class="o">.</span><span class="n">BCM</span><span class="p">)</span>
+
+
+
+<div class="viewcode-block" id="Tortoise"><a class="viewcode-back" href="../index.html#tortoise.Tortoise">[docs]</a><span class="k">class</span> <span class="nc">Tortoise</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="c1"># Variables that control the calibration of the light sensors</span>
+
+        <span class="sd">&quot;&quot;&quot; </span>
+<span class="sd">            The purpose was to avoid calibration everytime the tortoise object is created. </span>
+<span class="sd">            However, this hasn&#39;t been implemented yet. The idea could be to save the light </span>
+<span class="sd">            values in a file and read that file when creating the tortoise object. </span>
+<span class="sd">            Light conditions could have changed, so this should be done carefully. </span>
+
+<span class="sd">            At the moment, the tortoise object is created without calibration. If the users</span>
+<span class="sd">            want to use the light sensors, they need will need to execute the calibrateLight</span>
+<span class="sd">            function before using those sensors.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">global</span> <span class="n">isLightCalibrated</span>
+        <span class="k">global</span> <span class="n">lowerBoundLight</span>
+        <span class="k">global</span> <span class="n">upperBoundLight</span>
+
+        <span class="n">isLightCalibrated</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="n">lowerBoundLight</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">upperBoundLight</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1"># --- Variables that control the calibration of the light sensors ---</span>
+
+
+        <span class="c1"># No warnings from the GPIO library</span>
+        <span class="n">GPIO</span><span class="o">.</span><span class="n">setwarnings</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+
+
+        <span class="c1"># Variables that control the random motion</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lastRandomCommand</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timesSameRandomCommandExecuted</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">numberRepeatsRandomCommand</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lastRandomStepsWheelA</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lastRandomStepsWheelB</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lastRandomDirection</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="c1"># --- Variables that control the random motion ---</span>
+
+
+
+        
+
+
+        <span class="c1"># Setting the motors, sensors and actuators    </span>
+
+        <span class="c1"># Pin numbers of the motors</span>
+        <span class="n">motorPins</span> <span class="o">=</span> <span class="p">[</span><span class="mi">13</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">11</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">A</span> <span class="o">=</span> <span class="n">Motor</span><span class="p">(</span><span class="n">motorPins</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">motorPins</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">motorPins</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">motorPins</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">B</span> <span class="o">=</span> <span class="n">Motor</span><span class="p">(</span><span class="n">motorPins</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">motorPins</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">motorPins</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span> <span class="n">motorPins</span><span class="p">[</span><span class="mi">7</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sensors</span> <span class="o">=</span> <span class="n">Sensors</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actuators</span> <span class="o">=</span> <span class="n">Actuators</span><span class="p">()</span>
+
+        <span class="c1"># Position 1 of the light sensors area in the PCB assigned to pin 17</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sensors</span><span class="o">.</span><span class="n">setSensor</span><span class="p">(</span><span class="n">enums</span><span class="o">.</span><span class="n">SensorType</span><span class="o">.</span><span class="n">light</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">17</span><span class="p">)</span> 
+
+        <span class="c1"># Position 2 of the light sensors area in the PCB assigned to pin 4</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sensors</span><span class="o">.</span><span class="n">setSensor</span><span class="p">(</span><span class="n">enums</span><span class="o">.</span><span class="n">SensorType</span><span class="o">.</span><span class="n">light</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+
+        <span class="c1"># Position 1 of the touch sensors area in the PCB assigned to pin 27</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sensors</span><span class="o">.</span><span class="n">setSensor</span><span class="p">(</span><span class="n">enums</span><span class="o">.</span><span class="n">SensorType</span><span class="o">.</span><span class="n">touch</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">27</span><span class="p">)</span> 
+
+        <span class="c1"># Position 2 of the touch sensors area in the PCB assigned to pin 2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sensors</span><span class="o">.</span><span class="n">setSensor</span><span class="p">(</span><span class="n">enums</span><span class="o">.</span><span class="n">SensorType</span><span class="o">.</span><span class="n">touch</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="c1"># Position 3 of the touch sensors area in the PCB assigned to pin 18</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sensors</span><span class="o">.</span><span class="n">setSensor</span><span class="p">(</span><span class="n">enums</span><span class="o">.</span><span class="n">SensorType</span><span class="o">.</span><span class="n">touch</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">18</span><span class="p">)</span>
+
+        <span class="c1"># Position 4 of the touch sensors area in the PCB assigned to pin 3</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sensors</span><span class="o">.</span><span class="n">setSensor</span><span class="p">(</span><span class="n">enums</span><span class="o">.</span><span class="n">SensorType</span><span class="o">.</span><span class="n">emergencyStop</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> 
+
+        <span class="c1"># Position 1 of the proximity sensors area in the PCB assigned to pin 19</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sensors</span><span class="o">.</span><span class="n">setSensor</span><span class="p">(</span><span class="n">enums</span><span class="o">.</span><span class="n">SensorType</span><span class="o">.</span><span class="n">proximity</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">19</span><span class="p">)</span>
+
+        <span class="c1"># Position 2 of the proximity sensors area in the PCB assigned to pin 21</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sensors</span><span class="o">.</span><span class="n">setSensor</span><span class="p">(</span><span class="n">enums</span><span class="o">.</span><span class="n">SensorType</span><span class="o">.</span><span class="n">proximity</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">21</span><span class="p">)</span> 
+
+        <span class="c1"># Position 3 of the proximity sensors area in the PCB assigned to pin 22</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sensors</span><span class="o">.</span><span class="n">setSensor</span><span class="p">(</span><span class="n">enums</span><span class="o">.</span><span class="n">SensorType</span><span class="o">.</span><span class="n">proximity</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">22</span><span class="p">)</span> 
+
+        <span class="c1"># Position 4 of the proximity sensors area in the PCB assigned to pin 26</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sensors</span><span class="o">.</span><span class="n">setSensor</span><span class="p">(</span><span class="n">enums</span><span class="o">.</span><span class="n">SensorType</span><span class="o">.</span><span class="n">proximity</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">26</span><span class="p">)</span> 
+
+         <span class="c1"># Positions of the LEDs area in the PCB assigned to pins 8, 16, 25, 12</span>
+        <span class="n">ledPins</span> <span class="o">=</span> <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">12</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actuators</span><span class="o">.</span><span class="n">initActuator</span><span class="p">(</span><span class="n">enums</span><span class="o">.</span><span class="n">ActuatorType</span><span class="o">.</span><span class="n">led</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ledPins</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">actuators</span><span class="o">.</span><span class="n">initActuator</span><span class="p">(</span><span class="n">enums</span><span class="o">.</span><span class="n">ActuatorType</span><span class="o">.</span><span class="n">led</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">ledPins</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">actuators</span><span class="o">.</span><span class="n">initActuator</span><span class="p">(</span><span class="n">enums</span><span class="o">.</span><span class="n">ActuatorType</span><span class="o">.</span><span class="n">led</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">ledPins</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">actuators</span><span class="o">.</span><span class="n">initActuator</span><span class="p">(</span><span class="n">enums</span><span class="o">.</span><span class="n">ActuatorType</span><span class="o">.</span><span class="n">led</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">ledPins</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+        <span class="c1"># --- Setting the motors, sensors and actuators ---</span>
+
+
+        <span class="c1"># Times pressed the touch sensor for the latching behavour</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lastTouch</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="c1"># Minimum milliseconds to send to the motors as delay</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">minDelayMotors</span> <span class="o">=</span> <span class="mi">2</span>
+
+
+        <span class="c1"># Creation of a file with the PID of the process</span>
+
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            The reasons of termination of a user process could be because of normal termination </span>
+<span class="sd">            or because of an error (exceptions, ctrl-c, ...). When an error happens, the motors</span>
+<span class="sd">            and may be still on. In this case, the motors and LEDs should be turned off</span>
+<span class="sd">            for the battery not to drain. </span>
+
+<span class="sd">            The solution implemented is to have a background process (a watchdog) running </span>
+<span class="sd">            continously. This process checks if the user process doesn&#39;t exist anymore (termination).</span>
+<span class="sd">            If it doesn&#39;t, it stops the motors, switches off the LEDs and cleans up all the pins.</span>
+<span class="sd">            In order to identy that the user script has finished, a file with the name [PID].pid is</span>
+<span class="sd">            created in the folder ~/.tortoise_pids/, where [PID] is the PID of the user process.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># PID of process</span>
+        <span class="n">pid</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getpid</span><span class="p">()</span>
+
+        <span class="c1"># ~/.tortoise_pids/</span>
+        <span class="n">directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s2">&quot;~&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;/.tortoise_pids/&quot;</span>
+
+        <span class="c1"># Filename: [PID].pid</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">directory</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">pid</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;.pid&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+
+        <span class="c1"># First line: motor pins</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">motorPins</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">motorPins</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">motorPins</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">motorPins</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">motorPins</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">motorPins</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">motorPins</span><span class="p">[</span><span class="mi">6</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">motorPins</span><span class="p">[</span><span class="mi">7</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Second line: LED pins</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">ledPins</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ledPins</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ledPins</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ledPins</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="c1"># --- Creation of a file with the PID of the process ---</span>
+
+
+
+        <span class="c1"># Waiting for the user to press the e-stop button</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">enums</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">paused</span>
+
+        <span class="n">messages</span><span class="o">.</span><span class="n">printMessage</span><span class="p">(</span><span class="s1">&#39;greetings&#39;</span><span class="p">)</span>
+        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">getSensorData</span><span class="p">(</span><span class="n">enums</span><span class="o">.</span><span class="n">SensorType</span><span class="o">.</span><span class="n">emergencyStop</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+
+        <span class="n">messages</span><span class="o">.</span><span class="n">printMessage</span><span class="p">(</span><span class="s1">&#39;running&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">enums</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">running</span>
+        <span class="c1"># --- Waiting for the user to press the e-stop button ---</span>
+
+
+
+    <span class="k">def</span> <span class="nf">getStateTortoise</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span>
+
+
+    <span class="k">def</span> <span class="nf">setStateTortoise</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">toState</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">toState</span>
+
+
+    <span class="k">def</span> <span class="nf">calibrateLight</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">global</span> <span class="n">lowerBoundLight</span><span class="p">,</span> <span class="n">upperBoundLight</span><span class="p">,</span> <span class="n">isLightCalibrated</span>
+
+        <span class="n">messages</span><span class="o">.</span><span class="n">printMessage</span><span class="p">(</span><span class="s1">&#39;calibration_ambient&#39;</span><span class="p">)</span>
+        <span class="nb">raw_input</span><span class="p">()</span>
+        <span class="n">lowerBoundLight</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sensors</span><span class="o">.</span><span class="n">readSensor</span><span class="p">(</span><span class="n">enums</span><span class="o">.</span><span class="n">SensorType</span><span class="o">.</span><span class="n">light</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">messages</span><span class="o">.</span><span class="n">printMessage</span><span class="p">(</span><span class="s1">&#39;calibration_light_source&#39;</span><span class="p">)</span>
+        <span class="nb">raw_input</span><span class="p">()</span>
+        <span class="n">upperBoundLight</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sensors</span><span class="o">.</span><span class="n">readSensor</span><span class="p">(</span><span class="n">enums</span><span class="o">.</span><span class="n">SensorType</span><span class="o">.</span><span class="n">light</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">isLightCalibrated</span> <span class="o">=</span> <span class="bp">True</span>
+
+        <span class="n">messages</span><span class="o">.</span><span class="n">printMessage</span><span class="p">(</span><span class="s1">&#39;calibration_complete&#39;</span><span class="p">)</span>
+
+
+
+    <span class="k">def</span> <span class="nf">getSensorData</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sensor_type</span><span class="p">,</span> <span class="n">position</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">sensor_type</span> <span class="o">==</span> <span class="n">enums</span><span class="o">.</span><span class="n">SensorType</span><span class="o">.</span><span class="n">touch</span><span class="p">):</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="n">position</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">position</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">):</span>
+
+                <span class="n">messages</span><span class="o">.</span><span class="n">printMessage</span><span class="p">(</span><span class="s1">&#39;bad_touch_sensor&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">blinkLEDs_error</span><span class="p">()</span>
+                <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+
+        <span class="k">elif</span> <span class="p">(</span><span class="n">sensor_type</span> <span class="o">==</span> <span class="n">enums</span><span class="o">.</span><span class="n">SensorType</span><span class="o">.</span><span class="n">emergencyStop</span><span class="p">):</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="n">position</span> <span class="o">!=</span> <span class="mi">4</span><span class="p">):</span>
+
+                <span class="n">messages</span><span class="o">.</span><span class="n">printMessage</span><span class="p">(</span><span class="s1">&#39;bad_emergency_sensor&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">blinkLEDs_error</span><span class="p">()</span>
+                <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+
+        <span class="k">elif</span> <span class="p">(</span><span class="n">sensor_type</span> <span class="o">==</span> <span class="n">enums</span><span class="o">.</span><span class="n">SensorType</span><span class="o">.</span><span class="n">light</span><span class="p">):</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="n">position</span> <span class="o">!=</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">position</span><span class="o">!=</span><span class="mi">2</span><span class="p">):</span>
+
+                <span class="n">messages</span><span class="o">.</span><span class="n">printMessage</span><span class="p">(</span><span class="s1">&#39;bad_light_sensor&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">blinkLEDs_error</span><span class="p">()</span>
+                <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+
+        <span class="k">elif</span> <span class="p">(</span><span class="n">sensor_type</span> <span class="o">==</span> <span class="n">enums</span><span class="o">.</span><span class="n">SensorType</span><span class="o">.</span><span class="n">proximity</span><span class="p">):</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="n">position</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">position</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">):</span>
+
+                <span class="n">messages</span><span class="o">.</span><span class="n">printMessage</span><span class="p">(</span><span class="s1">&#39;bad_proximity_sensor&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">blinkLEDs_error</span><span class="p">()</span>
+                <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+
+        <span class="k">else</span><span class="p">:</span>
+                <span class="n">messages</span><span class="o">.</span><span class="n">printMessage</span><span class="p">(</span><span class="s1">&#39;bad_sensor&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">blinkLEDs_error</span><span class="p">()</span>
+                <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+
+
+        <span class="c1"># The value of the sensor is read at lowlevel</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sensors</span><span class="o">.</span><span class="n">readSensor</span><span class="p">(</span><span class="n">sensor_type</span><span class="p">,</span> <span class="n">position</span><span class="p">)</span>
+
+
+        <span class="c1"># For the light sensor, &#39;value&#39; is the count of the light</span>
+        <span class="k">if</span> <span class="n">sensor_type</span> <span class="o">==</span> <span class="n">enums</span><span class="o">.</span><span class="n">SensorType</span><span class="o">.</span><span class="n">light</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">value</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">upperBoundLight</span> <span class="o">-</span> <span class="n">lowerBoundLight</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">messages</span><span class="o">.</span><span class="n">printMessage</span><span class="p">(</span><span class="s1">&#39;no_calibration&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">blinkLEDs_error</span><span class="p">()</span>
+                <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+
+            <span class="c1"># A scale to the range [0, 9] is done</span>
+            <span class="n">lightVal</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">9</span> <span class="o">-</span> <span class="nb">round</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">value</span><span class="o">-</span><span class="n">upperBoundLight</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">upperBoundLight</span> <span class="o">-</span> <span class="n">lowerBoundLight</span><span class="p">)</span><span class="o">/</span><span class="mi">9</span><span class="p">)))</span>
+
+            <span class="k">if</span> <span class="n">lightVal</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">messages</span><span class="o">.</span><span class="n">printMessage</span><span class="p">(</span><span class="s1">&#39;no_calibration&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">blinkLEDs_error</span><span class="p">()</span>
+                <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+
+            <span class="k">return</span> <span class="n">lightVal</span>
+
+
+        <span class="c1"># For the touch sensor, &#39;value&#39; is the number of times the sensor has been pressed</span>
+        <span class="k">elif</span> <span class="n">sensor_type</span> <span class="o">==</span> <span class="n">enums</span><span class="o">.</span><span class="n">SensorType</span><span class="o">.</span><span class="n">touch</span><span class="p">:</span>
+
+            <span class="c1"># Returns if the sensor has been pressed since the last time it was queried</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">getSwitchTriggered</span><span class="p">(</span><span class="n">position</span><span class="p">,</span><span class="n">value</span><span class="p">)</span>
+
+        <span class="c1"># For the e-stop, &#39;value&#39; is the number of times the sensor has been pressed</span>
+        <span class="k">elif</span> <span class="n">sensor_type</span> <span class="o">==</span> <span class="n">enums</span><span class="o">.</span><span class="n">SensorType</span><span class="o">.</span><span class="n">emergencyStop</span><span class="p">:</span>
+
+            <span class="c1"># Returns if it&#39;s either 1 (ON) or 0 (OFF)</span>
+            <span class="k">return</span> <span class="n">value</span> <span class="o">%</span> <span class="mi">2</span>
+
+        <span class="c1"># For the proximity sensor, &#39;value&#39; is either 1 (ON) or 0 (OFF)</span>
+        <span class="k">elif</span> <span class="n">sensor_type</span> <span class="o">==</span> <span class="n">enums</span><span class="o">.</span><span class="n">SensorType</span><span class="o">.</span><span class="n">proximity</span><span class="p">:</span>
+
+            <span class="c1"># Returns 1 (ON) or 0 (OFF)</span>
+            <span class="k">return</span> <span class="n">value</span>
+
+
+
+    <span class="k">def</span> <span class="nf">getSwitchTriggered</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lastTouch</span><span class="p">[</span><span class="n">position</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">lastTouch</span><span class="p">[</span><span class="n">position</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="k">return</span> <span class="mi">0</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">lastTouch</span><span class="p">[</span><span class="n">position</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">value</span><span class="p">:</span>
+
+            <span class="k">return</span> <span class="mi">0</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">lastTouch</span><span class="p">[</span><span class="n">position</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="k">return</span> <span class="mi">1</span>
+
+
+    <span class="k">def</span> <span class="nf">getLEDValue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">position</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">position</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">):</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">printMessage</span><span class="p">(</span><span class="s1">&#39;bad_LED&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">blinkLEDs_error</span><span class="p">()</span>
+            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">actuators</span><span class="o">.</span><span class="n">getActuatorValue</span><span class="p">(</span><span class="n">enums</span><span class="o">.</span><span class="n">ActuatorType</span><span class="o">.</span><span class="n">led</span><span class="p">,</span> <span class="n">position</span><span class="p">)</span>
+
+
+
+    <span class="k">def</span> <span class="nf">setLEDValue</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="n">position</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">position</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">):</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">printMessage</span><span class="p">(</span><span class="s1">&#39;bad_LED&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">blinkLEDs_error</span><span class="p">()</span>
+            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="n">value</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">value</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">printMessage</span><span class="p">(</span><span class="s1">&#39;bad_LED_value&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">blinkLEDs_error</span><span class="p">()</span>
+            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">actuators</span><span class="o">.</span><span class="n">setActuatorValue</span><span class="p">(</span><span class="n">enums</span><span class="o">.</span><span class="n">ActuatorType</span><span class="o">.</span><span class="n">led</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="mi">0</span>
+
+
+
+    <span class="k">def</span> <span class="nf">blinkLEDs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positions</span><span class="p">,</span> <span class="n">numberOfBlinks</span><span class="p">,</span> <span class="n">delay</span><span class="p">,</span> <span class="n">blocking</span> <span class="o">=</span> <span class="bp">False</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">numberOfBlinks</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">printMessage</span><span class="p">(</span><span class="s1">&#39;blinks_negative&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">blinkLEDs_error</span><span class="p">()</span>
+            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+
+        <span class="k">if</span> <span class="n">numberOfBlinks</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">printMessage</span><span class="p">(</span><span class="s1">&#39;blinks_zero&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">blinkLEDs_error</span><span class="p">()</span>
+            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+
+        <span class="k">if</span> <span class="n">delay</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">printMessage</span><span class="p">(</span><span class="s1">&#39;blinking_fast&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">blinkLEDs_error</span><span class="p">()</span>
+            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+
+
+        <span class="c1"># If no TypeError exception raised, &#39;positions&#39; is an array</span>
+        <span class="k">try</span><span class="p">:</span>
+
+            <span class="c1"># All positions are checked</span>
+            <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">positions</span><span class="p">)):</span>
+
+                <span class="k">if</span> <span class="n">positions</span><span class="p">[</span><span class="n">y</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">positions</span><span class="p">[</span><span class="n">y</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">:</span>
+                    <span class="n">messages</span><span class="o">.</span><span class="n">printMessage</span><span class="p">(</span><span class="s1">&#39;bad_LED&#39;</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">blinkLEDs_error</span><span class="p">()</span>
+                    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+
+        <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span> <span class="c1"># It&#39;s not an array but an integer</span>
+
+            <span class="k">if</span> <span class="n">positions</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">positions</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">:</span>
+                <span class="n">messages</span><span class="o">.</span><span class="n">printMessage</span><span class="p">(</span><span class="s1">&#39;bad_LED&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">blinkLEDs_error</span><span class="p">()</span>
+                <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+
+
+        <span class="c1"># The current state of the LEDs is saved to restore it later</span>
+        <span class="n">previousStateLEDs</span> <span class="o">=</span> <span class="p">[</span> <span class="bp">self</span><span class="o">.</span><span class="n">getLEDValue</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="p">]</span>
+
+        <span class="n">cont</span> <span class="o">=</span> <span class="bp">True</span>
+
+        <span class="c1"># If blocking == True, it&#39;s an infinite loop to &quot;stop&quot; the execution of the program and keep blinkind the LEDs</span>
+        <span class="k">while</span> <span class="n">cont</span><span class="p">:</span>
+
+            <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">numberOfBlinks</span><span class="p">):</span>
+
+                <span class="c1"># If no TypeError exception raised, &#39;positions&#39; is an array</span>
+                <span class="k">try</span><span class="p">:</span>
+
+                    <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">positions</span><span class="p">)):</span>
+
+                        <span class="bp">self</span><span class="o">.</span><span class="n">actuators</span><span class="o">.</span><span class="n">setActuatorValue</span><span class="p">(</span><span class="n">enums</span><span class="o">.</span><span class="n">ActuatorType</span><span class="o">.</span><span class="n">led</span><span class="p">,</span> <span class="n">positions</span><span class="p">[</span><span class="n">y</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
+
+                    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">delay</span><span class="p">)</span>
+
+                    <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">positions</span><span class="p">)):</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">actuators</span><span class="o">.</span><span class="n">setActuatorValue</span><span class="p">(</span><span class="n">enums</span><span class="o">.</span><span class="n">ActuatorType</span><span class="o">.</span><span class="n">led</span><span class="p">,</span> <span class="n">positions</span><span class="p">[</span><span class="n">y</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span>
+
+                    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">delay</span><span class="p">)</span>
+
+                <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span> <span class="c1"># It&#39;s not an array but an integer</span>
+
+                    <span class="bp">self</span><span class="o">.</span><span class="n">actuators</span><span class="o">.</span><span class="n">setActuatorValue</span><span class="p">(</span><span class="n">enums</span><span class="o">.</span><span class="n">ActuatorType</span><span class="o">.</span><span class="n">led</span><span class="p">,</span> <span class="n">positions</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">delay</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">actuators</span><span class="o">.</span><span class="n">setActuatorValue</span><span class="p">(</span><span class="n">enums</span><span class="o">.</span><span class="n">ActuatorType</span><span class="o">.</span><span class="n">led</span><span class="p">,</span> <span class="n">positions</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">delay</span><span class="p">)</span>
+
+
+            <span class="c1"># Depending on the parameter, it blocks or not</span>
+            <span class="n">cont</span> <span class="o">=</span> <span class="n">blocking</span>
+
+
+
+        <span class="c1"># If it doesn&#39;t block, the previous state of the LEDs is restored</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setLEDValue</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">previousStateLEDs</span><span class="p">[</span><span class="n">x</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="mi">0</span>
+
+
+
+    <span class="k">def</span> <span class="nf">blinkLEDs_error</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">blinkLEDs</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="mi">3</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">blocking</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+
+
+
+    <span class="k">def</span> <span class="nf">moveMotors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stepsWheelA</span><span class="p">,</span> <span class="n">stepsWheelB</span><span class="p">,</span> <span class="n">delayWheelA</span><span class="p">,</span> <span class="n">delayWheelB</span><span class="p">,</span> <span class="n">direction</span><span class="p">):</span>
+
+        <span class="k">if</span><span class="p">(</span> <span class="n">direction</span> <span class="o">!=</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">backwards_right</span> <span class="ow">and</span> <span class="n">direction</span> <span class="o">!=</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">backwards_left</span> <span class="ow">and</span> <span class="n">direction</span> <span class="o">!=</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">forwards_right</span> <span class="ow">and</span> <span class="n">direction</span> <span class="o">!=</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">forwards_left</span> <span class="ow">and</span> <span class="n">direction</span> <span class="o">!=</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">forwards</span> <span class="ow">and</span> <span class="n">direction</span> <span class="o">!=</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">backwards</span>  <span class="ow">and</span> <span class="n">direction</span> <span class="o">!=</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">clockwise</span> <span class="ow">and</span> <span class="n">direction</span> <span class="o">!=</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">counterClockwise</span>  <span class="p">)</span> <span class="p">:</span>
+
+            <span class="n">messages</span><span class="o">.</span><span class="n">printMessage</span><span class="p">(</span><span class="s1">&#39;bad_direction&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">blinkLEDs_error</span><span class="p">()</span>
+            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="n">stepsWheelA</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">stepsWheelB</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">printMessage</span><span class="p">(</span><span class="s1">&#39;bad_steps&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">blinkLEDs_error</span><span class="p">()</span>
+            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+
+        <span class="k">if</span><span class="p">((</span><span class="n">stepsWheelA</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">delayWheelA</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">minDelayMotors</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">stepsWheelB</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">delayWheelB</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">minDelayMotors</span><span class="p">)):</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">printMessage</span><span class="p">(</span><span class="s1">&#39;bad_delay&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">blinkLEDs_error</span><span class="p">()</span>
+            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+
+
+
+        <span class="c1"># If a stop command has been sent, the turtle will stop its movement</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">getSensorData</span><span class="p">(</span><span class="n">enums</span><span class="o">.</span><span class="n">SensorType</span><span class="o">.</span><span class="n">emergencyStop</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">getStateTortoise</span><span class="p">()</span> <span class="o">==</span> <span class="n">enums</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">running</span><span class="p">:</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">setStateTortoise</span><span class="p">(</span><span class="n">enums</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">paused</span><span class="p">)</span>
+                <span class="n">messages</span><span class="o">.</span><span class="n">printMessage</span><span class="p">(</span><span class="s1">&#39;paused&#39;</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">getStateTortoise</span><span class="p">()</span> <span class="o">==</span> <span class="n">enums</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">paused</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">setStateTortoise</span><span class="p">(</span><span class="n">enums</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">running</span><span class="p">)</span>
+                    <span class="n">messages</span><span class="o">.</span><span class="n">printMessage</span><span class="p">(</span><span class="s1">&#39;resumed&#39;</span><span class="p">)</span>
+
+
+            <span class="c1"># The threads are created. They aren&#39;t started yet though.</span>
+            <span class="n">motorAprocess_backwards</span> <span class="o">=</span> <span class="n">Process</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">backwards</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">delayWheelA</span> <span class="o">/</span> <span class="mf">1000.00</span><span class="p">,</span> <span class="n">stepsWheelA</span><span class="p">))</span>
+            <span class="n">motorBprocess_backwards</span> <span class="o">=</span> <span class="n">Process</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">B</span><span class="o">.</span><span class="n">backwards</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">delayWheelB</span> <span class="o">/</span> <span class="mf">1000.00</span><span class="p">,</span> <span class="n">stepsWheelB</span><span class="p">))</span>
+            <span class="n">motorAprocess_forwards</span> <span class="o">=</span> <span class="n">Process</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">forwards</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">delayWheelA</span> <span class="o">/</span> <span class="mf">1000.00</span><span class="p">,</span> <span class="n">stepsWheelA</span><span class="p">))</span>
+            <span class="n">motorBprocess_forwards</span> <span class="o">=</span> <span class="n">Process</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">B</span><span class="o">.</span><span class="n">forwards</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">delayWheelB</span> <span class="o">/</span> <span class="mf">1000.00</span><span class="p">,</span> <span class="n">stepsWheelB</span><span class="p">))</span>
+
+
+            <span class="c1"># The specific wheels are started in order to accomplish the desired movement in the direction commanded</span>
+
+            <span class="k">if</span> <span class="n">direction</span> <span class="o">==</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">backwards_left</span> <span class="ow">or</span> <span class="n">direction</span> <span class="o">==</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">backwards</span> <span class="ow">or</span> <span class="n">direction</span> <span class="o">==</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">backwards_right</span><span class="p">:</span>
+
+                <span class="k">if</span> <span class="n">stepsWheelA</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">motorAprocess_backwards</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+                <span class="k">if</span> <span class="n">stepsWheelB</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">motorBprocess_backwards</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+            <span class="k">elif</span> <span class="n">direction</span> <span class="o">==</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">forwards_right</span> <span class="ow">or</span> <span class="n">direction</span> <span class="o">==</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">forwards</span> <span class="ow">or</span> <span class="n">direction</span> <span class="o">==</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">forwards_left</span><span class="p">:</span>
+
+                <span class="k">if</span> <span class="n">stepsWheelA</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">motorAprocess_forwards</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+                <span class="k">if</span> <span class="n">stepsWheelB</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">motorBprocess_forwards</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+            <span class="k">elif</span> <span class="n">direction</span> <span class="o">==</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">clockwise</span><span class="p">:</span>
+
+                <span class="k">if</span> <span class="n">stepsWheelA</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">motorAprocess_backwards</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+                <span class="k">if</span> <span class="n">stepsWheelB</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">motorBprocess_forwards</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+            <span class="k">elif</span> <span class="n">direction</span> <span class="o">==</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">counterClockwise</span><span class="p">:</span>
+
+                <span class="k">if</span> <span class="n">stepsWheelA</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">motorAprocess_forwards</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+                <span class="k">if</span> <span class="n">stepsWheelB</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">motorBprocess_backwards</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+
+
+
+            <span class="c1"># The main loop pools the emergencyStop while the motors are running</span>
+            <span class="k">while</span> <span class="n">motorAprocess_backwards</span><span class="o">.</span><span class="n">is_alive</span><span class="p">()</span> <span class="ow">or</span> <span class="n">motorBprocess_backwards</span><span class="o">.</span><span class="n">is_alive</span><span class="p">()</span> <span class="ow">or</span> <span class="n">motorAprocess_forwards</span><span class="o">.</span><span class="n">is_alive</span><span class="p">()</span> <span class="ow">or</span> <span class="n">motorBprocess_forwards</span><span class="o">.</span><span class="n">is_alive</span><span class="p">():</span>
+
+                <span class="c1"># If a stop command has been sent, the turtle will stop its movement and exit this function</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">getSensorData</span><span class="p">(</span><span class="n">enums</span><span class="o">.</span><span class="n">SensorType</span><span class="o">.</span><span class="n">emergencyStop</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">getStateTortoise</span><span class="p">()</span> <span class="o">==</span> <span class="n">enums</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">running</span><span class="p">:</span>
+
+                        <span class="bp">self</span><span class="o">.</span><span class="n">setStateTortoise</span><span class="p">(</span><span class="n">enums</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">paused</span><span class="p">)</span>
+                        <span class="n">messages</span><span class="o">.</span><span class="n">printMessage</span><span class="p">(</span><span class="s1">&#39;paused&#39;</span><span class="p">)</span>
+
+                        <span class="k">if</span> <span class="n">motorAprocess_backwards</span><span class="o">.</span><span class="n">is_alive</span><span class="p">():</span>
+                            <span class="n">motorAprocess_backwards</span><span class="o">.</span><span class="n">terminate</span><span class="p">()</span>
+                            <span class="n">motorAprocess_backwards</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+
+                        <span class="k">if</span> <span class="n">motorBprocess_backwards</span><span class="o">.</span><span class="n">is_alive</span><span class="p">():</span>
+                            <span class="n">motorBprocess_backwards</span><span class="o">.</span><span class="n">terminate</span><span class="p">()</span>
+                            <span class="n">motorBprocess_backwards</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+
+                        <span class="k">if</span> <span class="n">motorAprocess_forwards</span><span class="o">.</span><span class="n">is_alive</span><span class="p">():</span>
+                            <span class="n">motorAprocess_forwards</span><span class="o">.</span><span class="n">terminate</span><span class="p">()</span>
+                            <span class="n">motorAprocess_forwards</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+
+                        <span class="k">if</span> <span class="n">motorBprocess_forwards</span><span class="o">.</span><span class="n">is_alive</span><span class="p">():</span>
+                            <span class="n">motorBprocess_forwards</span><span class="o">.</span><span class="n">terminate</span><span class="p">()</span>
+                            <span class="n">motorBprocess_forwards</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">getStateTortoise</span><span class="p">()</span> <span class="o">==</span> <span class="n">enums</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">paused</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">setStateTortoise</span><span class="p">(</span><span class="n">enums</span><span class="o">.</span><span class="n">State</span><span class="o">.</span><span class="n">running</span><span class="p">)</span>
+                    <span class="n">messages</span><span class="o">.</span><span class="n">printMessage</span><span class="p">(</span><span class="s1">&#39;resumed&#39;</span><span class="p">)</span>
+
+
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+
+
+        <span class="c1"># When the movement finishes, the motors are turned off</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">stopMotors</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">B</span><span class="o">.</span><span class="n">stopMotors</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="mi">0</span>
+
+
+
+    <span class="k">def</span> <span class="nf">moveForwards</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">steps</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">moveMotors</span><span class="p">(</span><span class="n">steps</span><span class="p">,</span> <span class="n">steps</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">minDelayMotors</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">minDelayMotors</span><span class="p">,</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">forwards</span><span class="p">)</span>
+
+
+
+    <span class="k">def</span> <span class="nf">moveBackwards</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">steps</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">moveMotors</span><span class="p">(</span><span class="n">steps</span><span class="p">,</span> <span class="n">steps</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">minDelayMotors</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">minDelayMotors</span><span class="p">,</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">backwards</span><span class="p">)</span>
+
+
+
+    <span class="k">def</span> <span class="nf">turnOnTheSpot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">steps</span><span class="p">,</span> <span class="n">direction</span><span class="p">):</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="n">steps</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">printMessage</span><span class="p">(</span><span class="s1">&#39;bad_steps&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">blinkLEDs_error</span><span class="p">()</span>
+            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+
+        <span class="k">if</span><span class="p">(</span> <span class="n">direction</span> <span class="o">!=</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">backwards_right</span> <span class="ow">and</span> <span class="n">direction</span> <span class="o">!=</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">backwards_left</span> <span class="ow">and</span>
+            <span class="n">direction</span> <span class="o">!=</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">forwards_right</span> <span class="ow">and</span> <span class="n">direction</span> <span class="o">!=</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">forwards_left</span> <span class="p">)</span> <span class="p">:</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">printMessage</span><span class="p">(</span><span class="s1">&#39;bad_direction_turn&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">blinkLEDs_error</span><span class="p">()</span>
+            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+
+    
+        <span class="c1"># Only wheel A moves</span>
+        <span class="k">if</span> <span class="n">direction</span> <span class="o">==</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">backwards_right</span> <span class="ow">or</span> <span class="n">direction</span> <span class="o">==</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">forwards_right</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">moveMotors</span><span class="p">(</span><span class="n">steps</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">minDelayMotors</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">direction</span><span class="p">)</span>
+
+        <span class="c1"># Only wheel B moves</span>
+        <span class="k">elif</span> <span class="n">direction</span> <span class="o">==</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">backwards_left</span> <span class="ow">or</span> <span class="n">direction</span> <span class="o">==</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">forwards_left</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">moveMotors</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">steps</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">minDelayMotors</span><span class="p">,</span> <span class="n">direction</span><span class="p">)</span>
+
+
+
+    <span class="k">def</span> <span class="nf">shuffleOnTheSpot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">steps</span><span class="p">,</span> <span class="n">direction</span><span class="p">):</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="n">steps</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">printMessage</span><span class="p">(</span><span class="s1">&#39;bad_steps&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">blinkLEDs_error</span><span class="p">()</span>
+            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+
+        <span class="k">if</span><span class="p">(</span> <span class="n">direction</span> <span class="o">!=</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">clockwise</span> <span class="ow">and</span> <span class="n">direction</span> <span class="o">!=</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">counterClockwise</span> <span class="p">)</span> <span class="p">:</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">printMessage</span><span class="p">(</span><span class="s1">&#39;bad_shuffle&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">blinkLEDs_error</span><span class="p">()</span>
+            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">moveMotors</span><span class="p">(</span><span class="n">steps</span><span class="p">,</span> <span class="n">steps</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">minDelayMotors</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">minDelayMotors</span><span class="p">,</span> <span class="n">direction</span><span class="p">)</span>
+
+
+
+    <span class="k">def</span> <span class="nf">shuffle45degrees</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">direction</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">shuffleOnTheSpot</span><span class="p">(</span><span class="mi">180</span><span class="p">,</span> <span class="n">direction</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">turn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stepsWheelA</span><span class="p">,</span> <span class="n">stepsWheelB</span><span class="p">,</span> <span class="n">direction</span><span class="p">):</span>
+
+        <span class="k">if</span><span class="p">(</span> <span class="n">direction</span> <span class="o">!=</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">backwards_right</span> <span class="ow">and</span> <span class="n">direction</span> <span class="o">!=</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">backwards_left</span> <span class="ow">and</span>
+            <span class="n">direction</span> <span class="o">!=</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">forwards_right</span> <span class="ow">and</span> <span class="n">direction</span> <span class="o">!=</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">forwards_left</span> <span class="p">)</span> <span class="p">:</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">printMessage</span><span class="p">(</span><span class="s1">&#39;bad_direction_turn&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">blinkLEDs_error</span><span class="p">()</span>
+            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">direction</span> <span class="o">==</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">backwards_right</span> <span class="ow">or</span> <span class="n">direction</span> <span class="o">==</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">forwards_right</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">stepsWheelB</span> <span class="o">&gt;=</span> <span class="n">stepsWheelA</span><span class="p">):</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">printMessage</span><span class="p">(</span><span class="s1">&#39;bad_turn&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">blinkLEDs_error</span><span class="p">()</span>
+            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">direction</span> <span class="o">==</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">backwards_left</span> <span class="ow">or</span> <span class="n">direction</span> <span class="o">==</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">forwards_left</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">stepsWheelA</span> <span class="o">&gt;=</span> <span class="n">stepsWheelB</span><span class="p">):</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">printMessage</span><span class="p">(</span><span class="s1">&#39;bad_turn&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">blinkLEDs_error</span><span class="p">()</span>
+            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="n">stepsWheelA</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">stepsWheelB</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">messages</span><span class="o">.</span><span class="n">printMessage</span><span class="p">(</span><span class="s1">&#39;bad_steps&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">blinkLEDs_error</span><span class="p">()</span>
+            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+
+
+
+        <span class="k">if</span> <span class="n">direction</span> <span class="o">==</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">backwards_right</span> <span class="ow">or</span> <span class="n">direction</span> <span class="o">==</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">forwards_right</span><span class="p">:</span>
+
+            <span class="c1"># The delay of the wheel with less movements is worked out so that both wheels finish more or less at the same time</span>
+            <span class="n">delay</span> <span class="o">=</span> <span class="p">(</span><span class="n">stepsWheelA</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">minDelayMotors</span><span class="p">)</span> <span class="o">/</span> <span class="n">stepsWheelB</span>
+
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">moveMotors</span><span class="p">(</span><span class="n">stepsWheelA</span><span class="p">,</span> <span class="n">stepsWheelB</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">minDelayMotors</span><span class="p">,</span> <span class="n">delay</span><span class="p">,</span> <span class="n">direction</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">direction</span> <span class="o">==</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">backwards_left</span> <span class="ow">or</span> <span class="n">direction</span> <span class="o">==</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">forwards_left</span><span class="p">:</span>
+
+            <span class="c1"># The delay of the wheel with less movements is worked out so that both wheels finish more or less at the same time</span>
+            <span class="n">delay</span> <span class="o">=</span> <span class="p">(</span><span class="n">stepsWheelB</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">minDelayMotors</span><span class="p">)</span> <span class="o">/</span> <span class="n">stepsWheelA</span>
+
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">moveMotors</span><span class="p">(</span><span class="n">stepsWheelA</span><span class="p">,</span> <span class="n">stepsWheelB</span><span class="p">,</span> <span class="n">delay</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">minDelayMotors</span><span class="p">,</span> <span class="n">direction</span><span class="p">)</span>
+
+
+
+
+    <span class="k">def</span> <span class="nf">turn45degrees_sharp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">direction</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">direction</span> <span class="o">==</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">backwards_right</span> <span class="ow">or</span> <span class="n">direction</span> <span class="o">==</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">forwards_right</span><span class="p">:</span>
+
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">turn</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">75</span><span class="p">,</span> <span class="n">direction</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">direction</span> <span class="o">==</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">backwards_left</span> <span class="ow">or</span> <span class="n">direction</span> <span class="o">==</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">forwards_left</span><span class="p">:</span>
+
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">turn</span><span class="p">(</span><span class="mi">75</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="n">direction</span><span class="p">)</span>
+
+
+
+    <span class="k">def</span> <span class="nf">turn30degrees_wide</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">direction</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">direction</span> <span class="o">==</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">backwards_right</span> <span class="ow">or</span> <span class="n">direction</span> <span class="o">==</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">forwards_right</span><span class="p">:</span>
+
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">turn</span><span class="p">(</span><span class="mi">450</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="n">direction</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">direction</span> <span class="o">==</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">backwards_left</span> <span class="ow">or</span> <span class="n">direction</span> <span class="o">==</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">forwards_left</span><span class="p">:</span>
+
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">turn</span><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">450</span><span class="p">,</span> <span class="n">direction</span><span class="p">)</span>
+        
+
+
+    <span class="k">def</span> <span class="nf">doRandomMovement</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="c1"># New random command</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">numberRepeatsRandomCommand</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">timesSameRandomCommandExecuted</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">numberRepeatsRandomCommand</span><span class="p">:</span>
+
+            <span class="c1"># The number of times the command is repeated is chosen randomly with decreasing probabilities up to 3 times.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">numberRepeatsRandomCommand</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">])</span>
+
+            <span class="c1"># As this is a new command, no repetitions done</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">timesSameRandomCommandExecuted</span> <span class="o">=</span> <span class="mi">0</span>
+
+            <span class="c1"># Random steps for wheel A</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lastRandomStepsWheelA</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">300</span><span class="p">)</span>
+
+            <span class="c1"># Random number between 0 and 1 for decision on the random movement</span>
+            <span class="n">randomNumber</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random_sample</span><span class="p">()</span>
+
+            <span class="c1"># 40% probability of moving forwards/backwards</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">randomNumber</span> <span class="o">&lt;</span> <span class="mf">0.4</span><span class="p">):</span>
+
+                <span class="c1"># 75% of probability of moving forwards</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">randomNumber</span> <span class="o">&lt;</span> <span class="mf">0.30</span><span class="p">):</span>
+
+                    <span class="bp">self</span><span class="o">.</span><span class="n">moveForwards</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lastRandomStepsWheelA</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">lastRandomCommand</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">moveForwards</span>
+
+                <span class="c1"># 25% probability of moving backwards</span>
+                <span class="k">else</span><span class="p">:</span>
+
+                    <span class="bp">self</span><span class="o">.</span><span class="n">moveBackwards</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lastRandomStepsWheelA</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">lastRandomCommand</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">moveBackwards</span>
+
+
+            <span class="c1"># 10% probability of shuffling</span>
+            <span class="k">elif</span> <span class="p">(</span><span class="n">randomNumber</span> <span class="o">&lt;</span> <span class="mf">0.5</span><span class="p">):</span>
+
+                <span class="c1"># Equal probability of going clockwise or counter clockwise</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">lastRandomDirection</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">clockwise</span><span class="p">,</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">counterClockwise</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">shuffle45degrees</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lastRandomDirection</span><span class="p">)</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">lastRandomCommand</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shuffle45degrees</span>
+
+
+            <span class="c1"># 10% probability of turning 30 or 45 degrees</span>
+            <span class="k">elif</span> <span class="p">(</span><span class="n">randomNumber</span> <span class="o">&lt;</span> <span class="mf">0.6</span><span class="p">):</span>
+
+                <span class="c1"># Equal probability of moving forwards/backwards lef/right</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">lastRandomDirection</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">forwards_right</span><span class="p">,</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">forwards_left</span><span class="p">,</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">backwards_right</span><span class="p">,</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">backwards_left</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
+
+                <span class="c1"># Equal probability of turning 30 degrees wide or 45 degrees sharp</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">randomNumber</span> <span class="o">&lt;</span> <span class="mf">0.55</span><span class="p">):</span>
+
+                    <span class="bp">self</span><span class="o">.</span><span class="n">turn45degrees_sharp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lastRandomDirection</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">lastRandomCommand</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">turn45degrees_sharp</span>
+
+                <span class="k">else</span><span class="p">:</span>
+
+                    <span class="bp">self</span><span class="o">.</span><span class="n">turn30degrees_wide</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lastRandomDirection</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">lastRandomCommand</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">turn30degrees_wide</span>
+
+
+            <span class="c1"># 40% of turning randomly</span>
+            <span class="k">else</span><span class="p">:</span>
+
+                <span class="c1"># Random steps for wheel B</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">lastRandomStepsWheelB</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">300</span><span class="p">)</span>
+
+                <span class="c1"># Equal probability of moving forwards/backwards lef/right</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">lastRandomDirection</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">forwards_right</span><span class="p">,</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">forwards_left</span><span class="p">,</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">backwards_right</span><span class="p">,</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">backwards_left</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span>
+
+                <span class="k">if</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lastRandomDirection</span> <span class="o">==</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">forwards_left</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">lastRandomDirection</span> <span class="o">==</span> <span class="n">enums</span><span class="o">.</span><span class="n">Direction</span><span class="o">.</span><span class="n">backwards_left</span><span class="p">):</span>
+
+                    <span class="k">if</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lastRandomStepsWheelA</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lastRandomStepsWheelB</span><span class="p">):</span>
+                
+                        <span class="n">aux</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lastRandomStepsWheelA</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">lastRandomStepsWheelA</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lastRandomStepsWheelB</span> <span class="o">-</span> <span class="mi">1</span> <span class="c1"># To avoid the case of equals</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">lastRandomStepsWheelB</span> <span class="o">=</span> <span class="n">aux</span>
+
+                <span class="k">else</span><span class="p">:</span>
+
+                    <span class="k">if</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lastRandomStepsWheelB</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lastRandomStepsWheelA</span><span class="p">):</span>
+                
+                        <span class="n">aux</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lastRandomStepsWheelA</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">lastRandomStepsWheelA</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lastRandomStepsWheelB</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">lastRandomStepsWheelB</span> <span class="o">=</span> <span class="n">aux</span> <span class="o">-</span> <span class="mi">1</span> <span class="c1"># To avoid the case of equals</span>
+
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">turn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lastRandomStepsWheelA</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lastRandomStepsWheelB</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lastRandomDirection</span><span class="p">)</span>
+    
+                <span class="bp">self</span><span class="o">.</span><span class="n">lastRandomCommand</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">turn</span>
+
+
+
+        <span class="c1"># Repeat last command</span>
+        <span class="k">else</span><span class="p">:</span>
+    
+            <span class="bp">self</span><span class="o">.</span><span class="n">timesSameRandomCommandExecuted</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">timesSameRandomCommandExecuted</span> <span class="o">+</span> <span class="mi">1</span>
+
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lastRandomCommand</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">moveForwards</span><span class="p">:</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">moveForwards</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lastRandomStepsWheelA</span><span class="p">)</span>
+
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">lastRandomCommand</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">moveBackwards</span><span class="p">:</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">moveBackwards</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lastRandomStepsWheelA</span><span class="p">)</span>
+
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">lastRandomCommand</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">shuffle45degrees</span><span class="p">:</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">shuffle45degrees</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lastRandomDirection</span><span class="p">)</span>
+
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">lastRandomCommand</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">turn45degrees_sharp</span><span class="p">:</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">turn45degrees_sharp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lastRandomDirection</span><span class="p">)</span>
+
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">lastRandomCommand</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">turn30degrees_wide</span><span class="p">:</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">turn30degrees_wide</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lastRandomDirection</span><span class="p">)</span>
+
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">lastRandomCommand</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">turn</span><span class="p">:</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">turn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lastRandomStepsWheelA</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lastRandomStepsWheelB</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lastRandomDirection</span><span class="p">)</span>  </div>
+
+
+
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, 2nd cohort FARSCOPE programme at BRL.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.8</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
