@@ -12,10 +12,14 @@ Contents:
    :maxdepth: 2
 
 .. automodule:: tortoise
- 
-.. autoclass:: Tortoise
-    :members:
 
+.. automodule:: sensors
+
+.. autoclass:: Tortoise
+   :members:
+
+.. autoclass:: Sensors
+   :members:
 
 Indices and tables
 ==================
