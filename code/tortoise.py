@@ -592,7 +592,7 @@ class Tortoise:
         # New random command
         if self.numberRepeatsRandomCommand == -1 or self.timesSameRandomCommandExecuted == self.numberRepeatsRandomCommand:
 
-            self.numberRepeatsRandomCommand = 2 #np.random.randint(maxTimesCommandRepeated + 1)
+            self.numberRepeatsRandomCommand = np.random.choice([0, 1, 2, 3], 1, p = [0.6, 0.25, 0.1, 0.05])
             self.timesSameRandomCommandExecuted = 0
     
 
