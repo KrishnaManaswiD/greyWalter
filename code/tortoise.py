@@ -513,12 +513,13 @@ class Tortoise:
             self.blinkLEDs_error()
             return -1
 
-
-
         return self.moveMotors(steps, steps, self.minDelayMotors, self.minDelayMotors, direction)
 
 
 
+    def shuffle45degrees(self, direction):
+
+        return self.shuffleOnTheSpot(180, direction)
 
 
     def turn(self, stepsWheelA, stepsWheelB, direction):
@@ -600,7 +601,7 @@ class Tortoise:
             # Random number between 0 and 1
             randomNumber = np.random.random_sample()
 
-            # 40% of not turning (moving forwards/backwards)
+            # 40% of moving forwards/backwards
             if(randomNumber < 0.4):
 
                 if(randomNumber < 0.2):
@@ -613,12 +614,39 @@ class Tortoise:
                     self.moveBackwards(self.lastRandomStepsWheelA)
                     self.lastRandomCommand = self.moveBackwards
 
+            # 5% of shuffling
+            elif (randomNumber < 0.5):
+
+                self.lastRandomDirection = np.random.choice([enums.Direction.clockwise, enums.Direction.counterClockwise], 1)
+
+                self.shuffle45degrees(self.lastRandomDirection)
+
+                self.lastRandomCommand = self.shuffle45degrees
+
+            # 55% of turning
             else:
 
                 self.lastRandomStepsWheelB = np.random.randint(30, 300)
 
                 # Random enums.Direction: left of right
                 self.lastRandomDirection = np.random.choice([enums.Direction.forwards_right, enums.Direction.forwards_left, enums.Direction.backwards_right, enums.Direction.backwards_left], 1)
+
+                if(self.lastRandomDirection == enums.Direction.forwards_left or self.lastRandomDirection == enums.Direction.backwards_left):
+
+                    if(self.lastRandomStepsWheelA >= self.lastRandomStepsWheelB):
+                
+                        aux = self.lastRandomStepsWheelA
+                        self.lastRandomStepsWheelA = self.lastRandomStepsWheelB - 1 # To avoid the case of equals
+                        self.lastRandomStepsWheelB = aux
+
+                else:
+
+                    if(self.lastRandomStepsWheelB >= self.lastRandomStepsWheelA):
+                
+                        aux = self.lastRandomStepsWheelA
+                        self.lastRandomStepsWheelA = self.lastRandomStepsWheelB
+                        self.lastRandomStepsWheelB = aux - 1 # To avoid the case of equals
+
 
                 self.turn(self.lastRandomStepsWheelA, self.lastRandomStepsWheelB, self.lastRandomDirection)
     
@@ -639,6 +667,10 @@ class Tortoise:
             elif self.lastRandomCommand == self.moveBackwards:
 
                 self.moveBackwards(self.lastRandomStepsWheelA)
+
+            elif self.lastRandomCommand == self.shuffle45degrees:
+
+                self.shuffle45degrees(self.lastRandomDirection)
 
             elif self.lastRandomCommand == self.turn:
 

@@ -1,3 +1,5 @@
+- Allow at low_level to have less sensors/actuators
+
 V Comments in a new module - Dani
 
 V Arrays in sensors - Dito -- DONE!!
