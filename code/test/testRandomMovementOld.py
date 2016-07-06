@@ -18,4 +18,4 @@ t = Tortoise()
 
 while(True):
 
-    t.doRandomMovement()
+    t.doRandomMovement2()

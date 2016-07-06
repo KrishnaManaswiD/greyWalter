@@ -586,7 +586,7 @@ class Tortoise:
         
 
 
-    def doRandomMovement2(self):
+    def doRandomMovement(self):
 
         maxTimesCommandRepeated = 3
 
@@ -678,7 +678,7 @@ class Tortoise:
 
 
 
-    def doRandomMovement(self):
+    def doRandomMovement2(self):
 
         # Random number between 30 and (509/4 + 30)
         numberOfSteps = int(509/4*np.random.random_sample() + 30)
