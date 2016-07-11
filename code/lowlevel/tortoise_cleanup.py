@@ -1,10 +1,10 @@
-##########################################################
+############################################################
 # This program will be run when the tortoise process ends,
 # either naturally or because of an exception.
 # 
-# The program stops the motors to not drain baterry and 
-# cleans up the raspberry pi.
-##########################################################
+# The program stops the motors and LEDs to not drain battery 
+# and cleans up the raspberry pi.
+############################################################
 
 
 import sys
