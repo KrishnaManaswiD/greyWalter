@@ -17,26 +17,14 @@ from motors import Motor
 from sensors import Sensors
 from actuators import Actuators
 import messages
-
 import enums
 import time
 import numpy as np
-#import thread
-#import threading
 import RPi.GPIO as GPIO
 from multiprocessing import Process
 
-
 GPIO.setmode(GPIO.BCM)
 
-#def synchronized(method):
-
-#    def new_method(self, *arg, **kws):
-#        with self.lock:
-#            return method(self, *arg, **kws)
-
-
-#    return new_method
 
 
 class Tortoise:
@@ -49,8 +37,6 @@ class Tortoise:
 
         GPIO.setwarnings(False)
 
-#        self.lock = threading.RLock()
-
         self.lastRandomCommand = None
         self.timesSameRandomCommandExecuted = 0
         self.numberRepeatsRandomCommand = -1
@@ -62,9 +48,9 @@ class Tortoise:
         lowerBoundLight = 0
         upperBoundLight = 0
 
-        # Previous: [4, 17, 23, 24, 27, 22, 18, 5]
         motorPins = [13, 6, 5, 7, 20, 10, 9, 11]
         ledPins = [8, 16, 25, 12]
+
 
         # CREATING FILE WITH PID
 
@@ -84,33 +70,35 @@ class Tortoise:
         f.write(str(ledPins[0]) + " " + str(ledPins[1]) + " " + str(ledPins[2]) + " " + str(ledPins[3]) + "\n")
 
         f.close()
-        # ----------------------
+        # --- CREATING FILE WITH PID ---
 
 
-        # TODO: change to self.Motor.Left
+        self.minDelayMotors = 2
+        self.state = enums.State.paused
+
         self.A = Motor(motorPins[0], motorPins[1], motorPins[2], motorPins[3])
         self.B = Motor(motorPins[4], motorPins[5], motorPins[6], motorPins[7])
         self.sensors = Sensors()
         self.actuators = Actuators()
-        self.minDelayMotors = 2
-        self.state = enums.State.paused
 
+        self.sensors.setSensor(enums.SensorType.light, 1, 17) 
+        self.sensors.setSensor(enums.SensorType.light, 2, 4)
 
-        self.sensors.setSensor(enums.SensorType.light, 1, 17) # Previous: 16
-        self.sensors.setSensor(enums.SensorType.light, 2, 4) # Previous: 2
-        self.sensors.setSensor(enums.SensorType.emergencyStop, 1, 3) # Previous: 6
-        self.sensors.setSensor(enums.SensorType.touch, 1, 27) # Previous: 8
-        self.sensors.setSensor(enums.SensorType.touch, 2, 2) # Previous: 13
-        self.sensors.setSensor(enums.SensorType.touch, 3, 18) # Previous: 7
-        self.sensors.setSensor(enums.SensorType.proximity, 1, 19) # Previous: 10
-        self.sensors.setSensor(enums.SensorType.proximity, 2, 21) # Previous: 11
-        self.sensors.setSensor(enums.SensorType.proximity, 3, 22) # Previous: x
-        self.sensors.setSensor(enums.SensorType.proximity, 4, 26) # Previous: x
+        self.sensors.setSensor(enums.SensorType.emergencyStop, 4, 3) 
 
-        self.actuators.initActuator(enums.ActuatorType.led, 1, ledPins[0]) # Previous: 19
-        self.actuators.initActuator(enums.ActuatorType.led, 2, ledPins[1]) # Previous: 26
-        self.actuators.initActuator(enums.ActuatorType.led, 3, ledPins[2]) # Previous: x
-        self.actuators.initActuator(enums.ActuatorType.led, 4, ledPins[3]) # Previous: x
+        self.sensors.setSensor(enums.SensorType.touch, 1, 27) 
+        self.sensors.setSensor(enums.SensorType.touch, 2, 2)
+        self.sensors.setSensor(enums.SensorType.touch, 3, 18)
+
+        self.sensors.setSensor(enums.SensorType.proximity, 1, 19)
+        self.sensors.setSensor(enums.SensorType.proximity, 2, 21) 
+        self.sensors.setSensor(enums.SensorType.proximity, 3, 22) 
+        self.sensors.setSensor(enums.SensorType.proximity, 4, 26) 
+
+        self.actuators.initActuator(enums.ActuatorType.led, 1, ledPins[0]) 
+        self.actuators.initActuator(enums.ActuatorType.led, 2, ledPins[1]) 
+        self.actuators.initActuator(enums.ActuatorType.led, 3, ledPins[2]) 
+        self.actuators.initActuator(enums.ActuatorType.led, 4, ledPins[3]) 
 
         self.lastTouch = [-1,-1,-1]
 
@@ -125,7 +113,7 @@ class Tortoise:
 #            print "Error: unable to start thread"
 
         messages.printMessage('greetings')
-        while self.getSensorData(enums.SensorType.emergencyStop, 1) == 0:
+        while self.getSensorData(enums.SensorType.emergencyStop, 4) == 0:
             time.sleep(0.1)
 
         messages.printMessage('running')
@@ -190,7 +178,7 @@ class Tortoise:
 
         elif (sensor_type == enums.SensorType.emergencyStop):
 
-            if (position != 1):
+            if (position != 4):
 
                 messages.printMessage('bad_emergency_sensor')
                 self.blinkLEDs_error()
@@ -230,7 +218,10 @@ class Tortoise:
             return value % 2
 
         else:
+
             return value
+
+
 
     def getSwitchTriggered(self, position, value):
         if self.lastTouch[position-1]<0:
@@ -370,7 +361,7 @@ class Tortoise:
             return -1
 
         # If a stop command has been sent, the turtle will stop its movement
-        if self.getSensorData(enums.SensorType.emergencyStop, 1) == 0:
+        if self.getSensorData(enums.SensorType.emergencyStop, 4) == 0:
 
             if self.getStateTortoise() == enums.State.running:
 
@@ -428,7 +419,7 @@ class Tortoise:
             while motorAprocess_backwards.is_alive() or motorBprocess_backwards.is_alive() or motorAprocess_forwards.is_alive() or motorBprocess_forwards.is_alive():
 
                 # If a stop command has been sent, the turtle will stop its movement
-                if self.getSensorData(enums.SensorType.emergencyStop, 1) == 0:
+                if self.getSensorData(enums.SensorType.emergencyStop, 4) == 0:
 
                     if self.getStateTortoise() == enums.State.running:
 

@@ -12,14 +12,12 @@ class Sensors:
         self.dictionaryPinsToPositions = {}
 
         self.lightSensor_pin = [-1,-1]
-        self.touchSensor_pin = [-1,-1,-1]
+        self.touchSensor_pin = [-1,-1,-1,-1] # e-stop also here
         self.proximitySensor_pin = [-1,-1,-1,-1]
-        self.emergencyStop_pin = [-1]
 
         self.light_value = [-1,-1]
-        self.touch_timesPressed = [0,0,0]
+        self.touch_timesPressed = [0,0,0,0]
         self.proximity_state = [-1,-1,-1,-1]
-        self.emergency_timesPressed = [0]
 
 
 
@@ -28,7 +26,7 @@ class Sensors:
 
         idx = pos - 1
 
-        if sensor_type == enums.SensorType.touch:
+        if sensor_type == enums.SensorType.touch or sensor_type == enums.SensorType.emergencyStop:
 
             if pos <= len(self.touchSensor_pin) and pos > 0:
 
@@ -79,20 +77,6 @@ class Sensors:
                 return -1
 
 
-        elif sensor_type == enums.SensorType.emergencyStop:
-
-            if pos <= len(self.emergencyStop_pin) and pos > 0:
-
-                self.emergencyStop_pin[idx] = pin
-                self.dictionaryPinsToPositions[str(pin)] = pos
-                GPIO.setup(pin, GPIO.IN, pull_up_down = GPIO.PUD_UP)
-                GPIO.add_event_detect(pin, GPIO.FALLING, callback = self.callback_emergencySwitch, bouncetime = 300)
-                return 0
-
-            else:
-                raise RuntimeError('Emergency switch can only be assigned to position 1')
-                return -1
-
         else:
             raise RuntimeError('Unknown sensor type!')
             return -1
@@ -110,17 +94,6 @@ class Sensors:
             raise RuntimeError('Bad channel in callback_touch: ' + str(channel))
             return -1
 
-
-    def callback_emergencySwitch(self, channel):
-
-        try:
-    
-            idx = self.dictionaryPinsToPositions[str(channel)] - 1
-            self.emergency_timesPressed[idx] = self.emergency_timesPressed[idx] + 1
-
-        except KeyError:
-            raise RuntimeError('Bad channel in callback_emergencySwitch: ' + str(channel))
-            return -1
 
 
     def callback_proximity(self,channel):
@@ -148,7 +121,7 @@ class Sensors:
 
         idx = pos - 1
 
-        if sensor_type == enums.SensorType.touch:
+        if sensor_type == enums.SensorType.touch or sensor_type == enums.SensorType.emergencyStop:
 
             if pos <= len(self.touchSensor_pin) and pos > 0:
 
@@ -197,25 +170,10 @@ class Sensors:
                 raise RuntimeError('Proximity sensor can only be assigned to position 1-' + str(len(self.proximitySensor_pin)))
                 return -1
 
-        elif sensor_type == enums.SensorType.emergencyStop:
-
-            if pos <= len(self.emergencyStop_pin) and pos > 0:
-
-                if(self.emergencyStop_pin[idx] == -1):
-                    raise RuntimeError('Pin for emergency switch in position ' + str(pos) + ' is not assigned')
-                    return -1
-
-                else:
-
-                    return self.emergency_timesPressed[idx]
-
-            else:
-                raise RuntimeError('Emergency switch can only be assigned to position 1')
-                return -1
-
         else:
             raise RuntimeError('Unknown sensor type!')
             return -1
+
 
 
     def read_light(self,lspin):
