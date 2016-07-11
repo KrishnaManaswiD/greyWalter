@@ -5,12 +5,12 @@ V Comments in a new module - Dani
 V Arrays in sensors - Dito -- DONE!!
     Instead of hardcoded "lightSensor1, lightSensor2, ...", have an array indexed by position in Sensors.py and Actuators.py    
 
-- Tune steps for turning 90º
+V Tune steps for turning 90º
 
     ONCE THE TORTOISE IS COMPLETELY BUILT AND WITHOUT WIRES
     Tune number of steps in turnOnTheSpot (tortoise.py) so that tortoise turns 90º
 
-- Improve random motion
+V Improve random motion
 
     ONCE THE TORTOISE IS COMPLETELY BUILT AND WITHOUT WIRES
     Wise combination to moveForwards, moveBackwards, and turn so that it goes smoothly and natural.
