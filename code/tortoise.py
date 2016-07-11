@@ -681,23 +681,23 @@ class Tortoise:
             # Random number between 0 and 1 for decision on the random movement
             randomNumber = np.random.random_sample()
 
-            # 40% probability of moving forwards/backwards
+            # 40 percent probability of moving forwards/backwards
             if(randomNumber < 0.4):
 
-                # 75% of probability of moving forwards
+                # 75 percent of probability of moving forwards
                 if(randomNumber < 0.30):
 
                     self.moveForwards(self.lastRandomStepsWheelA)
                     self.lastRandomCommand = self.moveForwards
 
-                # 25% probability of moving backwards
+                # 25 percent probability of moving backwards
                 else:
 
                     self.moveBackwards(self.lastRandomStepsWheelA)
                     self.lastRandomCommand = self.moveBackwards
 
 
-            # 10% probability of shuffling
+            # 10 percent probability of shuffling
             elif (randomNumber < 0.5):
 
                 # Equal probability of going clockwise or counter clockwise
@@ -708,7 +708,7 @@ class Tortoise:
                 self.lastRandomCommand = self.shuffle45degrees
 
 
-            # 10% probability of turning 30º or 45º
+            # 10 percent probability of turning 30º or 45º
             elif (randomNumber < 0.6):
 
                 # Equal probability of moving forwards/backwards lef/right
@@ -726,7 +726,7 @@ class Tortoise:
                     self.lastRandomCommand = self.turn30degrees_wide
 
 
-            # 40% of turning randomly
+            # 40 percent of turning randomly
             else:
 
                 # Random steps for wheel B
