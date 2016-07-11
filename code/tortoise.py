@@ -29,21 +29,20 @@ GPIO.setmode(GPIO.BCM)
 
 
 class Tortoise:
+"""Class Tortoise. Explanation:"""
 
     def __init__(self):
 
         # Variables that control the calibration of the light sensors
 
-        """ 
-            The purpose was to avoid calibration everytime the tortoise object is created. 
-            However, this hasn't been implemented yet. The idea could be to save the light 
-            values in a file and read that file when creating the tortoise object. 
-            Light conditions could have changed, so this should be done carefully. 
+#        The purpose was to avoid calibration everytime the tortoise object is created. 
+#        However, this hasn't been implemented yet. The idea could be to save the light 
+#        values in a file and read that file when creating the tortoise object. 
+#        Light conditions could have changed, so this should be done carefully. 
 
-            At the moment, the tortoise object is created without calibration. If the users
-            want to use the light sensors, they need will need to execute the calibrateLight
-            function before using those sensors.
-        """
+#        At the moment, the tortoise object is created without calibration. If the users
+#        want to use the light sensors, they need will need to execute the calibrateLight
+#        function before using those sensors.
 
         global isLightCalibrated
         global lowerBoundLight
@@ -67,10 +66,6 @@ class Tortoise:
         self.lastRandomStepsWheelB = None
         self.lastRandomDirection = None
         # --- Variables that control the random motion ---
-
-
-
-        
 
 
         # Setting the motors, sensors and actuators    
@@ -131,18 +126,16 @@ class Tortoise:
 
         # Creation of a file with the PID of the process
 
-        """
-            The reasons of termination of a user process could be because of normal termination 
-            or because of an error (exceptions, ctrl-c, ...). When an error happens, the motors
-            and may be still on. In this case, the motors and LEDs should be turned off
-            for the battery not to drain. 
+#        The reasons of termination of a user process could be because of normal termination 
+#        or because of an error (exceptions, ctrl-c, ...). When an error happens, the motors
+#        and may be still on. In this case, the motors and LEDs should be turned off
+#        for the battery not to drain. 
 
-            The solution implemented is to have a background process (a watchdog) running 
-            continously. This process checks if the user process doesn't exist anymore (termination).
-            If it doesn't, it stops the motors, switches off the LEDs and cleans up all the pins.
-            In order to identy that the user script has finished, a file with the name [PID].pid is
-            created in the folder ~/.tortoise_pids/, where [PID] is the PID of the user process.
-        """
+#        The solution implemented is to have a background process (a watchdog) running 
+#        continously. This process checks if the user process doesn't exist anymore (termination).
+#        If it doesn't, it stops the motors, switches off the LEDs and cleans up all the pins.
+#        In order to identy that the user script has finished, a file with the name [PID].pid is
+#        created in the folder ~/.tortoise_pids/, where [PID] is the PID of the user process.
 
         # PID of process
         pid = os.getpid()
@@ -179,10 +172,108 @@ class Tortoise:
 
 
     def getStateTortoise(self):
+"""returns (arg1 / arg2) + arg3
+
+        This is a longer explanation, which may include math with latex syntax
+        :math:`\\alpha`.
+        Then, you need to provide optional subsection in this order (just to be
+        consistent and have a uniform documentation. Nothing prevent you to
+        switch the order):
+
+          - parameters using ``:param <name>: <description>``
+          - type of the parameters ``:type <name>: <description>``
+          - returns using ``:returns: <description>``
+          - examples (doctest)
+          - seealso using ``.. seealso:: text``
+          - notes using ``.. note:: text``
+          - warning using ``.. warning:: text``
+          - todo ``.. todo:: text``
+
+        **Advantages**:
+         - Uses sphinx markups, which will certainly be improved in future
+           version
+         - Nice HTML output with the See Also, Note, Warnings directives
+
+
+        **Drawbacks**:
+         - Just looking at the docstring, the parameter, type and  return
+           sections do not appear nicely
+
+        :param arg1: the first value
+        :param arg2: the first value
+        :param arg3: the first value
+        :type arg1: int, float,...
+        :type arg2: int, float,...
+        :type arg3: int, float,...
+        :returns: arg1/arg2 +arg3
+        :rtype: int, float
+
+        :Example:
+
+        >>> import template
+        >>> a = template.MainClass1()
+        >>> a.function1(1,1,1)
+        2
+
+        .. note:: can be useful to emphasize
+            important feature
+        .. seealso:: :class:`MainClass2`
+        .. warning:: arg2 must be non-zero.
+        .. todo:: check that arg2 is non zero.
+        """
         return self.state
 
 
     def setStateTortoise(self, toState):
+"""returns (arg1 / arg2) + arg3
+
+        This is a longer explanation, which may include math with latex syntax
+        :math:`\\alpha`.
+        Then, you need to provide optional subsection in this order (just to be
+        consistent and have a uniform documentation. Nothing prevent you to
+        switch the order):
+
+          - parameters using ``:param <name>: <description>``
+          - type of the parameters ``:type <name>: <description>``
+          - returns using ``:returns: <description>``
+          - examples (doctest)
+          - seealso using ``.. seealso:: text``
+          - notes using ``.. note:: text``
+          - warning using ``.. warning:: text``
+          - todo ``.. todo:: text``
+
+        **Advantages**:
+         - Uses sphinx markups, which will certainly be improved in future
+           version
+         - Nice HTML output with the See Also, Note, Warnings directives
+
+
+        **Drawbacks**:
+         - Just looking at the docstring, the parameter, type and  return
+           sections do not appear nicely
+
+        :param arg1: the first value
+        :param arg2: the first value
+        :param arg3: the first value
+        :type arg1: int, float,...
+        :type arg2: int, float,...
+        :type arg3: int, float,...
+        :returns: arg1/arg2 +arg3
+        :rtype: int, float
+
+        :Example:
+
+        >>> import template
+        >>> a = template.MainClass1()
+        >>> a.function1(1,1,1)
+        2
+
+        .. note:: can be useful to emphasize
+            important feature
+        .. seealso:: :class:`MainClass2`
+        .. warning:: arg2 must be non-zero.
+        .. todo:: check that arg2 is non zero.
+        """
         self.state = toState
 
 
