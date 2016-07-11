@@ -1,3 +1,52 @@
+"""returns (arg1 / arg2) + arg3
+
+        This is a longer explanation, which may include math with latex syntax
+        :math:`\\alpha`.
+        Then, you need to provide optional subsection in this order (just to be
+        consistent and have a uniform documentation. Nothing prevent you to
+        switch the order):
+
+          - parameters using ``:param <name>: <description>``
+          - type of the parameters ``:type <name>: <description>``
+          - returns using ``:returns: <description>``
+          - examples (doctest)
+          - seealso using ``.. seealso:: text``
+          - notes using ``.. note:: text``
+          - warning using ``.. warning:: text``
+          - todo ``.. todo:: text``
+
+        **Advantages**:
+         - Uses sphinx markups, which will certainly be improved in future
+           version
+         - Nice HTML output with the See Also, Note, Warnings directives
+
+
+        **Drawbacks**:
+         - Just looking at the docstring, the parameter, type and  return
+           sections do not appear nicely
+
+        :param arg1: the first value
+        :param arg2: the first value
+        :param arg3: the first value
+        :type arg1: int, float,...
+        :type arg2: int, float,...
+        :type arg3: int, float,...
+        :returns: arg1/arg2 +arg3
+        :rtype: int, float
+
+        :Example:
+
+        >>> import template
+        >>> a = template.MainClass1()
+        >>> a.function1(1,1,1)
+        2
+        """
+
+
+"""Module with the class Tortoise to define all the high level behaviour of the tortoises.
+"""
+
+
 # IMPORT MODULES FROM SUBFOLDERS #
 #It's neccesary in order to import modules not in the same folder, but in a different one.
 #This is the way to tell python the location on those subfolders:
@@ -29,21 +78,36 @@ GPIO.setmode(GPIO.BCM)
 
 
 class Tortoise:
-    """Class Tortoise. Explanation:"""
+    """
+        This is the class which implements the high-level behaviour of the tortoises. In order to make a proper use of the tortoises, an instance of this class should be created.
+    """
 
     def __init__(self):
+        """
+        This method creates a tortoise. It initializes the sensors, the variables that control the random motion and creates a file with the PID of the process which has created the tortoise so that the watchdog (a background process) can stops the motors and LEDs in case the user process finishes because of an error. The tortoise is created uncalibrated.
+
+        The reasons of termination of a user process could be because of normal termination 
+        or because of an error (exceptions, ctrl-c, ...). When an error happens, the motors
+        and may be still on. In this case, the motors and LEDs should be turned off
+        for the battery not to drain. 
+
+        The solution implemented is to have a background process (a watchdog) running 
+        continously. This process checks if the user process doesn't exist anymore (termination).
+        If it doesn't, it stops the motors, switches off the LEDs and cleans up all the pins.
+        In order to identy that the user script has finished, a file with the name [PID].pid is
+        created in the folder ~/.tortoise_pids/, where [PID] is the PID of the user process.
+
+        Regarding calibration, the purpose was to avoid calibration everytime the tortoise object is created. 
+        However, this hasn't been implemented yet. The idea could be to save the light 
+        values in a file and read that file when creating the tortoise object. 
+        Light conditions could have changed, so this should be done carefully. 
+
+        At the moment, the tortoise object is created without calibration. If the users
+        want to use the light sensors, they need will need to execute the calibrateLight
+        function before using those sensors.
+        """
 
         # Variables that control the calibration of the light sensors
-
-#        The purpose was to avoid calibration everytime the tortoise object is created. 
-#        However, this hasn't been implemented yet. The idea could be to save the light 
-#        values in a file and read that file when creating the tortoise object. 
-#        Light conditions could have changed, so this should be done carefully. 
-
-#        At the moment, the tortoise object is created without calibration. If the users
-#        want to use the light sensors, they need will need to execute the calibrateLight
-#        function before using those sensors.
-
         global isLightCalibrated
         global lowerBoundLight
         global upperBoundLight
@@ -126,17 +190,6 @@ class Tortoise:
 
         # Creation of a file with the PID of the process
 
-#        The reasons of termination of a user process could be because of normal termination 
-#        or because of an error (exceptions, ctrl-c, ...). When an error happens, the motors
-#        and may be still on. In this case, the motors and LEDs should be turned off
-#        for the battery not to drain. 
-
-#        The solution implemented is to have a background process (a watchdog) running 
-#        continously. This process checks if the user process doesn't exist anymore (termination).
-#        If it doesn't, it stops the motors, switches off the LEDs and cleans up all the pins.
-#        In order to identy that the user script has finished, a file with the name [PID].pid is
-#        created in the folder ~/.tortoise_pids/, where [PID] is the PID of the user process.
-
         # PID of process
         pid = os.getpid()
 
@@ -172,110 +225,27 @@ class Tortoise:
 
 
     def getStateTortoise(self):
-        """returns (arg1 / arg2) + arg3
+        """ 
+        Returns the state of the tortoise, either paused or running.
 
-        This is a longer explanation, which may include math with latex syntax
-        :math:`\\alpha`.
-        Then, you need to provide optional subsection in this order (just to be
-        consistent and have a uniform documentation. Nothing prevent you to
-        switch the order):
-
-          - parameters using ``:param <name>: <description>``
-          - type of the parameters ``:type <name>: <description>``
-          - returns using ``:returns: <description>``
-          - examples (doctest)
-          - seealso using ``.. seealso:: text``
-          - notes using ``.. note:: text``
-          - warning using ``.. warning:: text``
-          - todo ``.. todo:: text``
-
-        **Advantages**:
-         - Uses sphinx markups, which will certainly be improved in future
-           version
-         - Nice HTML output with the See Also, Note, Warnings directives
-
-
-        **Drawbacks**:
-         - Just looking at the docstring, the parameter, type and  return
-           sections do not appear nicely
-
-        :param arg1: the first value
-        :param arg2: the first value
-        :param arg3: the first value
-        :type arg1: int, float,...
-        :type arg2: int, float,...
-        :type arg3: int, float,...
-        :returns: arg1/arg2 +arg3
-        :rtype: int, float
-
-        :Example:
-
-        >>> import template
-        >>> a = template.MainClass1()
-        >>> a.function1(1,1,1)
-        2
-
-        .. note:: can be useful to emphasize
-            important feature
-        .. seealso:: :class:`MainClass2`
-        .. warning:: arg2 must be non-zero.
+        :rtype: enums.State
         """
+
         return self.state
 
 
     def setStateTortoise(self, toState):
-        """returns (arg1 / arg2) + arg3
 
-        This is a longer explanation, which may include math with latex syntax
-        :math:`\\alpha`.
-        Then, you need to provide optional subsection in this order (just to be
-        consistent and have a uniform documentation. Nothing prevent you to
-        switch the order):
-
-          - parameters using ``:param <name>: <description>``
-          - type of the parameters ``:type <name>: <description>``
-          - returns using ``:returns: <description>``
-          - examples (doctest)
-          - seealso using ``.. seealso:: text``
-          - notes using ``.. note:: text``
-          - warning using ``.. warning:: text``
-          - todo ``.. todo:: text``
-
-        **Advantages**:
-         - Uses sphinx markups, which will certainly be improved in future
-           version
-         - Nice HTML output with the See Also, Note, Warnings directives
-
-
-        **Drawbacks**:
-         - Just looking at the docstring, the parameter, type and  return
-           sections do not appear nicely
-
-        :param arg1: the first value
-        :param arg2: the first value
-        :param arg3: the first value
-        :type arg1: int, float,...
-        :type arg2: int, float,...
-        :type arg3: int, float,...
-        :returns: arg1/arg2 +arg3
-        :rtype: int, float
-
-        :Example:
-
-        >>> import template
-        >>> a = template.MainClass1()
-        >>> a.function1(1,1,1)
-        2
-
-        .. note:: can be useful to emphasize
-            important feature
-        .. seealso:: :class:`MainClass2`
-        .. warning:: arg2 must be non-zero.
-        """
         self.state = toState
 
 
     def calibrateLight(self):
+        """
+        Calibrates the light sensor, defining the upper and lower bounds of the light, i.e. the values returned by the light sensor of the ambience and when a light source is placed in front of it.
+
+        Currently, only the light sensor in the position 1 of the PCB is used for calibration.
+        """
+
         global lowerBoundLight, upperBoundLight, isLightCalibrated
 
         messages.printMessage('calibration_ambient')
@@ -293,6 +263,20 @@ class Tortoise:
 
 
     def getSensorData(self, sensor_type, position):
+        """
+        Returns a different value depending on the type of sensor queried:
+
+        - For the light sensor: an int in the range [0, 9]
+        - For the touch sensor: 1 if the sensor has been pressed since the last time it was queried, 0 if not
+        - For the e-stop: 1 if it's ON, 0 if it's OFF
+        - For the proximity sensor: 1 if there's an obstacle (it's ON), 0 if not (it's OFF)
+
+        :param sensor_type: type of the sensor queried
+        :param position: position in the PCB of the sensor queried
+        :type sensor_type: enums.SensorType
+        :type position: int
+        :rtype: int
+        """
 
         if (sensor_type == enums.SensorType.touch):
 
@@ -393,6 +377,13 @@ class Tortoise:
 
 
     def getLEDValue(self, position):
+        """
+        Returns 1 if the LED is ON, 0 if it's OFF.
+
+        :param position: position in the PCB of the sensor queried
+        :type position: int
+        :rtype: int
+        """
 
         if (position < 1 or position > 4):
             messages.printMessage('bad_LED')
@@ -404,6 +395,14 @@ class Tortoise:
 
 
     def setLEDValue(self, position, value):
+        """
+        Turns on/off an LED.
+
+        :param position: position in the PCB of the sensor queried
+        :param value: 1 (ON) or 0 (OFF)
+        :type position: int
+        :type value: int
+        """
 
         if(position < 1 or position > 4):
             messages.printMessage('bad_LED')
@@ -421,6 +420,20 @@ class Tortoise:
 
 
     def blinkLEDs(self, positions, numberOfBlinks, delay, blocking = False):
+        """
+        Blinks the LEDs wanted the number of times specified.
+
+        :param positions: position or positions in the PCB of the LEDs wanted
+        :param numberOfBlinks: number of blinks
+        :param delay: milliseconds to wait between blinking
+        :param blocking: whether the function should block forever or not. 
+        :type positions: int, [int]
+        :type numberOfBlinks: int
+        :type delay: int
+        :type blocking: boolean
+
+        .. warning:: If blocking == True, the thread will block forever because of infinite loop. It's only used when there are errors.
+        """
 
         if numberOfBlinks < 0:
             messages.printMessage('blinks_negative')
@@ -509,6 +522,22 @@ class Tortoise:
 
 
     def moveMotors(self, stepsWheelA, stepsWheelB, delayWheelA, delayWheelB, direction):
+        """
+        Move the motors of the wheels.
+
+        Running the motors is done in different threads so that both wheels can move at the same time. The thread that executes this functions waits until the threads are finished, i.e. the motion is done. However, it doesn't block, but checks every half a second if the e-stop button has been pressed. If so, it stops the motors and exits.
+
+        :param stepsWheelA: number of rotations of the motor attached to wheel A
+        :param stepsWheelB: number of rotations of the motor attached to wheel B
+        :param delayWheelA: controls the speed of rotation of the motor attached to wheel A (minimum is 2 milliseconds)
+        :param delayWheelB: controls the speed of rotation of the motor attached to wheel B (minimum is 2 milliseconds)
+        :param direction: the direction in which the tortoise should move
+        :type stepsWheelA: int
+        :type stepsWheelB: int
+        :type delayWheelA: int
+        :type delayWheelB: int
+        :type direction: enums.Direction
+        """
 
         if( direction != enums.Direction.backwards_right and direction != enums.Direction.backwards_left and direction != enums.Direction.forwards_right and direction != enums.Direction.forwards_left and direction != enums.Direction.forwards and direction != enums.Direction.backwards  and direction != enums.Direction.clockwise and direction != enums.Direction.counterClockwise  ) :
 
@@ -631,18 +660,38 @@ class Tortoise:
 
 
     def moveForwards(self, steps):
+        """
+        The tortoise moves forwards.
+
+        :param steps: number of rotations of the motors
+        :type steps: int
+        """
 
         return self.moveMotors(steps, steps, self.minDelayMotors, self.minDelayMotors, enums.Direction.forwards)
 
 
 
     def moveBackwards(self, steps):
+        """
+        The tortoise moves backwards.
+
+        :param steps: number of rotations of the motors
+        :type steps: int
+        """
 
         return self.moveMotors(steps, steps, self.minDelayMotors, self.minDelayMotors, enums.Direction.backwards)
 
 
 
     def turnOnTheSpot(self, steps, direction):
+        """
+        This function makes the tortoise turn with the centre of rotation in one of the wheels.
+
+        :param steps: number of rotations of the motors
+        :param direction: one of these four combinations: [forwards/backwards]_[left/right]
+        :type steps: int
+        :type direction: enums.Direction
+        """
 
         if(steps < 0):
             messages.printMessage('bad_steps')
@@ -667,6 +716,14 @@ class Tortoise:
 
 
     def shuffleOnTheSpot(self, steps, direction):
+        """
+        This function makes the tortoise turn with the centre of rotation between both wheels.
+
+        :param steps: number of rotations of the motors
+        :param direction: either clockwise or counter-clockwise
+        :type steps: int
+        :type direction: enums.Direction
+        """
 
         if(steps < 0):
             messages.printMessage('bad_steps')
@@ -683,11 +740,29 @@ class Tortoise:
 
 
     def shuffle45degrees(self, direction):
+        """
+        This function tries to make the tortoise shuffle 45 degrees.
+
+        :param direction: one of these four combinations: [forwards/backwards]_[left/right]
+        :type direction: enums.Direction
+        """
 
         return self.shuffleOnTheSpot(180, direction)
 
 
     def turn(self, stepsWheelA, stepsWheelB, direction):
+        """
+        This function makes the tortoise turn by specifying different steps for the wheels.
+
+        The function computes the delay that the wheel with less rotations should have in order to finish at the same time than the other wheel.
+
+        :param stepsWheelA: number of rotations of the motor attached to wheel A
+        :param stepsWheelB: number of rotations of the motor attached to wheel B
+        :param direction: one of these four combinations: [forwards/backwards]_[left/right]
+        :type stepsWheelA: int
+        :type stepsWheelB: int
+        :type direction: enums.Direction
+        """
 
         if( direction != enums.Direction.backwards_right and direction != enums.Direction.backwards_left and
             direction != enums.Direction.forwards_right and direction != enums.Direction.forwards_left ) :
@@ -730,6 +805,12 @@ class Tortoise:
 
 
     def turn45degrees_sharp(self, direction):
+        """
+        This function tries to make the tortoise turn 45 degrees sharply.
+
+        :param direction: one of these four combinations: [forwards/backwards]_[left/right]
+        :type direction: enums.Direction
+        """
 
         if direction == enums.Direction.backwards_right or direction == enums.Direction.forwards_right:
 
@@ -742,6 +823,12 @@ class Tortoise:
 
 
     def turn30degrees_wide(self, direction):
+        """
+        This function tries to make the tortoise turn 45 degrees wide.
+
+        :param direction: one of these four combinations: [forwards/backwards]_[left/right]
+        :type direction: enums.Direction
+        """
 
         if direction == enums.Direction.backwards_right or direction == enums.Direction.forwards_right:
 
@@ -754,6 +841,27 @@ class Tortoise:
 
 
     def doRandomMovement(self):
+        """
+        Performs a natural random movement.
+
+        The function chooses a movement, and it can be repeated up to three times. The probabilities of repeating the movement are as follows:
+
+        - No repetition: 60%
+        - Once: 60%
+        - Twice: 25%
+        - Three times: 10%
+        - Four times: 5%
+
+        The probabilities of choosing a random movement are as follows:
+
+        - Move forwards: 30%
+        - Move backwards: 10%
+        - Shuffling: 10%
+        - Turning 30 or 45 degrees: 10%
+        - Turning with random steps: 40%
+
+        The direction of movement for the turns and shuffles is chosen randomly.
+        """
 
         # New random command
         if self.numberRepeatsRandomCommand == -1 or self.timesSameRandomCommandExecuted == self.numberRepeatsRandomCommand:

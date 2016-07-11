@@ -10,7 +10,7 @@ Welcome to greyWalter's documentation!
 	:maxdepth: 2
 
 	tortoise
-	sensors
+..	sensors
 
 
 Indices and tables
