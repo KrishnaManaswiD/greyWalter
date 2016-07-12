@@ -20,7 +20,7 @@ echo
 
 echo "Installing enum34 (python module)"
 cd ./code/enum34-1.1.6/
-python setup.py install #>>/dev/null
+sudo python setup.py install #>>/dev/null
 cd ..
 cd ..
 echo "DONE"
