@@ -8,23 +8,26 @@
 ############################################################################
 
 
-echo "Installing ntpdate"
-sudo apt-get install -y ntpdate >>/dev/null
-echo "DONE"
-echo
+#echo "Installing ntpdate"
+#sudo apt-get install -y ntpdate #>>/dev/null
+#echo "DONE"
+#echo
 
 echo "Installing gedit"
-sudo apt-get install -y gedit >>/dev/null
+sudo apt-get install -y gedit #>>/dev/null
 echo "DONE"
 echo
 
 echo "Installing enum34 (python module)"
-sudo pip install enum34 >>/dev/null
+cd ./code/enum34-1.1.6/
+python setup.py install #>>/dev/null
+cd ..
+cd ..
 echo "DONE"
 echo
 
 #echo "Installing Sphinx (python module)"
-#sudo apt-get install -y python-sphinx >>/dev/null
+#sudo apt-get install -y python-sphinx #>>/dev/null
 #echo "DONE"
 #echo
 
